@@ -56,3 +56,14 @@ def test_lexer_invalid():
             tokens.append(token)
             if token.token_type == TokenType.EOF:
                 break
+def test_invalid_error_message():
+    test_data = "12 + 3\n+ 4a"
+    lexer = Lexer(test_data)
+    with pytest.raises(InvalidCharacterException) as error_info:
+        while True:
+            token = lexer.token()
+            if token.token_type == TokenType.EOF:
+                break
+    error_message = str(error_info.value)
+    assert "line" in error_message
+    assert "column" in error_message
