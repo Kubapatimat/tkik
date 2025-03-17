@@ -128,3 +128,46 @@ def test_lexer_error_position():
     error_message = str(error_info.value)
     assert "line 2, column 4" in error_message
     assert "Invalid character 'a'" in error_message
+
+
+def test_lexer_valid_multiline_expression():
+    lexer = Lexer("(1+2)\n*(3+4)\n /   (5 + 6) + abcd01\n\n\n - (2^3)^(-1)")
+    tokens = []
+    while True:
+        token = lexer.token()
+        tokens.append(token)
+        if token.token_type == TokenType.EOF:
+            break
+    assert tokens == [
+        Token(TokenType.LPAREN, '('),
+        Token(TokenType.NUMBER, '1'),
+        Token(TokenType.PLUS, '+'),
+        Token(TokenType.NUMBER, '2'),
+        Token(TokenType.RPAREN, ')'),
+        Token(TokenType.MULTIPLY, '*'),
+        Token(TokenType.LPAREN, '('),
+        Token(TokenType.NUMBER, '3'),
+        Token(TokenType.PLUS, '+'),
+        Token(TokenType.NUMBER, '4'),
+        Token(TokenType.RPAREN, ')'),
+        Token(TokenType.DIVIDE, '/'),
+        Token(TokenType.LPAREN, '('),
+        Token(TokenType.NUMBER, '5'),
+        Token(TokenType.PLUS, '+'),
+        Token(TokenType.NUMBER, '6'),
+        Token(TokenType.RPAREN, ')'),
+        Token(TokenType.PLUS, '+'),
+        Token(TokenType.IDENTIFIER, 'abcd01'),
+        Token(TokenType.MINUS, '-'),
+        Token(TokenType.LPAREN, '('),
+        Token(TokenType.NUMBER, '2'),
+        Token(TokenType.EXPONENT, '^'),
+        Token(TokenType.NUMBER, '3'),
+        Token(TokenType.RPAREN, ')'),
+        Token(TokenType.EXPONENT, '^'),
+        Token(TokenType.LPAREN, '('),
+        Token(TokenType.MINUS, '-'),
+        Token(TokenType.NUMBER, '1'),
+        Token(TokenType.RPAREN, ')'),
+        Token(TokenType.EOF, '')
+    ]

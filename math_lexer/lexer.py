@@ -29,7 +29,7 @@ class Lexer:
 
     def token(self) -> Token:
         if not self._is_within_bounds():
-            if self._parentheses:
+            if self._parentheses > 0:
                 raise InvalidCharacterException(
                     f"Invalid character at line {self._line}, column {self._column}. "
                     f"Unmatched opening parenthesis."
