@@ -1,15 +1,29 @@
 from enum import Enum, auto
 
+
 class TokenType(Enum):
+    EOF = auto()
     NUMBER = auto()
     IDENTIFIER = auto()
     PLUS = auto()
     MINUS = auto()
     MULTIPLY = auto()
     DIVIDE = auto()
+    EXPONENT = auto()
     LPAREN = auto()
     RPAREN = auto()
-    EOF = auto()
+
+
+token_mapping = {
+    "+": TokenType.PLUS,
+    "-": TokenType.MINUS,
+    "*": TokenType.MULTIPLY,
+    "/": TokenType.DIVIDE,
+    "^": TokenType.EXPONENT,
+    "(": TokenType.LPAREN,
+    ")": TokenType.RPAREN
+}
+
 
 class Token:
     def __init__(self, token_type: TokenType, value: str, start_pos: int = None, end_pos: int = None):

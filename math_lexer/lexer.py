@@ -1,74 +1,77 @@
-from .tokens import TokenType, Token
+from .tokens import TokenType, Token, token_mapping
 from .utils import is_whitespace, is_digit, is_alpha
+
 
 class InvalidCharacterException(Exception):
     pass
 
+
 class Lexer:
     def __init__(self, data: str):
-        self.pos = 0
-        self.data = data
-        self.line, self.column = 1, 1
-    def advance(self):
-        if self.pos < len(self.data):
-            if self.data[self.pos] == '\n':
-                self.line+=1
-                self.column = 1
-            else:
-                self.column+=1
+        self._pos = 0
+        self._data = data
+        self._line = 1
+        self._column = 1
+        self._parentheses = 0
 
-        self.pos += 1
+    def _is_within_bounds(self):
+        return self._pos < len(self._data)
+
+    def _advance(self):
+        if self._pos < len(self._data):
+            if self._data[self._pos] == '\n':
+                self._line += 1
+                self._column = 1
+            else:
+                self._column += 1
+
+        self._pos += 1
 
     def token(self) -> Token:
-        while self.pos < len(self.data) and self.data[self.pos].isspace():
-            self.advance()
+        if not self._is_within_bounds():
+            if self._parentheses:
+                raise InvalidCharacterException(
+                    f"Invalid character at line {self._line}, column {self._column}. "
+                    f"Unmatched opening parenthesis."
+                )
+            return Token(TokenType.EOF, '', self._pos, self._pos)
 
-        if self.pos >= len(self.data):
-            return Token(TokenType.EOF, '', self.pos, self.pos)
-
-        char = self.data[self.pos]
+        char = self._data[self._pos]
         if is_whitespace(char):
-            self.pos += 1
+            self._advance()
+            while self._is_within_bounds() and is_whitespace(self._data[self._pos]):
+                self._advance()
             return self.token()
-        if char == '+':
-            token = Token(TokenType.PLUS, '+', self.pos, self.pos)
-            self.pos += 1
-            return token
-        if char == '-':
-            token = Token(TokenType.MINUS, '-', self.pos, self.pos)
-            self.pos += 1
-            return token
-        if char == '*':
-            token = Token(TokenType.MULTIPLY, '*', self.pos, self.pos)
-            self.pos += 1
-            return token
-        if char == '/':
-            token = Token(TokenType.DIVIDE, '/', self.pos, self.pos)
-            self.pos += 1
-            return token
-        if char == '(':
-            token = Token(TokenType.LPAREN, '(', self.pos, self.pos)
-            self.pos += 1
-            return token
-        if char == ')':
-            token = Token(TokenType.RPAREN, ')', self.pos, self.pos)
-            self.pos += 1
+        if char in token_mapping:
+            token = Token(token_mapping[char], char, self._pos, self._pos)
+            self._advance()
+            if char == '(':
+                self._parentheses += 1
+            elif char == ')':
+                if self._parentheses == 0:
+                    raise InvalidCharacterException(
+                        f"Invalid character '{char}' at line {self._line}, column {self._column}. "
+                        f"Unmatched closing parenthesis."
+                    )
+                self._parentheses -= 1
             return token
         if is_digit(char):
-            start = self.pos
-            self.advance()
-            while self.pos < len(self.data) and is_digit(self.data[self.pos]):
-                self.advance()
-            if self.pos < len(self.data) and is_alpha(self.data[self.pos]):
+            start = self._pos
+            self._advance()
+            while self._is_within_bounds() and is_digit(self._data[self._pos]):
+                self._advance()
+            if self._is_within_bounds() and is_alpha(self._data[self._pos]):
                 raise InvalidCharacterException(
-                    f"Invalid character '{self.data[self.pos]}' is number token at line {self.line}, column {self.column}"
+                    f"Invalid character '{self._data[self._pos]}' at line {self._line}, column {self._column}. "
+                    f"Identifier cannot start with a digit."
                 )
-            return Token(TokenType.NUMBER, self.data[start:self.pos],start, self.pos-1)
+            return Token(TokenType.NUMBER, self._data[start:self._pos], start, self._pos - 1)
         if is_alpha(char):
-            start = self.pos
-            self.advance()
-            while self.pos < len(self.data) and (is_alpha(self.data[self.pos]) or is_digit(self.data[self.pos])):
-                self.advance()
-            return Token(TokenType.IDENTIFIER, self.data[start:self.pos], start, self.pos-1)
+            start = self._pos
+            self._advance()
+            while self._is_within_bounds() and (is_alpha(self._data[self._pos]) or is_digit(self._data[self._pos])):
+                self._advance()
+            return Token(TokenType.IDENTIFIER, self._data[start:self._pos], start, self._pos - 1)
         else:
-            raise InvalidCharacterException(f'Invalid character at line {self.line}, column {self.column}')
+            raise InvalidCharacterException(
+                f"Invalid character '{char}' at line {self._line}, column {self._column}.")
