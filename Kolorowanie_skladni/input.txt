@@ -1,0 +1,9 @@
+def factorial(n):
+    if n < 0: #Tutaj jest komentarz
+        raise ValueError("Liczba musi być nieujemna") #Tutaj też
+    elif n == 0:
+        return 1
+    else:
+        return n * factorial(n - 1)
+
+print("Silnia 5 wynosi:", factorial(5))
