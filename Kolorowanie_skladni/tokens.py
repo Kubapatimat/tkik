@@ -10,6 +10,7 @@ class TokenType(Enum):
     COMMENT = auto()
     OPERATOR = auto()
     DELIMITER = auto()
+    FUNCTION = auto()
 
 single_char_tokens = {
     '+': TokenType.OPERATOR,

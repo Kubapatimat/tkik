@@ -4,7 +4,7 @@ from utils import is_digit, is_whitespace, is_alpha
 python_keywords = {
     "def", "class", "if", "else", "elif", "while", "for", "in", "try", "except",
     "finally", "with", "return", "import", "from", "as", "pass", "break", "continue",
-    "and", "or", "not", "is", "None", "True", "False"
+    "and", "or", "not", "is", "None", "True", "False", "raise"
 }
 
 class Lexer:
@@ -41,13 +41,13 @@ class Lexer:
             while self._is_within_bounds() and is_whitespace(self._data[self._pos]):
                 self._advance()
             return Token(TokenType.WHITESPACE, self._data[start:self._pos], start, self._pos - 1)
-
+        #obsługa komentarzy
         if char == '#':
             start = self._pos
             while self._is_within_bounds() and self._data[self._pos] != '\n':
                 self._advance()
             return Token(TokenType.COMMENT, self._data[start:self._pos], start, self._pos - 1)
-
+        #Obsługa łańcucha znaków
         if char in ('"', "'"):
             quote_char = char
             start = self._pos
@@ -61,7 +61,7 @@ class Lexer:
                     self._advance()
             self._advance()
             return Token(TokenType.STRING, self._data[start:self._pos], start, self._pos - 1)
-
+        #Obsługa liczb
         if is_digit(char):
             start = self._pos
             self._advance()
@@ -72,7 +72,7 @@ class Lexer:
                 while self._is_within_bounds() and is_digit(self._data[self._pos]):
                     self._advance()
             return Token(TokenType.NUMBER, self._data[start:self._pos], start, self._pos - 1)
-
+        #Obsługa identyfikatorów oraz wywołanie funkcji
         if is_alpha(char):
             start = self._pos
             self._advance()
@@ -81,8 +81,12 @@ class Lexer:
             value = self._data[start:self._pos]
             if value in python_keywords:
                 return Token(TokenType.KEYWORD, value, start, self._pos - 1)
-            else:
-                return Token(TokenType.IDENTIFIER, value, start, self._pos - 1)
+            if value == "self":
+                return Token(TokenType.FUNCTION, value, start, self._pos - 1)
+#Tutaj jest to sprawdzenie żeby oznaczyć funkcje
+            if self._is_within_bounds() and self._data[self._pos] == '(':
+                return Token(TokenType.FUNCTION, value, start, self._pos - 1)
+            return Token(TokenType.IDENTIFIER, value, start, self._pos - 1)
 
         if char in single_char_tokens:
             token = Token(single_char_tokens[char], char, self._pos, self._pos)
