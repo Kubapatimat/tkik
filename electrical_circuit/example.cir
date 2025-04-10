@@ -1,0 +1,8 @@
+R1 = 10kOhm
+C1 n1 n2 100uF
+V1 -> R1 -> GND
+
+.model D1 D (Is=1e-15 N=1)
+
+.tran 1n 10u
+.tran 1n 100u
