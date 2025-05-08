@@ -3,7 +3,7 @@
 ## Autorzy:
 - Jakub Halfar - jakubhalfar@student.agh.edu.pl
 - Aleksander Pyrdek - apyrdek@student.agh.edu.pl
-- Antoni Pater - mail
+- Antoni Pater - antonipater@student.agh.edu.pl
 
 ## Załóżenia programu
 Projekt ma na celu:
