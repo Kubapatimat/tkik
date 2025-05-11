@@ -1,0 +1,11 @@
+# Parameterized circuit example
+
+let R_top = 1k, R_bottom = 2k # Resistor values, multiple assignments in one line
+let V_in = 5                  # Voltage source value
+
+V1 = V_in     : N001, GND   # Voltage source V1 is between node N001 and GND
+R1 = R_top    : N001, OUT   # Resistor R1 is between node N001 and OUT
+R2 = R_bottom : OUT, GND    # Resistor R2 is between node OUT and GND
+
+# Operating point analysis
+op

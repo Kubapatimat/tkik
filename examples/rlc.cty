@@ -1,0 +1,14 @@
+# RLC circuit with sinusoidal voltage source
+
+let freq = 50
+let period = 1/freq
+let stop = 10*period
+
+let R = 1k, L = 1, C = 1m
+
+V1 = sine(dc=0, amplitude=10, f=freq) : 1, 0
+R1 = R : 1, 2
+L1 = L : 2, 3
+C1 = C : 3, 0
+
+transient(stop)

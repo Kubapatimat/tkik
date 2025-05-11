@@ -1,4 +1,0 @@
-# Kolorowanie składni języka Python
-- - -  
-
-
