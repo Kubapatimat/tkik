@@ -1,8 +1,14 @@
-# RLC circuit with sinusoidal voltage source
+/**
+ * @title: RLC circuit with sinusoidal voltage source
+ * @description: Transient analysis of an RLC circuit
+ * @author: JH
+ * @date: 11.05.2025
+ * @version: 1.0
+ */
 
 let freq = 50
-let period = 1/freq
-let stop = 10*period
+let period = 1 / freq
+let stop = 10 * period
 
 let R = 1k, L = 1, C = 1m
 

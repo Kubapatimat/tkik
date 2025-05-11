@@ -1,11 +1,20 @@
-# Parameterized circuit example
+/**
+ * @title: Variables
+ * @description: This example demonstrates the use of variables in a circuit simulation.
+ * @author: JH
+ * @date: 11.05.2025
+ * @version: 1.0
+ */
 
-let R_top = 1k, R_bottom = 2k # Resistor values, multiple assignments in one line
-let V_in = 5                  # Voltage source value
+let V_in = 5                       # Voltage source value
 
-V1 = V_in     : N001, GND   # Voltage source V1 is between node N001 and GND
-R1 = R_top    : N001, OUT   # Resistor R1 is between node N001 and OUT
-R2 = R_bottom : OUT, GND    # Resistor R2 is between node OUT and GND
+let R_top = 1k, R_bottom = 2k      # Resistor values, multiple assignments in one line
+let R_side = R_top + 2 * R_bottom  # Calculate the value of the side resistor
 
-# Operating point analysis
-op
+V1 = V_in       : IN, GND          # Voltage source V1 is between node IN(+) and GND(-)
+R1 = R_top      : IN, OUT          # Resistor R1 is between node IN(+) and OUT(-)
+R2 = R_bottom   : OUT, GND         # Resistor R2 is between node OUT(+) and GND(-)
+R3 = R_side     : IN, GND          # Resistor R3 is between node IN(+) and GND(-)
+R4 = R_side / 2 : IN, GND          # Resistor R4 is parallel to R3 and has half the value of R3
+
+op                                 # Operating point analysis

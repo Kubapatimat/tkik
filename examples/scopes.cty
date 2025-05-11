@@ -1,0 +1,29 @@
+/**
+ * @title: Scopes
+ * @description: Variable and function scopes in a circuit.
+ * @author: JH
+ * @date: 11.05.2025
+ * @version: 1.0
+ */
+
+V = 10 : IN, GND
+
+series : IN, GND {
+    R1 = 1         # 1 Ω
+    R2 = 1k        # 1 kΩ
+
+    # The function `R_parallel` is scoped to the series block
+    fn R_parallel(R1, R2) {
+        return R1 * R2 / (R1 + R2)
+    }
+
+    # The variable `resistance_sum` is scoped to the series block
+    # To get the values of a element, the curly braces operator is used
+    let resistance_sum = R_parallel({R1}, {R2})
+
+    R3 = resistance_sum
+}
+
+# Outside scope, the function `R_parallel` is not accessible and the variable `resistance_sum` is not defined
+
+transient(3μ)

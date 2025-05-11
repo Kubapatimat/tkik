@@ -1,0 +1,27 @@
+/**
+ * @title: Functions
+ * @description: This example demonstrates the use of functions in a circuit simulation.
+ * @author: JH
+ * @date: 11.05.2025
+ * @version: 1.0
+ */
+
+/**
+ * @title: Calculate the resonance frequency of an RLC circuit.
+ * @param L: Inductance in Henry
+ * @param C: Capacitance in Farad
+ * @return: Resonance frequency in Hertz
+ */
+fn resonance_frequency(L, C) {
+    return 1 / (2 * pi * sqrt(L * C))
+}
+
+let R = 1k, L = 1, C = 1m
+let freq = resonance_frequency(L, C)
+
+V = sine(dc=0, amplitude=10, f=freq) : 1, 0  # Voltage source "V" is between node 1(+) and 0(-)
+R = R : 1, 2                                 # Resistor "R" is between node 1(+) and 2(-) and has value R (variable)
+L = L : 2, 3                                 # Inductor "L" is between node 2(+) and 3(-) and has value L (variable)
+C = C : 3, 0                                 # Capacitor "C" is between node 3(+) and 0(-) and has value C (variable)
+
+transient(3μ)
