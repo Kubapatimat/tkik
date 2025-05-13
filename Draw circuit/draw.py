@@ -282,7 +282,7 @@ if __name__ == "__main__":
     D2 = LED : LED2, GND
     """
 
-    data_wheatstone_bridge = """
+    data_wheatstone_bridge = """`
     V = 5 : VCC, GND
     R1 = 1000 : VCC, A
     R2 = 1000 : A, GND
