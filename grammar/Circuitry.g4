@@ -1,6 +1,8 @@
 grammar Circuitry;
+
 circuit
-    : statement* EOF;
+    : statement* EOF
+    ;
 
 statement
     : letStmt
@@ -8,11 +10,14 @@ statement
     | subcircuitDecl
     | subcircuitInst
     | macroStmt
+    | namedMacroStmt
+    | functionDecl
+    | returnStmt
     | analysisStmt
     ;
 
 letStmt
-    : LET assignment(',' assignment)*
+    : LET assignment (',' assignment)*
     ;
 assignment
     : ID '=' expr
@@ -45,6 +50,12 @@ mapping
 macroStmt
     : (SERIES | PARALLEL) (':' nodeList)? block
     ;
+
+
+namedMacroStmt
+    : ID '=' (SERIES | PARALLEL) (':' nodeList)? block
+    ;
+
 block
     : '{' statement* '}'
     ;
@@ -54,13 +65,27 @@ analysisStmt
     | OP
     ;
 
-// expr rules
 
+functionDecl
+    : FN ID '(' paramIDList? ')' block
+    ;
+paramIDList
+    : ID (',' ID)*
+    ;
+
+
+returnStmt
+    : RETURN expr
+    ;
+
+
+// Expr rules
 expr
     : expr op=('*'|'/') expr
     | expr op=('+'|'-') expr
     | ID '(' argList? ')'
     | NUMBER
+    | elementRef
     | ID
     | '(' expr ')'
     ;
@@ -71,23 +96,50 @@ node
     : ID
     ;
 
-//Tokens
-LET : 'let';
-SUBCIRCUIT : 'subcircuit';
-SERIES : 'series';
-PARALLEL : 'parallel';
-TRANSIENT : 'transient';
-OP : 'op';
 
-//libcza z czescia dziesietna opcjonalnie i suffix jednostki
+elementRef
+    : '{' ID '}'
+    ;
+
+
+// Lexer tokens
+
+
+BLOCK_COMMENT
+    : '/**' .*? '*/' -> skip
+    ;
+
+COMMENT
+    : '#' ~[\r\n]* -> skip
+    ;
+
+WS
+    : [ \t\r\n]+ -> skip
+    ;
+
+// keywords
+LET         : 'let';
+SUBCIRCUIT  : 'subcircuit';
+SERIES      : 'series';
+PARALLEL    : 'parallel';
+TRANSIENT   : 'transient';
+OP          : 'op';
+
+
+FN          : 'fn';
+RETURN      : 'return';
+
+// liczby z sufiksem jednostki (k, m, μ, M, G, T, itd.)
 NUMBER
     : DIGIT+ ('.' DIGIT+)? [a-zA-Zμ]*
     ;
+
+// identyfikatory
 ID
     : [a-zA-Z_][a-zA-Z0-9_]*
     ;
-COMMENT : '#' ~[\r\n]* -> skip;
 
-WS : [ \t\r\n]+ -> skip;
-
-fragment DIGIT : [0-9];
+// fragment dla cyfr
+fragment DIGIT
+    : [0-9]
+    ;
