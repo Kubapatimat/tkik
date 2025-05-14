@@ -1,0 +1,7 @@
+draw voltage_source V from (0,0) to (0,4)
+draw resistor R1 from (0,4) to (2,6)
+draw resistor R2 from (0,4) to (2,2)
+draw resistor R3 from (2,6) to (4,4)
+draw resistor R4 from (2,2) to (4,4)
+draw wire back from (4,4) to (4,0)
+draw wire return from (4,0) to (0,0)

@@ -1,0 +1,5 @@
+draw voltage_source V from (0,0) to (0,4) label "Vs" voltage "u_Vs"
+draw resistor R1 from (0,4) to (2,4) label "R1" current "i1"
+draw resistor R2 from (2,4) to (4,4) label "R2" current "i2"
+draw wire back from (4,4) to (4,0)
+draw wire return from (4,0) to (0,0)

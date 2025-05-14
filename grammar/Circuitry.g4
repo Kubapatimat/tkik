@@ -1,5 +1,7 @@
 grammar Circuitry;
 
+import Draw;
+
 circuit
     : statement* EOF
     ;
@@ -14,6 +16,7 @@ statement
     | functionDecl
     | returnStmt
     | analysisStmt
+    | drawStmt
     ;
 
 letStmt
@@ -63,6 +66,10 @@ block
 analysisStmt
     : TRANSIENT '(' expr ')'
     | OP
+    ;
+
+drawStmt
+    : 'draw' component
     ;
 
 
