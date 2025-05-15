@@ -1,0 +1,4 @@
+draw current_source I from (0,0) to (0,4)
+draw diode D from (0,4) to (4,4)
+draw wire gnd from (4,4) to (4,0)
+draw wire back from (4,0) to (0,0)
