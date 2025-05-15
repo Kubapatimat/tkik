@@ -138,12 +138,12 @@ NUMBER
     : DIGIT+ ('.' DIGIT+)? [a-zA-Zμ]*
     ;
 
-// identyfikatory
+//identyfikatory
 ID
     : [a-zA-Z_][a-zA-Z0-9_]*
     ;
 
-// fragment dla cyfr
+//fragment dla cyfr
 fragment DIGIT
     : [0-9]
     ;
