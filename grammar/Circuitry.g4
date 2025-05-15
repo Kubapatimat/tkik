@@ -16,28 +16,31 @@ statement
     | analysisStmt
     ;
 
+//let a, b = wartość
 letStmt
     : LET assignment (',' assignment)*
     ;
+
 assignment
     : ID '=' expr
     ;
-
+// Deklaracja elementu obwodu: nazwa = wyrażenie [: lista węzłów]
 componentStmt
-    : ID '=' expr ':' nodeList
+    : ID '=' expr (':' nodeList)?
     ;
+//Definicja podobwodu: subcircuit NAZWA(parametry) : wejścia/wyjścia { ciało }
 subcircuitDecl
     : SUBCIRCUIT ID '(' paramList? ')' ':' nodeList block
     ;
 paramList
     : assignment (',' assignment)*
     ;
-
+//Instancja podobwodu: alias = nazwaPodobwodu(argList) : mapowanie lub zwykłe węzły
 subcircuitInst
     : ID '=' ID '(' argList? ')' ':' (mappingList | nodeList)
     ;
 argList
-    : assignment (',' assignment)*
+    : (assignment | expr) (',' (assignment | expr))*
     ;
 
 mappingList
@@ -46,20 +49,21 @@ mappingList
 mapping
     : ID '->' ID
     ;
-
+//Anonimowy lub nazwana seria/równoległość elementów
 macroStmt
-    : (SERIES | PARALLEL) (':' nodeList)? block
-    ;
+  : (SERIES | PARALLEL) (':' nodeList)? block
+  ;
 
 
 namedMacroStmt
-    : ID '=' (SERIES | PARALLEL) (':' nodeList)? block
-    ;
+  : ID '=' (SERIES | PARALLEL) (':' nodeList)? block
+  ;
 
+//Blok kodu: { zero lub więcej zdań }
 block
     : '{' statement* '}'
     ;
-
+//Analiza transientna lub OP (operacje)
 analysisStmt
     : TRANSIENT '(' expr ')'
     | OP
@@ -79,7 +83,7 @@ returnStmt
     ;
 
 
-// Expr rules
+//Reguły dla wyrażeń arytmetycznych i wywołań funkcji
 expr
     : expr op=('*'|'/') expr
     | expr op=('+'|'-') expr
@@ -93,10 +97,10 @@ nodeList
     : node (',' node)*
     ;
 node
-    : ID
+    : (ID | NUMBER) ('.' ID | '.+' | '.-')*
     ;
 
-
+//Odwołanie do elementu: {nazwa_elementu}
 elementRef
     : '{' ID '}'
     ;
