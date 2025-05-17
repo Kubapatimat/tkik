@@ -1,46 +1,37 @@
-/**
- * @title: Series and parallel blocks
- * @description: This example demonstrates the use of series and parallel blocks in a circuit simulation.
- * Also shows how to access the nodes of the blocks.
- * @author: JH
- * @date: 11.05.2025
- * @version: 1.0
- */
+let freq = 50;
+let period = 1 / freq;
+let stop = 10 * period;
 
-let freq = 50
-let period = 1 / freq
-let stop = 10 * period
+let R = 1k, L = 1, C = 1m;
 
-let R = 1k, L = 1, C = 1m
+V V1 = sine(vdc=0, amplitude=10, f=freq) : n1, GND;
 
-V1 = sine(dc=0, amplitude=10, f=freq) : 1, 0
+// Define an anonymous series block between the nodes n1 and GND
+series : n1, GND {
+    R R1 = R,             // : R1.+ -> 1, R1.- -> L1.+
+    L L1 = L,             // : L1.- -> C1.- (C1 is reversed)
+    C C1 = C : reversed,  // : C1.+ -> R2.+
+    parallel {            // automatically connects to the previous node
+        R R2 = 2k,        // : R2.+ -> R3.+
+        R R3 = 3k         // : R3.- -> R3.-
+    }                     // : R2.- -> 0
+};
 
-# Define an anonymous series block between the nodes 1 and 0
-series : 1, 0 {
-    R1 = R       # : R1.+ -> 1, R1.- -> L1.+
-    L1 = L       # : L1.- -> C1.+
-    C1 = C       # : C1.- -> R2.+
-    parallel {   # automatically connects to the previous node
-        R2 = 2k  # : R2.+ -> R3.+
-        R3 = 3k  # : R3.- -> R3.-
-    }            # : R2.- -> 0
-}
+// Connect an external resistor to the block
+R R4 = 5k : R3.-, GND;
 
-# Connect an external resistor to the block
-R4 = 5k : R3.-, 0
+// Named series block
+series S1 : n1, GND {
+    R R5 = 2k,
+    parallel P1 {
+        R R6 = 3k,
+        R R7 = 4k
+    },
+    L L2 = 1m,
+    C C2 = 1u
+};
 
-# Named series block
-S1 = series : 1, 0 {
-    R5 = 2k
-    P1 = parallel {
-        R6 = 3k
-        R7 = 4k
-    }
-    L2 = 1m
-    C2 = 1u
-}
+// Connect an external resistor parallel to the P1 block
+R R8 = 5k : S1.P1.+, S1.P1.-;
 
-# Connect an external resistor parallel to the P1 block
-R8 = 5k : S1.P1.+, S1.P1.-
-
-transient(stop)
+transient(stop);

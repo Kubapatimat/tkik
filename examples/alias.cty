@@ -1,0 +1,6 @@
+alias GND = Vm;
+
+V V1 = 12 : Vp, Vm;
+
+R R1 = 1k : Vp, NODE_A;
+R R2 = 2k : NODE_A, Vm;

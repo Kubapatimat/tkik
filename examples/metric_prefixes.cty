@@ -1,30 +1,22 @@
-/**
- * @title: Metric prefixes
- * @description: Demonstration of metric prefixes for electrical components.
- * @author: JH
- * @date: 11.05.2025
- * @version: 1.0
- */
-
-V = 10 : IN, GND
+V V = 10 : IN, GND;
 
 series : IN, GND {
-    R1 = 1         # 1 Ω
-    R2 = 1k        # 1 kΩ
-    R3 = 1M        # 1 MΩ
-    R4 = 1G        # 1 GΩ
-    R5 = 1T        # 1 TΩ
-    R6 = 1P        # 1 PΩ
-}
+    R R1 = 1,         // 1 Ω
+    R R2 = 1k,        // 1 kΩ
+    R R3 = 1M,        // 1 MΩ
+    R R4 = 1G,        // 1 GΩ
+    R R5 = 1T,        // 1 TΩ
+    R R6 = 1P         // 1 PΩ
+};
 
-series : IN, GND {
-    C1 = 1         # 1 F
-    C2 = 1m        # 1 mF
-    C3 = 1u        # 1 uF
-    C4 = 1μ        # 1 μF (alternative syntax for 1u)
-    C5 = 1n        # 1 nF
-    C6 = 1p        # 1 pF
-    C7 = 1f        # 1 fF
-}
+series S2 : IN, GND {
+    C C1 = 1,         // 1 F
+    C C2 = 1m,        // 1 mF
+    C C3 = 1u,        // 1 uF
+    C C4 = 1μ,        // 1 μF (alternative syntax for 1u)
+    C C5 = 1n,        // 1 nF
+    C C6 = 1p,        // 1 pF
+    C C7 = 1f        // 1 fF
+};
 
-transient(3μ)
+transient(3μ);

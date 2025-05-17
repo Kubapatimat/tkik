@@ -1,20 +1,14 @@
-/**
- * @title: RLC circuit with sinusoidal voltage source
- * @description: Transient analysis of an RLC circuit
- * @author: JH
- * @date: 11.05.2025
- * @version: 1.0
- */
+let freq = 50;
+let period = 1 / freq;
+let stop = 10 * period;
 
-let freq = 50
-let period = 1 / freq
-let stop = 10 * period
+let R = 1k, L = 1, C = 1m;
 
-let R = 1k, L = 1, C = 1m
+alias GND = n0;
 
-V1 = sine(dc=0, amplitude=10, f=freq) : 1, 0
-R1 = R : 1, 2
-L1 = L : 2, 3
-C1 = C : 3, 0
+V V1 = sine(vdc=0, amplitude=10, f=freq) : n1, n0;
+R R1 = R : n1, n2;
+L L1 = L : n2, n3;
+C C1 = C : n3, n0;
 
-transient(stop)
+transient(stop);

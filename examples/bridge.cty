@@ -1,0 +1,13 @@
+alias GND = B;
+
+V V1 = 10 : A, B;
+
+R R1 = 1k : C, A;
+R R2 = 2k : B, C;
+R R3 = 3k : D, A;
+R R4 = 6k : B, D;
+
+pos A = (2, 2);
+pos B = (2, -2);
+pos C = (0, 0);
+pos D = (4, 0);
