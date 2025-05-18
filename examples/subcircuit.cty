@@ -1,48 +1,11 @@
-/**
- * @title: Subcircuit
- * @description: This example demonstrates the use of subcircuits in a circuit simulation.
- * @author: JH
- * @date: 11.05.2025
- * @version: 1.0
- */
-
-/* Define a subcircuit
- * Subcircuit exposes the following nodes (connections): TOP, MIDDLE, BOTTOM */
-
-/**
- * @title: Voltage divider circuit
- * @param R_top: Top resistor value in Ohm
- * @param R_bottom: Bottom resistor value in Ohm
- * @connections:
- * - TOP: Top node of the voltage divider
- * - MIDDLE: Middle node of the voltage divider
- * - BOTTOM: Bottom node of the voltage divider
- */
 subcircuit divider(R_top=1k, R_bottom=2k) : TOP, MIDDLE, BOTTOM {
-    R1 = R_top    : TOP, MIDDLE
-    R2 = R_bottom : MIDDLE, BOTTOM
+    R R1 = R_top    : TOP, MIDDLE;
+    R R2 = R_bottom : MIDDLE, BOTTOM;
 }
 
-# Node "0" is the ground node, it is a special node. One can also use "GND"
-V1 = pulse(0, 1, 0, 0.5μ, 0.5μ, 0, 1μ) : IN, GND
+V V1 = pulse(0, 1, 0, 0.5μ, 0.5μ, 0, 1μ) : IN, GND;
+X X1 = divider(R_top=9k, R_bottom=1k) : TOP->IN, MIDDLE->OUT, BOTTOM->GND;
 
-/* Instantiate the subcircuit with default parameters
- * Map the subcircuit nodes to the circuit nodes (the subcircuit node names are not visible directly outside the subcircuit)
- * To refer to the subcircuit nodes later, use the following:
+R R3 = 5k : X1.OUT, GND;
 
-   X1.TOP, X1.MIDDLE, X1.BOTTOM
-
- * The order of the remapping can be arbitrary as long as the alias operator -> is used for every node
- * One can also rename the names directly, using the original order:
-
-   X1 = divider(R_top=9k, R_bottom=1k) : IN, OUT, GND
-
-*/
-
-X1 = divider(R_top=9k, R_bottom=1k) : TOP->IN, MIDDLE->OUT, BOTTOM->GND
-
-# Connect a resistor in parallel to the subcircuit R_bottom
-R3 = 5k : X1.OUT, GND
-
-# Run transient analysis for 3 seconds
-transient(3)
+transient(3);

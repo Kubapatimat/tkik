@@ -1,0 +1,14 @@
+{
+  "name": "circuitry",
+  "version": "1.0.0",
+  "description": "Language for describing electronic circuits",
+  "scripts": {
+    "format": "npx antlr-format --config antlr-format-config.json -v ./grammar/*.g4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "antlr-format-cli": "^1.2.8"
+  }
+}

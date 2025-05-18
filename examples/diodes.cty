@@ -1,0 +1,8 @@
+let Vpeak = 5;
+
+V V1 = pulse(0, Vpeak, 0, 1μ, 1μ, 0, 10μ) : IN, GND;
+R R1 = 1k : IN, DIODE_ANODE;
+D D1 = diode(model="1N4148") : A->DIODE_ANODE, C->DIODE_CATHODE;
+R R2 = 100 : DIODE_CATHODE, GND;
+
+transient(20μ);
