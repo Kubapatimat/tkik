@@ -1,1 +1,2 @@
-draw resistor R1 from (0,0) to (4,0) label "R1" voltage "u" current "i"
+draw
+resistor R1 from (0,0) to (4,0) label "R1" voltage "u" current "i"

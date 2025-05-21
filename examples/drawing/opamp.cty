@@ -1,1 +1,2 @@
-draw opamp U1 at (4,4)
+draw
+opamp U1 at (4,4)
