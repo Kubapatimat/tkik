@@ -199,8 +199,13 @@ class CircuitryParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by CircuitryParser#functionCallArg.
-    def visitFunctionCallArg(self, ctx:CircuitryParser.FunctionCallArgContext):
+    # Visit a parse tree produced by CircuitryParser#functionCallKeywordArg.
+    def visitFunctionCallKeywordArg(self, ctx:CircuitryParser.FunctionCallKeywordArgContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#functionCallPositionalArg.
+    def visitFunctionCallPositionalArg(self, ctx:CircuitryParser.FunctionCallPositionalArgContext):
         return self.visitChildren(ctx)
 
 

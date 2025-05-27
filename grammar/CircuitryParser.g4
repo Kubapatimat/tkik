@@ -160,12 +160,19 @@ functionCall
     ;
 
 functionCallArgs
-    : functionCallArg (COMMA functionCallArg)*
+    : functionCallKeywordArg (COMMA functionCallKeywordArg)*
+    | functionCallPositionalArg (COMMA functionCallPositionalArg)*
+    | functionCallPositionalArg (COMMA functionCallPositionalArg)* functionCallKeywordArg (
+        COMMA functionCallKeywordArg
+    )*
     ;
 
-functionCallArg
-    : ID ASSIGN expr // keyword argument
-    | expr           // positional argument
+functionCallKeywordArg
+    : ID ASSIGN expr
+    ;
+
+functionCallPositionalArg
+    : expr
     ;
 
 // If statement
