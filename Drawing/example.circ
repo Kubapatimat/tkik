@@ -1,0 +1,5 @@
+draw {
+    resistor from (0,0) to (2,0);
+    capacitor from (2,0) to (2,2);
+    inductor from (2,2) to (4,2);
+}
