@@ -59,13 +59,30 @@ class CircuitBuilder(CircuitryParserListener):
 
         self.components.append(Component(ctype, name, value, nodes))
 
-    def exitFunctionStatement(self, ctx):
+    def exitFunctionDefinition(self, ctx):
         fname = ctx.ID().getText()
-        params = [param.getText() for param in ctx.parameterList().ID()]
-        expr = ctx.expr()  # Assuming fn returns a single expression
-        self.functions[fname] = {'params': params, 'body': expr}
+        print("Zdefiniowano funkcję:", fname)
+        params = [param.getText() for param in ctx.functionParams().functionParam()] if ctx.functionParams() else []
+
+        # Extract the return expression from the function body
+        return_expr = ctx.functionBody().returnStatement().expr()
+
+        self.functions[fname] = {
+            'params': params,
+            'body': return_expr
+        }
 
     def eval_expr(self, ctx):
+        def get_expr(ctx, index=0):
+            """Safely get expr(index) or expr() depending on the context type."""
+            expr_method = ctx.expr
+            try:
+                return expr_method(index)
+            except TypeError:
+                if index == 0:
+                    return expr_method()
+                raise IndexError("This context only supports expr() with no arguments.")
+
         # Function call
         if isinstance(ctx, CircuitryParser.FuncCallExprContext):
             func_name = ctx.functionCall().ID().getText()
@@ -83,23 +100,29 @@ class CircuitBuilder(CircuitryParserListener):
 
             # If there are any arguments
             if call_args_ctx:
-                for arg_ctx in call_args_ctx.functionCallArg():
-                    if arg_ctx.ASSIGN():
-                        # Keyword argument: name = value
-                        key = arg_ctx.ID().getText()
-                        val = self.eval_expr(arg_ctx.expr())
+                for child in call_args_ctx.children:
+                    # Skip commas
+                    if child.getText() == ',':
+                        continue
+
+                    if isinstance(child, CircuitryParser.FunctionCallKeywordArgContext):
+                        key = child.ID().getText()
+                        val = self.eval_expr(child.expr())
                         if key not in param_names:
                             raise ValueError(f"Function {func_name} got unknown keyword argument: {key}")
                         arg_values[key] = val
-                    else:
-                        # Positional argument
+
+                    elif isinstance(child, CircuitryParser.FunctionCallPositionalArgContext):
                         idx = len(arg_values)
                         if idx >= param_count:
                             raise ValueError(
                                 f"Function {func_name} takes {param_count} arguments, but more were given.")
                         key = param_names[idx]
-                        val = self.eval_expr(arg_ctx.expr())
+                        val = self.eval_expr(child.expr())
                         arg_values[key] = val
+
+                    else:
+                        raise ValueError(f"Unexpected child in functionCallArgs: {type(child)}")
 
             # Ensure all parameters are filled
             missing = [p for p in param_names if p not in arg_values]
@@ -119,8 +142,8 @@ class CircuitBuilder(CircuitryParserListener):
 
         # If this node has a binary operator
         if hasattr(ctx, 'op') and ctx.op is not None:
-            left = self.eval_expr(ctx.expr(0))
-            right = self.eval_expr(ctx.expr(1))
+            left = self.eval_expr(get_expr(ctx, 0))
+            right = self.eval_expr(get_expr(ctx, 1))
             op = ctx.op.text
             if op == '+':
                 return left + right
@@ -139,7 +162,7 @@ class CircuitBuilder(CircuitryParserListener):
 
         # Parentheses (expr in parentheses)
         if ctx.getChildCount() == 3 and ctx.getChild(0).getText() == '(':
-            return self.eval_expr(ctx.expr(0))
+            return self.eval_expr(get_expr(ctx, 0))
 
         # Single child node: either a VALUE or ID
         if ctx.getChildCount() == 1:
@@ -147,19 +170,15 @@ class CircuitBuilder(CircuitryParserListener):
             text = child.getText()
 
             # Check if it's a variable name (ID)
-            # We check if ctx is IdExpr context or text matches a known variable
-            # The grammar uses labels, so ctx.IdExpr or ctx.ValueExpr etc. can be checked if needed
             if ctx.getRuleIndex() == CircuitryParser.RULE_expr:
-                # Try variable lookup
                 if text in self.variables:
                     return self.variables[text]
-                # Try parsing value
                 try:
                     return parse_value(text)
                 except ValueError:
                     pass
-                # If neither, it might be an undefined variable
                 raise ValueError(
                     f"Undefined variable or invalid value: {text}. Available: {list(self.variables.keys())}")
 
         raise ValueError(f"Unsupported expression: {ctx.getText()}")
+
