@@ -9,7 +9,7 @@ from circuitry.gen.CircuitryParser import CircuitryParser
 
 
 def main():
-    input_stream = FileStream(sys.argv[1])
+    input_stream = FileStream(sys.argv[1], encoding='utf-8')
     lexer = CircuitryLexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = CircuitryParser(stream)

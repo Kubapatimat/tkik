@@ -350,12 +350,21 @@ class CircuitryParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CircuitryParser#functionCallArg.
-    def enterFunctionCallArg(self, ctx:CircuitryParser.FunctionCallArgContext):
+    # Enter a parse tree produced by CircuitryParser#functionCallKeywordArg.
+    def enterFunctionCallKeywordArg(self, ctx:CircuitryParser.FunctionCallKeywordArgContext):
         pass
 
-    # Exit a parse tree produced by CircuitryParser#functionCallArg.
-    def exitFunctionCallArg(self, ctx:CircuitryParser.FunctionCallArgContext):
+    # Exit a parse tree produced by CircuitryParser#functionCallKeywordArg.
+    def exitFunctionCallKeywordArg(self, ctx:CircuitryParser.FunctionCallKeywordArgContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#functionCallPositionalArg.
+    def enterFunctionCallPositionalArg(self, ctx:CircuitryParser.FunctionCallPositionalArgContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#functionCallPositionalArg.
+    def exitFunctionCallPositionalArg(self, ctx:CircuitryParser.FunctionCallPositionalArgContext):
         pass
 
 
