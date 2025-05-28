@@ -1,4 +1,4 @@
-# Generated from E:/Studia/AGH/Semestr 4/ISI/TKIK/tkik/grammar/CircuitryParser.g4 by ANTLR 4.13.2
+# Generated from ../grammar/CircuitryParser.g4 by ANTLR 4.13.2
 from antlr4 import *
 if "." in __name__:
     from .CircuitryParser import CircuitryParser
@@ -144,8 +144,13 @@ class CircuitryParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by CircuitryParser#MulDivExpr.
-    def visitMulDivExpr(self, ctx:CircuitryParser.MulDivExprContext):
+    # Visit a parse tree produced by CircuitryParser#AndExpr.
+    def visitAndExpr(self, ctx:CircuitryParser.AndExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#TrueLiteralExpr.
+    def visitTrueLiteralExpr(self, ctx:CircuitryParser.TrueLiteralExprContext):
         return self.visitChildren(ctx)
 
 
@@ -154,13 +159,43 @@ class CircuitryParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by CircuitryParser#FloatLiteralExpr.
-    def visitFloatLiteralExpr(self, ctx:CircuitryParser.FloatLiteralExprContext):
+    # Visit a parse tree produced by CircuitryParser#FalseLiteralExpr.
+    def visitFalseLiteralExpr(self, ctx:CircuitryParser.FalseLiteralExprContext):
         return self.visitChildren(ctx)
 
 
     # Visit a parse tree produced by CircuitryParser#StringLiteralExpr.
     def visitStringLiteralExpr(self, ctx:CircuitryParser.StringLiteralExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#RelationalExpr.
+    def visitRelationalExpr(self, ctx:CircuitryParser.RelationalExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#ExpExpr.
+    def visitExpExpr(self, ctx:CircuitryParser.ExpExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#OrExpr.
+    def visitOrExpr(self, ctx:CircuitryParser.OrExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#MulDivExpr.
+    def visitMulDivExpr(self, ctx:CircuitryParser.MulDivExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#FloatLiteralExpr.
+    def visitFloatLiteralExpr(self, ctx:CircuitryParser.FloatLiteralExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#NotExpr.
+    def visitNotExpr(self, ctx:CircuitryParser.NotExprContext):
         return self.visitChildren(ctx)
 
 
@@ -171,11 +206,6 @@ class CircuitryParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by CircuitryParser#ParenExpr.
     def visitParenExpr(self, ctx:CircuitryParser.ParenExprContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by CircuitryParser#ExpExpr.
-    def visitExpExpr(self, ctx:CircuitryParser.ExpExprContext):
         return self.visitChildren(ctx)
 
 
@@ -209,11 +239,6 @@ class CircuitryParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by CircuitryParser#ifStatement.
-    def visitIfStatement(self, ctx:CircuitryParser.IfStatementContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by CircuitryParser#conditionWithBlock.
     def visitConditionWithBlock(self, ctx:CircuitryParser.ConditionWithBlockContext):
         return self.visitChildren(ctx)
@@ -221,6 +246,11 @@ class CircuitryParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by CircuitryParser#booleanExpr.
     def visitBooleanExpr(self, ctx:CircuitryParser.BooleanExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#ifStatement.
+    def visitIfStatement(self, ctx:CircuitryParser.IfStatementContext):
         return self.visitChildren(ctx)
 
 

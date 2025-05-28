@@ -1,4 +1,4 @@
-# Generated from E:/Studia/AGH/Semestr 4/ISI/TKIK/tkik/grammar/CircuitryParser.g4 by ANTLR 4.13.2
+# Generated from ../grammar/CircuitryParser.g4 by ANTLR 4.13.2
 from antlr4 import *
 if "." in __name__:
     from .CircuitryParser import CircuitryParser
@@ -251,12 +251,21 @@ class CircuitryParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CircuitryParser#MulDivExpr.
-    def enterMulDivExpr(self, ctx:CircuitryParser.MulDivExprContext):
+    # Enter a parse tree produced by CircuitryParser#AndExpr.
+    def enterAndExpr(self, ctx:CircuitryParser.AndExprContext):
         pass
 
-    # Exit a parse tree produced by CircuitryParser#MulDivExpr.
-    def exitMulDivExpr(self, ctx:CircuitryParser.MulDivExprContext):
+    # Exit a parse tree produced by CircuitryParser#AndExpr.
+    def exitAndExpr(self, ctx:CircuitryParser.AndExprContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#TrueLiteralExpr.
+    def enterTrueLiteralExpr(self, ctx:CircuitryParser.TrueLiteralExprContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#TrueLiteralExpr.
+    def exitTrueLiteralExpr(self, ctx:CircuitryParser.TrueLiteralExprContext):
         pass
 
 
@@ -269,12 +278,12 @@ class CircuitryParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CircuitryParser#FloatLiteralExpr.
-    def enterFloatLiteralExpr(self, ctx:CircuitryParser.FloatLiteralExprContext):
+    # Enter a parse tree produced by CircuitryParser#FalseLiteralExpr.
+    def enterFalseLiteralExpr(self, ctx:CircuitryParser.FalseLiteralExprContext):
         pass
 
-    # Exit a parse tree produced by CircuitryParser#FloatLiteralExpr.
-    def exitFloatLiteralExpr(self, ctx:CircuitryParser.FloatLiteralExprContext):
+    # Exit a parse tree produced by CircuitryParser#FalseLiteralExpr.
+    def exitFalseLiteralExpr(self, ctx:CircuitryParser.FalseLiteralExprContext):
         pass
 
 
@@ -284,6 +293,60 @@ class CircuitryParserListener(ParseTreeListener):
 
     # Exit a parse tree produced by CircuitryParser#StringLiteralExpr.
     def exitStringLiteralExpr(self, ctx:CircuitryParser.StringLiteralExprContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#RelationalExpr.
+    def enterRelationalExpr(self, ctx:CircuitryParser.RelationalExprContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#RelationalExpr.
+    def exitRelationalExpr(self, ctx:CircuitryParser.RelationalExprContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#ExpExpr.
+    def enterExpExpr(self, ctx:CircuitryParser.ExpExprContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#ExpExpr.
+    def exitExpExpr(self, ctx:CircuitryParser.ExpExprContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#OrExpr.
+    def enterOrExpr(self, ctx:CircuitryParser.OrExprContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#OrExpr.
+    def exitOrExpr(self, ctx:CircuitryParser.OrExprContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#MulDivExpr.
+    def enterMulDivExpr(self, ctx:CircuitryParser.MulDivExprContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#MulDivExpr.
+    def exitMulDivExpr(self, ctx:CircuitryParser.MulDivExprContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#FloatLiteralExpr.
+    def enterFloatLiteralExpr(self, ctx:CircuitryParser.FloatLiteralExprContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#FloatLiteralExpr.
+    def exitFloatLiteralExpr(self, ctx:CircuitryParser.FloatLiteralExprContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#NotExpr.
+    def enterNotExpr(self, ctx:CircuitryParser.NotExprContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#NotExpr.
+    def exitNotExpr(self, ctx:CircuitryParser.NotExprContext):
         pass
 
 
@@ -302,15 +365,6 @@ class CircuitryParserListener(ParseTreeListener):
 
     # Exit a parse tree produced by CircuitryParser#ParenExpr.
     def exitParenExpr(self, ctx:CircuitryParser.ParenExprContext):
-        pass
-
-
-    # Enter a parse tree produced by CircuitryParser#ExpExpr.
-    def enterExpExpr(self, ctx:CircuitryParser.ExpExprContext):
-        pass
-
-    # Exit a parse tree produced by CircuitryParser#ExpExpr.
-    def exitExpExpr(self, ctx:CircuitryParser.ExpExprContext):
         pass
 
 
@@ -368,15 +422,6 @@ class CircuitryParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CircuitryParser#ifStatement.
-    def enterIfStatement(self, ctx:CircuitryParser.IfStatementContext):
-        pass
-
-    # Exit a parse tree produced by CircuitryParser#ifStatement.
-    def exitIfStatement(self, ctx:CircuitryParser.IfStatementContext):
-        pass
-
-
     # Enter a parse tree produced by CircuitryParser#conditionWithBlock.
     def enterConditionWithBlock(self, ctx:CircuitryParser.ConditionWithBlockContext):
         pass
@@ -392,6 +437,15 @@ class CircuitryParserListener(ParseTreeListener):
 
     # Exit a parse tree produced by CircuitryParser#booleanExpr.
     def exitBooleanExpr(self, ctx:CircuitryParser.BooleanExprContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#ifStatement.
+    def enterIfStatement(self, ctx:CircuitryParser.IfStatementContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#ifStatement.
+    def exitIfStatement(self, ctx:CircuitryParser.IfStatementContext):
         pass
 
 

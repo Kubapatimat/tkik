@@ -15,10 +15,10 @@ def main():
     lexer = CircuitryLexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = CircuitryParser(stream)
-    tree = parser.program()
-
     parser.removeErrorListeners()
     parser.addErrorListener(FriendlyErrorListener())
+    tree = parser.program()
+
 
     builder = CircuitBuilder()
     walker = ParseTreeWalker()

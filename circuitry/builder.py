@@ -1,51 +1,80 @@
+# circuitry/builder.py
+
+from antlr4 import TerminalNode
 from circuitry.component import Component
 from circuitry.evaluator import parse_value
 from circuitry.gen.CircuitryParser import CircuitryParser
 from circuitry.gen.CircuitryParserListener import CircuitryParserListener
 import math
 
+def text_of(node):
+    """Jeśli node jest str, zwraca je; w przeciwnym razie node.getText()."""
+    return node if isinstance(node, str) else node.getText()
 
 def get_id_text(mapping, index=0):
+    """
+    Zwraca nazwę węzła z mappingu:
+    - jeśli mapping jest str, zwraca bez zmian,
+    - inaczej wyciąga ID() i zwraca jego tekst.
+    """
+    if isinstance(mapping, str):
+        return mapping
     ids = mapping.ID()
     if isinstance(ids, list):
-        return ids[index].getText()
+        return text_of(ids[index])
     else:
         if index == 0:
-            return ids.getText()
-        else:
-            raise IndexError("Trying to access index > 0 but only one ID exists.")
-
+            return text_of(ids)
+        raise IndexError("Index > 0 but only one ID exists.")
 
 class CircuitBuilder(CircuitryParserListener):
     def __init__(self):
         self.components = []
         self.aliases = {}
-        self.variables = {
-            "pi": math.pi,
-        }
+        self.variables = {"pi": math.pi}
         self.builtins = {
             "sqrt": math.sqrt,
             "sine": lambda **kwargs: {"type": "sine", **kwargs}
         }
         self.functions = {}
+        # Stos flag do if/else: True -> collect, False -> skip
+        self._cond_stack = [True]
 
-    def exitAliasStatement(self, ctx):
-        for alias in ctx.aliasAssignment():
-            alias_name = alias.ID(0).getText()
-            original_name = alias.ID(1).getText()
-            self.aliases[alias_name] = original_name
+    def _collecting(self):
+        return all(self._cond_stack)
 
-    def exitLetStatement(self, ctx):
-        for assignCtx in ctx.letAssignment():
-            name = assignCtx.ID().getText()
-            val = self.eval_expr(assignCtx.expr())
+    # --- ALIAS ---
+    def exitAliasStatement(self, ctx: CircuitryParser.AliasStatementContext):
+        if not self._collecting():
+            return
+        for aliasCtx in ctx.aliasAssignment():
+            name = text_of(aliasCtx.ID())
+            rhs = aliasCtx.expr()
+            if isinstance(rhs, CircuitryParser.IdExprContext):
+                val = text_of(rhs)
+            else:
+                val = str(self.eval_expr(rhs))
+            self.aliases[name] = val
+
+    # --- LET ---
+    def exitLetStatement(self, ctx: CircuitryParser.LetStatementContext):
+        if not self._collecting():
+            return
+        for letCtx in ctx.letAssignment():
+            name = text_of(letCtx.ID())
+            val = self.eval_expr(letCtx.expr())
             self.variables[name] = val
 
-    def exitComponentStatement(self, ctx):
-        ctype = ctx.componentType().getText()
-        name = ctx.ID().getText()
+    # --- COMPONENT ---
+    def exitComponentStatement(self, ctx: CircuitryParser.ComponentStatementContext):
+        if not self._collecting():
+            return
+        ctype = text_of(ctx.componentType().ID())
+        name = text_of(ctx.ID())
         value = self.eval_expr(ctx.expr())
-
+        # przykładowa ochrona przed rezystorem 0Ω:
+        # if ctype == 'R' and value == 0:
+        #     value = 1e-12
         nodes = []
         for mapping in ctx.nodeList().nodeMapping():
             kind = type(mapping).__name__
@@ -54,126 +83,154 @@ class CircuitBuilder(CircuitryParserListener):
             elif kind == "RemappedNodeContext":
                 nodes.append(get_id_text(mapping, 1))
             elif kind == "SubNodeContext":
+                # mapping.getText() to np. "X.Y"
                 nodes.append(mapping.getText())
             else:
-                raise ValueError(f"Unknown nodeMapping type: {kind}, line: {ctx.start.line}, column: {ctx.start.column}")
-
+                raise ValueError(f"Unknown nodeMapping type: {kind}")
         self.components.append(Component(ctype, name, value, nodes))
 
-    def exitFunctionDefinition(self, ctx):
-        fname = ctx.ID().getText()
-        print("Zdefiniowano funkcję:", fname)
-        params = [param.getText() for param in ctx.functionParams().functionParam()] if ctx.functionParams() else []
-        return_expr = ctx.functionBody().returnStatement().expr()
-        self.functions[fname] = {
-            'params': params,
-            'body': return_expr
-        }
+    # --- FUNCTION DEF ---
+    def exitFunctionDefinition(self, ctx: CircuitryParser.FunctionDefinitionContext):
+        if not self._collecting():
+            return
+        fname = text_of(ctx.ID())
+        params = []
+        if ctx.functionParams():
+            for p in ctx.functionParams().functionParam():
+                params.append(text_of(p.ID()))
+        body = ctx.functionBody().returnStatement().expr()
+        self.functions[fname] = {"params": params, "body": body}
 
+    # --- IF / ELSE STACKING ---
+    def enterConditionWithBlock(self, ctx: CircuitryParser.ConditionWithBlockContext):
+        cond = self.eval_bool(ctx.booleanExpr())
+        self._cond_stack.append(cond)
+
+    def exitConditionWithBlock(self, ctx: CircuitryParser.ConditionWithBlockContext):
+        self._cond_stack.pop()
+
+    def exitIfStatement(self, ctx: CircuitryParser.IfStatementContext):
+        # po całym if/else wyczyść stos do bazowego poziomu
+        while len(self._cond_stack) > 1:
+            self._cond_stack.pop()
+
+    # --- BOOLEAN evaluation for condition blocks ---
+    def eval_bool(self, bctx: CircuitryParser.BooleanExprContext) -> bool:
+        if bctx.relationalOperator():
+            l = self.eval_expr(bctx.expr(0))
+            r = self.eval_expr(bctx.expr(1))
+            op = text_of(bctx.relationalOperator())
+            return {"==": l == r, "!=": l != r, "<": l < r, ">": l > r, "<=": l <= r, ">=": l >= r}[op]
+        if bctx.AND():
+            return self.eval_expr(bctx.expr(0)) and self.eval_expr(bctx.expr(1))
+        if bctx.OR():
+            return self.eval_expr(bctx.expr(0)) or self.eval_expr(bctx.expr(1))
+        if bctx.NOT():
+            return not self.eval_expr(bctx.expr(0))
+        # fallback, np. zagnieżdżone wyrażenie
+        return bool(self.eval_expr(bctx.expr(0)))
+
+    # --- Expression evaluator ---
     def eval_expr(self, ctx):
+        # function calls
         if isinstance(ctx, CircuitryParser.FuncCallExprContext):
-            func_call_ctx = ctx.functionCall()
-            func_name = func_call_ctx.ID().getText()
-            call_args_ctx = func_call_ctx.functionCallArgs()
-
-            if func_name in self.builtins:
-                builtin_func = self.builtins[func_name]
-
-                # Spróbuj najpierw pozycyjnie
-                args = []
-                kwargs = {}
-
-                if call_args_ctx:
-                    for child in call_args_ctx.children:
-                        if child.getText() == ',':
+            fc = ctx.functionCall()
+            fname = text_of(fc.ID())
+            args_ctx = fc.functionCallArgs()
+            # builtins
+            if fname in self.builtins:
+                fn, args, kwargs = self.builtins[fname], [], {}
+                if args_ctx:
+                    for ch in args_ctx.children:
+                        if text_of(ch) == ',':
                             continue
-                        if isinstance(child, CircuitryParser.FunctionCallPositionalArgContext):
-                            val = self.eval_expr(child.expr())
-                            args.append(val)
-                        elif isinstance(child, CircuitryParser.FunctionCallKeywordArgContext):
-                            key = child.ID().getText()
-                            val = self.eval_expr(child.expr())
-                            kwargs[key] = val
+                        if isinstance(ch, CircuitryParser.FunctionCallPositionalArgContext):
+                            args.append(self.eval_expr(ch.expr()))
                         else:
-                            raise ValueError(
-                                f"Unexpected argument in call to built-in '{func_name}': {child.getText()}, line: {ctx.start.line}, column: {ctx.start.column}")
-
-                try:
-                    return builtin_func(*args, **kwargs)
-                except TypeError as e:
-                    raise ValueError(f"Error calling built-in '{func_name}': {e}, line: {ctx.start.line}, column: {ctx.start.column}")
-
-            if func_name not in self.functions:
-                raise ValueError(f"Undefined function: {func_name}, line: {ctx.start.line}, column: {ctx.start.column}")
-
-            func_def = self.functions[func_name]
-            param_names = func_def['params']
-            param_count = len(param_names)
-            arg_values = {}
-
-            if call_args_ctx:
-                for child in call_args_ctx.children:
-                    if child.getText() == ',':
+                            key = text_of(ch.ID())
+                            kwargs[key] = self.eval_expr(ch.expr())
+                return fn(*args, **kwargs)
+            # user functions
+            if fname not in self.functions:
+                raise ValueError(f"Undefined function: {fname}")
+            fdef = self.functions[fname]
+            vals, idx = {}, 0
+            if args_ctx:
+                for ch in args_ctx.children:
+                    if text_of(ch) == ',':
                         continue
-                    if isinstance(child, CircuitryParser.FunctionCallKeywordArgContext):
-                        key = child.ID().getText()
-                        val = self.eval_expr(child.expr())
-                        if key not in param_names:
-                            raise ValueError(f"Function {func_name} got unknown keyword argument: {key}, line: {ctx.start.line}, column: {ctx.start.column}")
-                        arg_values[key] = val
-                    elif isinstance(child, CircuitryParser.FunctionCallPositionalArgContext):
-                        idx = len(arg_values)
-                        if idx >= param_count:
-                            raise ValueError(f"Function {func_name} takes {param_count} arguments, but more were given, line: {ctx.start.line}, column: {ctx.start.column}")
-                        key = param_names[idx]
-                        val = self.eval_expr(child.expr())
-                        arg_values[key] = val
+                    if isinstance(ch, CircuitryParser.FunctionCallKeywordArgContext):
+                        key = text_of(ch.ID())
+                        vals[key] = self.eval_expr(ch.expr())
                     else:
-                        raise ValueError(f"Unexpected argument in functionCallArgs for {func_name}, line: {ctx.start.line}, column: {ctx.start.column}")
-
-            missing = [p for p in param_names if p not in arg_values]
-            if missing:
-                raise ValueError(f"Missing arguments for function {func_name}: {missing}, line: {ctx.start.line}, column: {ctx.start.column}")
-
+                        param = fdef["params"][idx]
+                        vals[param] = self.eval_expr(ch.expr())
+                        idx += 1
+            for p in fdef["params"]:
+                if p not in vals:
+                    raise ValueError(f"Missing argument: {p}")
             old_vars = self.variables.copy()
-            self.variables.update(arg_values)
-            result = self.eval_expr(func_def['body'])
+            self.variables.update(vals)
+            res = self.eval_expr(fdef["body"])
             self.variables = old_vars
-            return result
+            return res
 
-        if ctx is None:
-            return 0.0
+        # bool literals
+        if isinstance(ctx, CircuitryParser.TrueLiteralExprContext):
+            return True
+        if isinstance(ctx, CircuitryParser.FalseLiteralExprContext):
+            return False
 
-        if hasattr(ctx, 'op') and ctx.op is not None:
-            subexprs = [c for c in ctx.children if isinstance(c, CircuitryParser.ExprContext)]
-            if len(subexprs) != 2:
-                raise ValueError(f"Expected binary operation with two operands, line: {ctx.start.line}, column: {ctx.start.column}")
-            left = self.eval_expr(subexprs[0])
-            right = self.eval_expr(subexprs[1])
-            op = ctx.op.text
-            if op == '+': return left + right
-            elif op == '-': return left - right
-            elif op == '*': return left * right
-            elif op == '/': return left / right
-            elif op == '^': return left ** right
-            elif op == '%': return left % right
-            else: raise ValueError(f"Unsupported operator: {op}, line: {ctx.start.line}, column: {ctx.start.column}")
+        # relational in expr → zwraca 1 lub 0
+        if isinstance(ctx, CircuitryParser.RelationalExprContext):
+            l = self.eval_expr(ctx.expr(0))
+            r = self.eval_expr(ctx.expr(1))
+            t = ctx.op.type
+            return {
+                CircuitryParser.LESS:        1 if l < r else 0,
+                CircuitryParser.GREATER:     1 if l > r else 0,
+                CircuitryParser.LESS_EQUAL:  1 if l <= r else 0,
+                CircuitryParser.GREATER_EQUAL: 1 if l >= r else 0,
+                CircuitryParser.EQUAL:       1 if l == r else 0,
+                CircuitryParser.NOT_EQUAL:   1 if l != r else 0,
+            }[t]
 
-        if ctx.getChildCount() == 3 and ctx.getChild(0).getText() == '(' and ctx.getChild(2).getText() == ')':
-            subexprs = [c for c in ctx.children if isinstance(c, CircuitryParser.ExprContext)]
-            if not subexprs:
-                raise ValueError(f"Empty parentheses in expression, line: {ctx.start.line}, column: {ctx.start.column}")
-            return self.eval_expr(subexprs[0])
+        # logical
+        if isinstance(ctx, CircuitryParser.NotExprContext):
+            return not self.eval_expr(ctx.expr())
+        if isinstance(ctx, CircuitryParser.AndExprContext) or isinstance(ctx, CircuitryParser.OrExprContext):
+            l = self.eval_expr(ctx.expr(0))
+            r = self.eval_expr(ctx.expr(1))
+            return (l and r) if ctx.op.type == CircuitryParser.AND else (l or r)
 
+        # arithmetic
+        if hasattr(ctx, "op") and ctx.op is not None:
+            l = self.eval_expr(ctx.expr(0))
+            r = self.eval_expr(ctx.expr(1))
+            t = ctx.op.type
+            return {
+                CircuitryParser.PLUS:     l + r,
+                CircuitryParser.MINUS:    l - r,
+                CircuitryParser.MULTIPLY: l * r,
+                CircuitryParser.DIVIDE:   l / r,
+                CircuitryParser.EXPONENT: l ** r,
+                CircuitryParser.MODULO:   l % r,
+            }[t]
+
+        # parentheses
+        if ctx.getChildCount() == 3 and text_of(ctx.getChild(0)) == "(":
+            # znajdź wewnętrzne ExprContext
+            inner = next(c for c in ctx.children if hasattr(c, "expr"))
+            return self.eval_expr(inner)
+
+        # single token: ID lub literal
         if ctx.getChildCount() == 1:
-            child = ctx.getChild(0)
-            text = child.getText()
-            if ctx.getRuleIndex() == CircuitryParser.RULE_expr:
-                if text in self.variables:
-                    return self.variables[text]
-                try:
-                    return parse_value(text)
-                except ValueError:
-                    raise ValueError(f"Undefined variable or invalid value: {text}, line: {ctx.start.line}, column: {ctx.start.column}")
+            tok = text_of(ctx)
+            if tok in self.variables:
+                return self.variables[tok]
+            try:
+                return parse_value(tok)
+            except ValueError:
+                raise ValueError(f"Unknown literal or variable: {tok}")
 
-        raise ValueError(f"Unsupported expression: {ctx.getText()}, line: {ctx.start.line}, column: {ctx.start.column}")
+        raise ValueError(f"Cannot evaluate expression: {text_of(ctx)}")

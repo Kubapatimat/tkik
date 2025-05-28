@@ -39,7 +39,7 @@ aliasStatement
     ;
 
 aliasAssignment
-    : ID ASSIGN ID
+    : ID ASSIGN expr
     ;
 
 // Let statement
@@ -144,16 +144,27 @@ binaryAssignmentOperator
     ;
 
 expr
-    : <assoc = right> expr EXPONENT expr # ExpExpr
-    | expr op = (MULTIPLY | DIVIDE) expr # MulDivExpr
-    | expr MODULO expr                   # ModExpr
-    | expr op = (PLUS | MINUS) expr      # AddSubExpr
-    | functionCall                       # FuncCallExpr
-    | LPAREN expr RPAREN                 # ParenExpr
-    | FLOAT_LITERAL                      # FloatLiteralExpr
-    | STRING_LITERAL                     # StringLiteralExpr
-    | ID                                 # IdExpr
+    // wykładnicze i arytmetyka dotychczasowa...
+    : <assoc = right> expr EXPONENT expr     # ExpExpr
+    | expr op=(MULTIPLY|DIVIDE) expr         # MulDivExpr
+    | expr MODULO expr                       # ModExpr
+    | expr op=(PLUS|MINUS) expr              # AddSubExpr
+    | expr op=(EQUAL|NOT_EQUAL|LESS|GREATER|LESS_EQUAL|GREATER_EQUAL) expr  # RelationalExpr
+    // --- NOWOŚĆ: operacje logiczne mają niższy priorytet niż arytmetyka ---
+    | expr op=AND expr                       # AndExpr
+    | expr op=OR expr                        # OrExpr
+    | NOT expr                               # NotExpr
+
+    // nawiasy, wywołania itp.
+    | functionCall                           # FuncCallExpr
+    | LPAREN expr RPAREN                     # ParenExpr
+    | FLOAT_LITERAL                          # FloatLiteralExpr
+    | STRING_LITERAL                         # StringLiteralExpr
+    | TRUE                                   # TrueLiteralExpr
+    | FALSE                                  # FalseLiteralExpr
+    | ID                                     # IdExpr
     ;
+
 
 functionCall
     : ID LPAREN functionCallArgs? RPAREN
@@ -175,10 +186,10 @@ functionCallPositionalArg
     : expr
     ;
 
-// If statement
-ifStatement
-    : IF conditionWithBlock (ELSE IF conditionWithBlock)* (ELSE topologyStatement*)?
-    ;
+
+
+
+
 
 conditionWithBlock
     : LPAREN booleanExpr RPAREN LBRACE topologyStatement* RBRACE
@@ -189,6 +200,20 @@ booleanExpr
     | expr AND expr
     | expr OR expr
     | NOT expr
+    | expr
+    ;
+ifStatement
+    : IF LPAREN booleanExpr RPAREN
+        (   // jeden statement
+            topologyStatement
+        |   // blok { … }
+            LBRACE topologyStatement* RBRACE
+        )
+      ( ELSE
+          (   topologyStatement
+          |   LBRACE topologyStatement* RBRACE
+          )
+      )?
     ;
 
 relationalOperator

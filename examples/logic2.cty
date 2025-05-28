@@ -1,0 +1,24 @@
+// examples/simple_logic.cty
+
+// alias masy
+alias GND = 0;
+
+// definiujemy dwie zmienne numeryczne
+let a = 3;
+let b = 7;
+
+// porównania dające wartość logiczną
+let isLess   = a < b;      // true
+let isEqual  = a == b;     // false
+let isNe     = a != b;     // true
+let isGreater= b > a;      // true
+
+// zsumujmy logiczne wartości (True→1, False→0)
+let logicSum = isLess + isEqual + isNe + isGreater;
+// logicSum = 1 + 0 + 1 + 1 = 3
+
+// teraz zbudujmy prosty obwód:
+// źródło 5 V między N i masą,
+// oraz jeden rezystor o wartości logicSum*100 Ω = 300 Ω
+V V1 = 5 : N, GND;
+R R1 = logicSum * 100 : N, GND;

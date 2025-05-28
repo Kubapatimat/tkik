@@ -1,0 +1,13 @@
+
+// alias masy
+alias GND = 0;
+
+// definiujemy flagę logiczną
+let flag = true && !false;  // flag → True (1)
+
+// źródło 5 V
+V V1 = 5 : N, GND;
+
+// rezystor, którego wartość to flag*100 Ω
+// czyli jeżeli flag==true → 100 Ω, w przeciwnym razie 0 Ω
+R R1 = flag * 100 : N, GND;

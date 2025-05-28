@@ -1,0 +1,15 @@
+// alias masy
+alias GND = 0;
+
+// Podstawowe obliczenia
+let a = 5 + 3 * 2;        // a = 11
+let b = (10 - 2) / 4;     // b = 2
+let c = a + b * 3;        // c = 17
+
+// Źródło 12 V między węzłem N a masą
+V V1 = 12 : N, GND;
+
+// Rezystory
+R R1 = a * 100 : N, GND;
+R R2 = b * 200 : N, GND;
+R R3 = c * 50  : N, GND;

@@ -1,0 +1,33 @@
+// examples/if_example.cty
+
+alias GND = 0;
+let includeR1 = true;
+let includeR2 = false;
+
+// jeśli includeR1 == true, wstawimy R1
+if (includeR1 == true) {
+    R R1 = 100 : N, GND;
+}
+
+// druga instrukcja if z else
+if (includeR2 == true) {
+    R R2 = 200 : N, GND;
+} else {
+    // jeśli nie includeR2, wstawimy R3
+    R R3 = 300 : N, GND;
+}
+
+// kilka zagnieżdżonych ifów
+let useSeries = false;
+if (includeR1) {
+    if (useSeries) {
+        // ta gałąź nigdy się nie wykona, bo useSeries=false
+        R R4 = 400 : N, GND;
+    } else {
+        // wykona się tylko ten resistor
+        R R5 = 500 : N, GND;
+    }
+}
+
+// na koniec źródło napięcia
+V V1 = 10 : N, GND;

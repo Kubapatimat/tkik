@@ -1,4 +1,4 @@
-# Generated from E:/Studia/AGH/Semestr 4/ISI/TKIK/tkik/grammar/CircuitryParser.g4 by ANTLR 4.13.2
+# Generated from ../grammar/CircuitryParser.g4 by ANTLR 4.13.2
 # encoding: utf-8
 from antlr4 import *
 from io import StringIO
@@ -10,7 +10,7 @@ else:
 
 def serializedATN():
     return [
-        4,1,67,617,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,67,641,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,
         2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,
         7,20,2,21,7,21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,
@@ -36,48 +36,50 @@ def serializedATN():
         19,10,19,12,19,295,9,19,1,20,1,20,1,20,3,20,300,8,20,1,21,1,21,1,
         21,1,21,1,21,1,21,3,21,308,8,21,1,22,1,22,1,22,1,22,1,22,1,22,1,
         22,1,22,1,22,3,22,319,8,22,1,23,1,23,1,24,1,24,1,25,1,25,1,25,1,
-        25,1,25,1,25,1,25,1,25,1,25,3,25,334,8,25,1,25,1,25,1,25,1,25,1,
-        25,1,25,1,25,1,25,1,25,1,25,1,25,1,25,5,25,348,8,25,10,25,12,25,
-        351,9,25,1,26,1,26,1,26,3,26,356,8,26,1,26,1,26,1,27,1,27,1,27,5,
-        27,363,8,27,10,27,12,27,366,9,27,1,27,1,27,1,27,5,27,371,8,27,10,
-        27,12,27,374,9,27,1,27,1,27,1,27,5,27,379,8,27,10,27,12,27,382,9,
-        27,1,27,1,27,1,27,5,27,387,8,27,10,27,12,27,390,9,27,3,27,392,8,
-        27,1,28,1,28,1,28,1,28,1,29,1,29,1,30,1,30,1,30,1,30,1,30,5,30,405,
-        8,30,10,30,12,30,408,9,30,1,30,1,30,5,30,412,8,30,10,30,12,30,415,
-        9,30,3,30,417,8,30,1,31,1,31,1,31,1,31,1,31,5,31,424,8,31,10,31,
-        12,31,427,9,31,1,31,1,31,1,32,1,32,1,32,1,32,1,32,1,32,1,32,1,32,
-        1,32,1,32,1,32,1,32,1,32,1,32,3,32,445,8,32,1,33,1,33,1,34,1,34,
-        1,34,1,35,1,35,1,35,5,35,455,8,35,10,35,12,35,458,9,35,1,35,1,35,
-        1,35,1,35,1,35,1,35,1,35,1,36,1,36,1,36,3,36,470,8,36,1,36,1,36,
-        1,36,1,36,3,36,476,8,36,1,36,1,36,1,36,5,36,481,8,36,10,36,12,36,
-        484,9,36,1,36,1,36,1,37,1,37,3,37,490,8,37,1,38,1,38,1,39,1,39,1,
-        39,1,39,1,39,1,39,5,39,500,8,39,10,39,12,39,503,9,39,1,39,3,39,506,
-        8,39,1,39,1,39,1,40,1,40,1,40,1,40,5,40,514,8,40,10,40,12,40,517,
-        9,40,1,41,1,41,1,41,5,41,522,8,41,10,41,12,41,525,9,41,1,42,1,42,
-        1,42,1,42,3,42,531,8,42,1,42,1,42,1,42,1,42,1,42,1,43,1,43,1,43,
-        5,43,541,8,43,10,43,12,43,544,9,43,1,44,1,44,1,44,3,44,549,8,44,
-        1,45,5,45,552,8,45,10,45,12,45,555,9,45,1,45,1,45,1,46,1,46,1,46,
-        1,46,1,47,1,47,1,47,1,47,3,47,567,8,47,1,47,1,47,1,47,1,47,1,47,
-        5,47,574,8,47,10,47,12,47,577,9,47,1,47,1,47,1,48,1,48,1,48,5,48,
-        584,8,48,10,48,12,48,587,9,48,1,49,1,49,1,49,3,49,592,8,49,1,50,
-        1,50,1,50,3,50,597,8,50,1,50,1,50,1,50,1,51,1,51,1,52,1,52,1,52,
+        25,1,25,1,25,1,25,1,25,1,25,1,25,1,25,1,25,1,25,3,25,338,8,25,1,
+        25,1,25,1,25,1,25,1,25,1,25,1,25,1,25,1,25,1,25,1,25,1,25,1,25,1,
+        25,1,25,1,25,1,25,1,25,1,25,1,25,1,25,5,25,361,8,25,10,25,12,25,
+        364,9,25,1,26,1,26,1,26,3,26,369,8,26,1,26,1,26,1,27,1,27,1,27,5,
+        27,376,8,27,10,27,12,27,379,9,27,1,27,1,27,1,27,5,27,384,8,27,10,
+        27,12,27,387,9,27,1,27,1,27,1,27,5,27,392,8,27,10,27,12,27,395,9,
+        27,1,27,1,27,1,27,5,27,400,8,27,10,27,12,27,403,9,27,3,27,405,8,
+        27,1,28,1,28,1,28,1,28,1,29,1,29,1,30,1,30,1,30,1,30,1,30,5,30,418,
+        8,30,10,30,12,30,421,9,30,1,30,1,30,1,31,1,31,1,31,1,31,1,31,1,31,
+        1,31,1,31,1,31,1,31,1,31,1,31,1,31,1,31,1,31,3,31,440,8,31,1,32,
+        1,32,1,32,1,32,1,32,1,32,1,32,5,32,449,8,32,10,32,12,32,452,9,32,
+        1,32,3,32,455,8,32,1,32,1,32,1,32,1,32,5,32,461,8,32,10,32,12,32,
+        464,9,32,1,32,3,32,467,8,32,3,32,469,8,32,1,33,1,33,1,34,1,34,1,
+        34,1,35,1,35,1,35,5,35,479,8,35,10,35,12,35,482,9,35,1,35,1,35,1,
+        35,1,35,1,35,1,35,1,35,1,36,1,36,1,36,3,36,494,8,36,1,36,1,36,1,
+        36,1,36,3,36,500,8,36,1,36,1,36,1,36,5,36,505,8,36,10,36,12,36,508,
+        9,36,1,36,1,36,1,37,1,37,3,37,514,8,37,1,38,1,38,1,39,1,39,1,39,
+        1,39,1,39,1,39,5,39,524,8,39,10,39,12,39,527,9,39,1,39,3,39,530,
+        8,39,1,39,1,39,1,40,1,40,1,40,1,40,5,40,538,8,40,10,40,12,40,541,
+        9,40,1,41,1,41,1,41,5,41,546,8,41,10,41,12,41,549,9,41,1,42,1,42,
+        1,42,1,42,3,42,555,8,42,1,42,1,42,1,42,1,42,1,42,1,43,1,43,1,43,
+        5,43,565,8,43,10,43,12,43,568,9,43,1,44,1,44,1,44,3,44,573,8,44,
+        1,45,5,45,576,8,45,10,45,12,45,579,9,45,1,45,1,45,1,46,1,46,1,46,
+        1,46,1,47,1,47,1,47,1,47,3,47,591,8,47,1,47,1,47,1,47,1,47,1,47,
+        5,47,598,8,47,10,47,12,47,601,9,47,1,47,1,47,1,48,1,48,1,48,5,48,
+        608,8,48,10,48,12,48,611,9,48,1,49,1,49,1,49,3,49,616,8,49,1,50,
+        1,50,1,50,3,50,621,8,50,1,50,1,50,1,50,1,51,1,51,1,52,1,52,1,52,
         1,53,1,53,1,53,1,53,1,53,1,53,1,53,1,53,1,53,1,53,1,53,0,1,50,54,
         0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,
         46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,
         90,92,94,96,98,100,102,104,106,0,7,2,0,7,8,64,64,1,0,28,29,1,0,21,
-        27,1,0,9,10,1,0,7,8,1,0,15,20,1,0,57,59,639,0,111,1,0,0,0,2,140,
+        27,1,0,9,10,1,0,7,8,1,0,15,20,1,0,57,59,672,0,111,1,0,0,0,2,140,
         1,0,0,0,4,164,1,0,0,0,6,166,1,0,0,0,8,177,1,0,0,0,10,181,1,0,0,0,
         12,192,1,0,0,0,14,196,1,0,0,0,16,204,1,0,0,0,18,206,1,0,0,0,20,225,
         1,0,0,0,22,227,1,0,0,0,24,229,1,0,0,0,26,240,1,0,0,0,28,248,1,0,
         0,0,30,259,1,0,0,0,32,261,1,0,0,0,34,269,1,0,0,0,36,280,1,0,0,0,
         38,288,1,0,0,0,40,299,1,0,0,0,42,301,1,0,0,0,44,318,1,0,0,0,46,320,
-        1,0,0,0,48,322,1,0,0,0,50,333,1,0,0,0,52,352,1,0,0,0,54,391,1,0,
-        0,0,56,393,1,0,0,0,58,397,1,0,0,0,60,399,1,0,0,0,62,418,1,0,0,0,
-        64,444,1,0,0,0,66,446,1,0,0,0,68,448,1,0,0,0,70,451,1,0,0,0,72,466,
-        1,0,0,0,74,489,1,0,0,0,76,491,1,0,0,0,78,493,1,0,0,0,80,509,1,0,
-        0,0,82,518,1,0,0,0,84,526,1,0,0,0,86,537,1,0,0,0,88,545,1,0,0,0,
-        90,553,1,0,0,0,92,558,1,0,0,0,94,562,1,0,0,0,96,580,1,0,0,0,98,588,
-        1,0,0,0,100,593,1,0,0,0,102,601,1,0,0,0,104,603,1,0,0,0,106,606,
+        1,0,0,0,48,322,1,0,0,0,50,337,1,0,0,0,52,365,1,0,0,0,54,404,1,0,
+        0,0,56,406,1,0,0,0,58,410,1,0,0,0,60,412,1,0,0,0,62,439,1,0,0,0,
+        64,441,1,0,0,0,66,470,1,0,0,0,68,472,1,0,0,0,70,475,1,0,0,0,72,490,
+        1,0,0,0,74,513,1,0,0,0,76,515,1,0,0,0,78,517,1,0,0,0,80,533,1,0,
+        0,0,82,542,1,0,0,0,84,550,1,0,0,0,86,561,1,0,0,0,88,569,1,0,0,0,
+        90,577,1,0,0,0,92,582,1,0,0,0,94,586,1,0,0,0,96,604,1,0,0,0,98,612,
+        1,0,0,0,100,617,1,0,0,0,102,625,1,0,0,0,104,627,1,0,0,0,106,630,
         1,0,0,0,108,110,3,2,1,0,109,108,1,0,0,0,110,113,1,0,0,0,111,109,
         1,0,0,0,111,112,1,0,0,0,112,117,1,0,0,0,113,111,1,0,0,0,114,116,
         3,4,2,0,115,114,1,0,0,0,116,119,1,0,0,0,117,115,1,0,0,0,117,118,
@@ -92,7 +94,7 @@ def serializedATN():
         1,0,0,0,146,147,1,0,0,0,147,149,1,0,0,0,148,146,1,0,0,0,149,150,
         5,33,0,0,150,3,1,0,0,0,151,165,3,6,3,0,152,165,3,10,5,0,153,165,
         3,14,7,0,154,165,3,24,12,0,155,165,3,34,17,0,156,165,3,44,22,0,157,
-        165,3,60,30,0,158,165,3,68,34,0,159,165,3,70,35,0,160,165,3,72,36,
+        165,3,64,32,0,158,165,3,68,34,0,159,165,3,70,35,0,160,165,3,72,36,
         0,161,165,3,78,39,0,162,165,3,84,42,0,163,165,3,94,47,0,164,151,
         1,0,0,0,164,152,1,0,0,0,164,153,1,0,0,0,164,154,1,0,0,0,164,155,
         1,0,0,0,164,156,1,0,0,0,164,157,1,0,0,0,164,158,1,0,0,0,164,159,
@@ -100,9 +102,9 @@ def serializedATN():
         1,0,0,0,165,5,1,0,0,0,166,167,5,36,0,0,167,172,3,8,4,0,168,169,5,
         35,0,0,169,171,3,8,4,0,170,168,1,0,0,0,171,174,1,0,0,0,172,170,1,
         0,0,0,172,173,1,0,0,0,173,175,1,0,0,0,174,172,1,0,0,0,175,176,5,
-        33,0,0,176,7,1,0,0,0,177,178,5,64,0,0,178,179,5,21,0,0,179,180,5,
-        64,0,0,180,9,1,0,0,0,181,182,5,37,0,0,182,187,3,12,6,0,183,184,5,
-        35,0,0,184,186,3,12,6,0,185,183,1,0,0,0,186,189,1,0,0,0,187,185,
+        33,0,0,176,7,1,0,0,0,177,178,5,64,0,0,178,179,5,21,0,0,179,180,3,
+        50,25,0,180,9,1,0,0,0,181,182,5,37,0,0,182,187,3,12,6,0,183,184,
+        5,35,0,0,184,186,3,12,6,0,185,183,1,0,0,0,186,189,1,0,0,0,187,185,
         1,0,0,0,187,188,1,0,0,0,188,190,1,0,0,0,189,187,1,0,0,0,190,191,
         5,33,0,0,191,11,1,0,0,0,192,193,5,64,0,0,193,194,5,21,0,0,194,195,
         3,50,25,0,195,13,1,0,0,0,196,197,3,16,8,0,197,198,5,64,0,0,198,199,
@@ -142,94 +144,103 @@ def serializedATN():
         0,0,313,314,5,64,0,0,314,315,3,48,24,0,315,316,3,50,25,0,316,317,
         5,33,0,0,317,319,1,0,0,0,318,309,1,0,0,0,318,313,1,0,0,0,319,45,
         1,0,0,0,320,321,7,1,0,0,321,47,1,0,0,0,322,323,7,2,0,0,323,49,1,
-        0,0,0,324,325,6,25,-1,0,325,334,3,52,26,0,326,327,5,1,0,0,327,328,
-        3,50,25,0,328,329,5,2,0,0,329,334,1,0,0,0,330,334,5,62,0,0,331,334,
-        5,63,0,0,332,334,5,64,0,0,333,324,1,0,0,0,333,326,1,0,0,0,333,330,
-        1,0,0,0,333,331,1,0,0,0,333,332,1,0,0,0,334,349,1,0,0,0,335,336,
-        10,9,0,0,336,337,5,12,0,0,337,348,3,50,25,9,338,339,10,8,0,0,339,
-        340,7,3,0,0,340,348,3,50,25,9,341,342,10,7,0,0,342,343,5,11,0,0,
-        343,348,3,50,25,8,344,345,10,6,0,0,345,346,7,4,0,0,346,348,3,50,
-        25,7,347,335,1,0,0,0,347,338,1,0,0,0,347,341,1,0,0,0,347,344,1,0,
-        0,0,348,351,1,0,0,0,349,347,1,0,0,0,349,350,1,0,0,0,350,51,1,0,0,
-        0,351,349,1,0,0,0,352,353,5,64,0,0,353,355,5,1,0,0,354,356,3,54,
-        27,0,355,354,1,0,0,0,355,356,1,0,0,0,356,357,1,0,0,0,357,358,5,2,
-        0,0,358,53,1,0,0,0,359,364,3,56,28,0,360,361,5,35,0,0,361,363,3,
-        56,28,0,362,360,1,0,0,0,363,366,1,0,0,0,364,362,1,0,0,0,364,365,
-        1,0,0,0,365,392,1,0,0,0,366,364,1,0,0,0,367,372,3,58,29,0,368,369,
-        5,35,0,0,369,371,3,58,29,0,370,368,1,0,0,0,371,374,1,0,0,0,372,370,
-        1,0,0,0,372,373,1,0,0,0,373,392,1,0,0,0,374,372,1,0,0,0,375,380,
-        3,58,29,0,376,377,5,35,0,0,377,379,3,58,29,0,378,376,1,0,0,0,379,
-        382,1,0,0,0,380,378,1,0,0,0,380,381,1,0,0,0,381,383,1,0,0,0,382,
-        380,1,0,0,0,383,388,3,56,28,0,384,385,5,35,0,0,385,387,3,56,28,0,
-        386,384,1,0,0,0,387,390,1,0,0,0,388,386,1,0,0,0,388,389,1,0,0,0,
-        389,392,1,0,0,0,390,388,1,0,0,0,391,359,1,0,0,0,391,367,1,0,0,0,
-        391,375,1,0,0,0,392,55,1,0,0,0,393,394,5,64,0,0,394,395,5,21,0,0,
-        395,396,3,50,25,0,396,57,1,0,0,0,397,398,3,50,25,0,398,59,1,0,0,
-        0,399,400,5,45,0,0,400,406,3,62,31,0,401,402,5,46,0,0,402,403,5,
-        45,0,0,403,405,3,62,31,0,404,401,1,0,0,0,405,408,1,0,0,0,406,404,
-        1,0,0,0,406,407,1,0,0,0,407,416,1,0,0,0,408,406,1,0,0,0,409,413,
-        5,46,0,0,410,412,3,4,2,0,411,410,1,0,0,0,412,415,1,0,0,0,413,411,
-        1,0,0,0,413,414,1,0,0,0,414,417,1,0,0,0,415,413,1,0,0,0,416,409,
-        1,0,0,0,416,417,1,0,0,0,417,61,1,0,0,0,418,419,5,1,0,0,419,420,3,
-        64,32,0,420,421,5,2,0,0,421,425,5,3,0,0,422,424,3,4,2,0,423,422,
-        1,0,0,0,424,427,1,0,0,0,425,423,1,0,0,0,425,426,1,0,0,0,426,428,
-        1,0,0,0,427,425,1,0,0,0,428,429,5,4,0,0,429,63,1,0,0,0,430,431,3,
-        50,25,0,431,432,3,66,33,0,432,433,3,50,25,0,433,445,1,0,0,0,434,
-        435,3,50,25,0,435,436,5,30,0,0,436,437,3,50,25,0,437,445,1,0,0,0,
-        438,439,3,50,25,0,439,440,5,31,0,0,440,441,3,50,25,0,441,445,1,0,
-        0,0,442,443,5,32,0,0,443,445,3,50,25,0,444,430,1,0,0,0,444,434,1,
-        0,0,0,444,438,1,0,0,0,444,442,1,0,0,0,445,65,1,0,0,0,446,447,7,5,
-        0,0,447,67,1,0,0,0,448,449,5,48,0,0,449,450,3,62,31,0,450,69,1,0,
-        0,0,451,452,5,49,0,0,452,456,5,3,0,0,453,455,3,4,2,0,454,453,1,0,
-        0,0,455,458,1,0,0,0,456,454,1,0,0,0,456,457,1,0,0,0,457,459,1,0,
-        0,0,458,456,1,0,0,0,459,460,5,4,0,0,460,461,5,48,0,0,461,462,5,1,
-        0,0,462,463,3,64,32,0,463,464,5,2,0,0,464,465,5,33,0,0,465,71,1,
-        0,0,0,466,467,5,47,0,0,467,469,5,1,0,0,468,470,3,74,37,0,469,468,
-        1,0,0,0,469,470,1,0,0,0,470,471,1,0,0,0,471,472,5,33,0,0,472,473,
-        3,64,32,0,473,475,5,33,0,0,474,476,3,76,38,0,475,474,1,0,0,0,475,
-        476,1,0,0,0,476,477,1,0,0,0,477,478,5,2,0,0,478,482,5,3,0,0,479,
-        481,3,4,2,0,480,479,1,0,0,0,481,484,1,0,0,0,482,480,1,0,0,0,482,
-        483,1,0,0,0,483,485,1,0,0,0,484,482,1,0,0,0,485,486,5,4,0,0,486,
-        73,1,0,0,0,487,490,3,12,6,0,488,490,3,44,22,0,489,487,1,0,0,0,489,
-        488,1,0,0,0,490,75,1,0,0,0,491,492,3,44,22,0,492,77,1,0,0,0,493,
-        494,5,52,0,0,494,495,5,1,0,0,495,496,3,50,25,0,496,497,5,2,0,0,497,
-        501,5,3,0,0,498,500,3,80,40,0,499,498,1,0,0,0,500,503,1,0,0,0,501,
-        499,1,0,0,0,501,502,1,0,0,0,502,505,1,0,0,0,503,501,1,0,0,0,504,
-        506,3,82,41,0,505,504,1,0,0,0,505,506,1,0,0,0,506,507,1,0,0,0,507,
-        508,5,4,0,0,508,79,1,0,0,0,509,510,5,53,0,0,510,511,3,50,25,0,511,
-        515,5,34,0,0,512,514,3,4,2,0,513,512,1,0,0,0,514,517,1,0,0,0,515,
-        513,1,0,0,0,515,516,1,0,0,0,516,81,1,0,0,0,517,515,1,0,0,0,518,519,
-        5,54,0,0,519,523,5,34,0,0,520,522,3,4,2,0,521,520,1,0,0,0,522,525,
-        1,0,0,0,523,521,1,0,0,0,523,524,1,0,0,0,524,83,1,0,0,0,525,523,1,
-        0,0,0,526,527,5,38,0,0,527,528,5,64,0,0,528,530,5,1,0,0,529,531,
-        3,86,43,0,530,529,1,0,0,0,530,531,1,0,0,0,531,532,1,0,0,0,532,533,
-        5,2,0,0,533,534,5,3,0,0,534,535,3,90,45,0,535,536,5,4,0,0,536,85,
-        1,0,0,0,537,542,3,88,44,0,538,539,5,35,0,0,539,541,3,88,44,0,540,
-        538,1,0,0,0,541,544,1,0,0,0,542,540,1,0,0,0,542,543,1,0,0,0,543,
-        87,1,0,0,0,544,542,1,0,0,0,545,548,5,64,0,0,546,547,5,21,0,0,547,
-        549,3,50,25,0,548,546,1,0,0,0,548,549,1,0,0,0,549,89,1,0,0,0,550,
-        552,3,4,2,0,551,550,1,0,0,0,552,555,1,0,0,0,553,551,1,0,0,0,553,
-        554,1,0,0,0,554,556,1,0,0,0,555,553,1,0,0,0,556,557,3,92,46,0,557,
-        91,1,0,0,0,558,559,5,39,0,0,559,560,3,50,25,0,560,561,5,33,0,0,561,
-        93,1,0,0,0,562,563,5,43,0,0,563,564,5,64,0,0,564,566,5,1,0,0,565,
-        567,3,96,48,0,566,565,1,0,0,0,566,567,1,0,0,0,567,568,1,0,0,0,568,
-        569,5,2,0,0,569,570,5,34,0,0,570,571,3,18,9,0,571,575,5,3,0,0,572,
-        574,3,4,2,0,573,572,1,0,0,0,574,577,1,0,0,0,575,573,1,0,0,0,575,
-        576,1,0,0,0,576,578,1,0,0,0,577,575,1,0,0,0,578,579,5,4,0,0,579,
-        95,1,0,0,0,580,585,3,98,49,0,581,582,5,35,0,0,582,584,3,98,49,0,
-        583,581,1,0,0,0,584,587,1,0,0,0,585,583,1,0,0,0,585,586,1,0,0,0,
-        586,97,1,0,0,0,587,585,1,0,0,0,588,591,5,64,0,0,589,590,5,21,0,0,
-        590,592,3,50,25,0,591,589,1,0,0,0,591,592,1,0,0,0,592,99,1,0,0,0,
-        593,594,3,102,51,0,594,596,5,1,0,0,595,597,3,54,27,0,596,595,1,0,
-        0,0,596,597,1,0,0,0,597,598,1,0,0,0,598,599,5,2,0,0,599,600,5,33,
-        0,0,600,101,1,0,0,0,601,602,7,6,0,0,602,103,1,0,0,0,603,604,5,60,
-        0,0,604,605,5,64,0,0,605,105,1,0,0,0,606,607,5,61,0,0,607,608,5,
-        64,0,0,608,609,5,21,0,0,609,610,5,1,0,0,610,611,5,62,0,0,611,612,
-        5,35,0,0,612,613,5,62,0,0,613,614,5,2,0,0,614,615,5,33,0,0,615,107,
-        1,0,0,0,55,111,117,123,129,135,146,164,172,187,211,223,225,231,242,
-        253,259,267,271,282,293,299,307,318,333,347,349,355,364,372,380,
-        388,391,406,413,416,425,444,456,469,475,482,489,501,505,515,523,
-        530,542,548,553,566,575,585,591,596
+        0,0,0,324,325,6,25,-1,0,325,326,5,32,0,0,326,338,3,50,25,8,327,338,
+        3,52,26,0,328,329,5,1,0,0,329,330,3,50,25,0,330,331,5,2,0,0,331,
+        338,1,0,0,0,332,338,5,62,0,0,333,338,5,63,0,0,334,338,5,55,0,0,335,
+        338,5,56,0,0,336,338,5,64,0,0,337,324,1,0,0,0,337,327,1,0,0,0,337,
+        328,1,0,0,0,337,332,1,0,0,0,337,333,1,0,0,0,337,334,1,0,0,0,337,
+        335,1,0,0,0,337,336,1,0,0,0,338,362,1,0,0,0,339,340,10,15,0,0,340,
+        341,5,12,0,0,341,361,3,50,25,15,342,343,10,14,0,0,343,344,7,3,0,
+        0,344,361,3,50,25,15,345,346,10,13,0,0,346,347,5,11,0,0,347,361,
+        3,50,25,14,348,349,10,12,0,0,349,350,7,4,0,0,350,361,3,50,25,13,
+        351,352,10,11,0,0,352,353,7,5,0,0,353,361,3,50,25,12,354,355,10,
+        10,0,0,355,356,5,30,0,0,356,361,3,50,25,11,357,358,10,9,0,0,358,
+        359,5,31,0,0,359,361,3,50,25,10,360,339,1,0,0,0,360,342,1,0,0,0,
+        360,345,1,0,0,0,360,348,1,0,0,0,360,351,1,0,0,0,360,354,1,0,0,0,
+        360,357,1,0,0,0,361,364,1,0,0,0,362,360,1,0,0,0,362,363,1,0,0,0,
+        363,51,1,0,0,0,364,362,1,0,0,0,365,366,5,64,0,0,366,368,5,1,0,0,
+        367,369,3,54,27,0,368,367,1,0,0,0,368,369,1,0,0,0,369,370,1,0,0,
+        0,370,371,5,2,0,0,371,53,1,0,0,0,372,377,3,56,28,0,373,374,5,35,
+        0,0,374,376,3,56,28,0,375,373,1,0,0,0,376,379,1,0,0,0,377,375,1,
+        0,0,0,377,378,1,0,0,0,378,405,1,0,0,0,379,377,1,0,0,0,380,385,3,
+        58,29,0,381,382,5,35,0,0,382,384,3,58,29,0,383,381,1,0,0,0,384,387,
+        1,0,0,0,385,383,1,0,0,0,385,386,1,0,0,0,386,405,1,0,0,0,387,385,
+        1,0,0,0,388,393,3,58,29,0,389,390,5,35,0,0,390,392,3,58,29,0,391,
+        389,1,0,0,0,392,395,1,0,0,0,393,391,1,0,0,0,393,394,1,0,0,0,394,
+        396,1,0,0,0,395,393,1,0,0,0,396,401,3,56,28,0,397,398,5,35,0,0,398,
+        400,3,56,28,0,399,397,1,0,0,0,400,403,1,0,0,0,401,399,1,0,0,0,401,
+        402,1,0,0,0,402,405,1,0,0,0,403,401,1,0,0,0,404,372,1,0,0,0,404,
+        380,1,0,0,0,404,388,1,0,0,0,405,55,1,0,0,0,406,407,5,64,0,0,407,
+        408,5,21,0,0,408,409,3,50,25,0,409,57,1,0,0,0,410,411,3,50,25,0,
+        411,59,1,0,0,0,412,413,5,1,0,0,413,414,3,62,31,0,414,415,5,2,0,0,
+        415,419,5,3,0,0,416,418,3,4,2,0,417,416,1,0,0,0,418,421,1,0,0,0,
+        419,417,1,0,0,0,419,420,1,0,0,0,420,422,1,0,0,0,421,419,1,0,0,0,
+        422,423,5,4,0,0,423,61,1,0,0,0,424,425,3,50,25,0,425,426,3,66,33,
+        0,426,427,3,50,25,0,427,440,1,0,0,0,428,429,3,50,25,0,429,430,5,
+        30,0,0,430,431,3,50,25,0,431,440,1,0,0,0,432,433,3,50,25,0,433,434,
+        5,31,0,0,434,435,3,50,25,0,435,440,1,0,0,0,436,437,5,32,0,0,437,
+        440,3,50,25,0,438,440,3,50,25,0,439,424,1,0,0,0,439,428,1,0,0,0,
+        439,432,1,0,0,0,439,436,1,0,0,0,439,438,1,0,0,0,440,63,1,0,0,0,441,
+        442,5,45,0,0,442,443,5,1,0,0,443,444,3,62,31,0,444,454,5,2,0,0,445,
+        455,3,4,2,0,446,450,5,3,0,0,447,449,3,4,2,0,448,447,1,0,0,0,449,
+        452,1,0,0,0,450,448,1,0,0,0,450,451,1,0,0,0,451,453,1,0,0,0,452,
+        450,1,0,0,0,453,455,5,4,0,0,454,445,1,0,0,0,454,446,1,0,0,0,455,
+        468,1,0,0,0,456,466,5,46,0,0,457,467,3,4,2,0,458,462,5,3,0,0,459,
+        461,3,4,2,0,460,459,1,0,0,0,461,464,1,0,0,0,462,460,1,0,0,0,462,
+        463,1,0,0,0,463,465,1,0,0,0,464,462,1,0,0,0,465,467,5,4,0,0,466,
+        457,1,0,0,0,466,458,1,0,0,0,467,469,1,0,0,0,468,456,1,0,0,0,468,
+        469,1,0,0,0,469,65,1,0,0,0,470,471,7,5,0,0,471,67,1,0,0,0,472,473,
+        5,48,0,0,473,474,3,60,30,0,474,69,1,0,0,0,475,476,5,49,0,0,476,480,
+        5,3,0,0,477,479,3,4,2,0,478,477,1,0,0,0,479,482,1,0,0,0,480,478,
+        1,0,0,0,480,481,1,0,0,0,481,483,1,0,0,0,482,480,1,0,0,0,483,484,
+        5,4,0,0,484,485,5,48,0,0,485,486,5,1,0,0,486,487,3,62,31,0,487,488,
+        5,2,0,0,488,489,5,33,0,0,489,71,1,0,0,0,490,491,5,47,0,0,491,493,
+        5,1,0,0,492,494,3,74,37,0,493,492,1,0,0,0,493,494,1,0,0,0,494,495,
+        1,0,0,0,495,496,5,33,0,0,496,497,3,62,31,0,497,499,5,33,0,0,498,
+        500,3,76,38,0,499,498,1,0,0,0,499,500,1,0,0,0,500,501,1,0,0,0,501,
+        502,5,2,0,0,502,506,5,3,0,0,503,505,3,4,2,0,504,503,1,0,0,0,505,
+        508,1,0,0,0,506,504,1,0,0,0,506,507,1,0,0,0,507,509,1,0,0,0,508,
+        506,1,0,0,0,509,510,5,4,0,0,510,73,1,0,0,0,511,514,3,12,6,0,512,
+        514,3,44,22,0,513,511,1,0,0,0,513,512,1,0,0,0,514,75,1,0,0,0,515,
+        516,3,44,22,0,516,77,1,0,0,0,517,518,5,52,0,0,518,519,5,1,0,0,519,
+        520,3,50,25,0,520,521,5,2,0,0,521,525,5,3,0,0,522,524,3,80,40,0,
+        523,522,1,0,0,0,524,527,1,0,0,0,525,523,1,0,0,0,525,526,1,0,0,0,
+        526,529,1,0,0,0,527,525,1,0,0,0,528,530,3,82,41,0,529,528,1,0,0,
+        0,529,530,1,0,0,0,530,531,1,0,0,0,531,532,5,4,0,0,532,79,1,0,0,0,
+        533,534,5,53,0,0,534,535,3,50,25,0,535,539,5,34,0,0,536,538,3,4,
+        2,0,537,536,1,0,0,0,538,541,1,0,0,0,539,537,1,0,0,0,539,540,1,0,
+        0,0,540,81,1,0,0,0,541,539,1,0,0,0,542,543,5,54,0,0,543,547,5,34,
+        0,0,544,546,3,4,2,0,545,544,1,0,0,0,546,549,1,0,0,0,547,545,1,0,
+        0,0,547,548,1,0,0,0,548,83,1,0,0,0,549,547,1,0,0,0,550,551,5,38,
+        0,0,551,552,5,64,0,0,552,554,5,1,0,0,553,555,3,86,43,0,554,553,1,
+        0,0,0,554,555,1,0,0,0,555,556,1,0,0,0,556,557,5,2,0,0,557,558,5,
+        3,0,0,558,559,3,90,45,0,559,560,5,4,0,0,560,85,1,0,0,0,561,566,3,
+        88,44,0,562,563,5,35,0,0,563,565,3,88,44,0,564,562,1,0,0,0,565,568,
+        1,0,0,0,566,564,1,0,0,0,566,567,1,0,0,0,567,87,1,0,0,0,568,566,1,
+        0,0,0,569,572,5,64,0,0,570,571,5,21,0,0,571,573,3,50,25,0,572,570,
+        1,0,0,0,572,573,1,0,0,0,573,89,1,0,0,0,574,576,3,4,2,0,575,574,1,
+        0,0,0,576,579,1,0,0,0,577,575,1,0,0,0,577,578,1,0,0,0,578,580,1,
+        0,0,0,579,577,1,0,0,0,580,581,3,92,46,0,581,91,1,0,0,0,582,583,5,
+        39,0,0,583,584,3,50,25,0,584,585,5,33,0,0,585,93,1,0,0,0,586,587,
+        5,43,0,0,587,588,5,64,0,0,588,590,5,1,0,0,589,591,3,96,48,0,590,
+        589,1,0,0,0,590,591,1,0,0,0,591,592,1,0,0,0,592,593,5,2,0,0,593,
+        594,5,34,0,0,594,595,3,18,9,0,595,599,5,3,0,0,596,598,3,4,2,0,597,
+        596,1,0,0,0,598,601,1,0,0,0,599,597,1,0,0,0,599,600,1,0,0,0,600,
+        602,1,0,0,0,601,599,1,0,0,0,602,603,5,4,0,0,603,95,1,0,0,0,604,609,
+        3,98,49,0,605,606,5,35,0,0,606,608,3,98,49,0,607,605,1,0,0,0,608,
+        611,1,0,0,0,609,607,1,0,0,0,609,610,1,0,0,0,610,97,1,0,0,0,611,609,
+        1,0,0,0,612,615,5,64,0,0,613,614,5,21,0,0,614,616,3,50,25,0,615,
+        613,1,0,0,0,615,616,1,0,0,0,616,99,1,0,0,0,617,618,3,102,51,0,618,
+        620,5,1,0,0,619,621,3,54,27,0,620,619,1,0,0,0,620,621,1,0,0,0,621,
+        622,1,0,0,0,622,623,5,2,0,0,623,624,5,33,0,0,624,101,1,0,0,0,625,
+        626,7,6,0,0,626,103,1,0,0,0,627,628,5,60,0,0,628,629,5,64,0,0,629,
+        105,1,0,0,0,630,631,5,61,0,0,631,632,5,64,0,0,632,633,5,21,0,0,633,
+        634,5,1,0,0,634,635,5,62,0,0,635,636,5,35,0,0,636,637,5,62,0,0,637,
+        638,5,2,0,0,638,639,5,33,0,0,639,107,1,0,0,0,57,111,117,123,129,
+        135,146,164,172,187,211,223,225,231,242,253,259,267,271,282,293,
+        299,307,318,337,360,362,368,377,385,393,401,404,419,439,450,454,
+        462,466,468,480,493,499,506,513,525,529,539,547,554,566,572,577,
+        590,599,609,615,620
     ]
 
 class CircuitryParser ( Parser ):
@@ -298,9 +309,9 @@ class CircuitryParser ( Parser ):
     RULE_functionCallArgs = 27
     RULE_functionCallKeywordArg = 28
     RULE_functionCallPositionalArg = 29
-    RULE_ifStatement = 30
-    RULE_conditionWithBlock = 31
-    RULE_booleanExpr = 32
+    RULE_conditionWithBlock = 30
+    RULE_booleanExpr = 31
+    RULE_ifStatement = 32
     RULE_relationalOperator = 33
     RULE_whileStatement = 34
     RULE_doWhileStatement = 35
@@ -332,7 +343,7 @@ class CircuitryParser ( Parser ):
                    "parallelAssignment", "assignmentStatement", "unaryAssignmentOperator", 
                    "binaryAssignmentOperator", "expr", "functionCall", "functionCallArgs", 
                    "functionCallKeywordArg", "functionCallPositionalArg", 
-                   "ifStatement", "conditionWithBlock", "booleanExpr", "relationalOperator", 
+                   "conditionWithBlock", "booleanExpr", "ifStatement", "relationalOperator", 
                    "whileStatement", "doWhileStatement", "forStatement", 
                    "forInit", "forUpdate", "switchStatement", "caseStatement", 
                    "defaultStatement", "functionDefinition", "functionParams", 
@@ -892,14 +903,15 @@ class CircuitryParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def ID(self, i:int=None):
-            if i is None:
-                return self.getTokens(CircuitryParser.ID)
-            else:
-                return self.getToken(CircuitryParser.ID, i)
+        def ID(self):
+            return self.getToken(CircuitryParser.ID, 0)
 
         def ASSIGN(self):
             return self.getToken(CircuitryParser.ASSIGN, 0)
+
+        def expr(self):
+            return self.getTypedRuleContext(CircuitryParser.ExprContext,0)
+
 
         def getRuleIndex(self):
             return CircuitryParser.RULE_aliasAssignment
@@ -932,7 +944,7 @@ class CircuitryParser ( Parser ):
             self.state = 178
             self.match(CircuitryParser.ASSIGN)
             self.state = 179
-            self.match(CircuitryParser.ID)
+            self.expr(0)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -2510,6 +2522,235 @@ class CircuitryParser ( Parser ):
             super().copyFrom(ctx)
 
 
+    class AndExprContext(ExprContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ExprContext
+            super().__init__(parser)
+            self.op = None # Token
+            self.copyFrom(ctx)
+
+        def expr(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(CircuitryParser.ExprContext)
+            else:
+                return self.getTypedRuleContext(CircuitryParser.ExprContext,i)
+
+        def AND(self):
+            return self.getToken(CircuitryParser.AND, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterAndExpr" ):
+                listener.enterAndExpr(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitAndExpr" ):
+                listener.exitAndExpr(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAndExpr" ):
+                return visitor.visitAndExpr(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+    class TrueLiteralExprContext(ExprContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ExprContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def TRUE(self):
+            return self.getToken(CircuitryParser.TRUE, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterTrueLiteralExpr" ):
+                listener.enterTrueLiteralExpr(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitTrueLiteralExpr" ):
+                listener.exitTrueLiteralExpr(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitTrueLiteralExpr" ):
+                return visitor.visitTrueLiteralExpr(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+    class IdExprContext(ExprContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ExprContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def ID(self):
+            return self.getToken(CircuitryParser.ID, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterIdExpr" ):
+                listener.enterIdExpr(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitIdExpr" ):
+                listener.exitIdExpr(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitIdExpr" ):
+                return visitor.visitIdExpr(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+    class FalseLiteralExprContext(ExprContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ExprContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def FALSE(self):
+            return self.getToken(CircuitryParser.FALSE, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterFalseLiteralExpr" ):
+                listener.enterFalseLiteralExpr(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitFalseLiteralExpr" ):
+                listener.exitFalseLiteralExpr(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitFalseLiteralExpr" ):
+                return visitor.visitFalseLiteralExpr(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+    class StringLiteralExprContext(ExprContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ExprContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def STRING_LITERAL(self):
+            return self.getToken(CircuitryParser.STRING_LITERAL, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterStringLiteralExpr" ):
+                listener.enterStringLiteralExpr(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitStringLiteralExpr" ):
+                listener.exitStringLiteralExpr(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitStringLiteralExpr" ):
+                return visitor.visitStringLiteralExpr(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+    class RelationalExprContext(ExprContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ExprContext
+            super().__init__(parser)
+            self.op = None # Token
+            self.copyFrom(ctx)
+
+        def expr(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(CircuitryParser.ExprContext)
+            else:
+                return self.getTypedRuleContext(CircuitryParser.ExprContext,i)
+
+        def EQUAL(self):
+            return self.getToken(CircuitryParser.EQUAL, 0)
+        def NOT_EQUAL(self):
+            return self.getToken(CircuitryParser.NOT_EQUAL, 0)
+        def LESS(self):
+            return self.getToken(CircuitryParser.LESS, 0)
+        def GREATER(self):
+            return self.getToken(CircuitryParser.GREATER, 0)
+        def LESS_EQUAL(self):
+            return self.getToken(CircuitryParser.LESS_EQUAL, 0)
+        def GREATER_EQUAL(self):
+            return self.getToken(CircuitryParser.GREATER_EQUAL, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterRelationalExpr" ):
+                listener.enterRelationalExpr(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitRelationalExpr" ):
+                listener.exitRelationalExpr(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitRelationalExpr" ):
+                return visitor.visitRelationalExpr(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+    class ExpExprContext(ExprContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ExprContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def expr(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(CircuitryParser.ExprContext)
+            else:
+                return self.getTypedRuleContext(CircuitryParser.ExprContext,i)
+
+        def EXPONENT(self):
+            return self.getToken(CircuitryParser.EXPONENT, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterExpExpr" ):
+                listener.enterExpExpr(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitExpExpr" ):
+                listener.exitExpExpr(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitExpExpr" ):
+                return visitor.visitExpExpr(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+    class OrExprContext(ExprContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ExprContext
+            super().__init__(parser)
+            self.op = None # Token
+            self.copyFrom(ctx)
+
+        def expr(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(CircuitryParser.ExprContext)
+            else:
+                return self.getTypedRuleContext(CircuitryParser.ExprContext,i)
+
+        def OR(self):
+            return self.getToken(CircuitryParser.OR, 0)
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterOrExpr" ):
+                listener.enterOrExpr(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitOrExpr" ):
+                listener.exitOrExpr(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitOrExpr" ):
+                return visitor.visitOrExpr(self)
+            else:
+                return visitor.visitChildren(self)
+
+
     class MulDivExprContext(ExprContext):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ExprContext
@@ -2543,30 +2784,6 @@ class CircuitryParser ( Parser ):
                 return visitor.visitChildren(self)
 
 
-    class IdExprContext(ExprContext):
-
-        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ExprContext
-            super().__init__(parser)
-            self.copyFrom(ctx)
-
-        def ID(self):
-            return self.getToken(CircuitryParser.ID, 0)
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterIdExpr" ):
-                listener.enterIdExpr(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitIdExpr" ):
-                listener.exitIdExpr(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitIdExpr" ):
-                return visitor.visitIdExpr(self)
-            else:
-                return visitor.visitChildren(self)
-
-
     class FloatLiteralExprContext(ExprContext):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ExprContext
@@ -2591,26 +2808,29 @@ class CircuitryParser ( Parser ):
                 return visitor.visitChildren(self)
 
 
-    class StringLiteralExprContext(ExprContext):
+    class NotExprContext(ExprContext):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ExprContext
             super().__init__(parser)
             self.copyFrom(ctx)
 
-        def STRING_LITERAL(self):
-            return self.getToken(CircuitryParser.STRING_LITERAL, 0)
+        def NOT(self):
+            return self.getToken(CircuitryParser.NOT, 0)
+        def expr(self):
+            return self.getTypedRuleContext(CircuitryParser.ExprContext,0)
+
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterStringLiteralExpr" ):
-                listener.enterStringLiteralExpr(self)
+            if hasattr( listener, "enterNotExpr" ):
+                listener.enterNotExpr(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitStringLiteralExpr" ):
-                listener.exitStringLiteralExpr(self)
+            if hasattr( listener, "exitNotExpr" ):
+                listener.exitNotExpr(self)
 
         def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitStringLiteralExpr" ):
-                return visitor.visitStringLiteralExpr(self)
+            if hasattr( visitor, "visitNotExpr" ):
+                return visitor.visitNotExpr(self)
             else:
                 return visitor.visitChildren(self)
 
@@ -2670,36 +2890,6 @@ class CircuitryParser ( Parser ):
         def accept(self, visitor:ParseTreeVisitor):
             if hasattr( visitor, "visitParenExpr" ):
                 return visitor.visitParenExpr(self)
-            else:
-                return visitor.visitChildren(self)
-
-
-    class ExpExprContext(ExprContext):
-
-        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ExprContext
-            super().__init__(parser)
-            self.copyFrom(ctx)
-
-        def expr(self, i:int=None):
-            if i is None:
-                return self.getTypedRuleContexts(CircuitryParser.ExprContext)
-            else:
-                return self.getTypedRuleContext(CircuitryParser.ExprContext,i)
-
-        def EXPONENT(self):
-            return self.getToken(CircuitryParser.EXPONENT, 0)
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterExpExpr" ):
-                listener.enterExpExpr(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitExpExpr" ):
-                listener.exitExpExpr(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitExpExpr" ):
-                return visitor.visitExpExpr(self)
             else:
                 return visitor.visitChildren(self)
 
@@ -2773,57 +2963,83 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 333
+            self.state = 337
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,23,self._ctx)
             if la_ == 1:
-                localctx = CircuitryParser.FuncCallExprContext(self, localctx)
+                localctx = CircuitryParser.NotExprContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
 
                 self.state = 325
-                self.functionCall()
+                self.match(CircuitryParser.NOT)
+                self.state = 326
+                self.expr(8)
                 pass
 
             elif la_ == 2:
-                localctx = CircuitryParser.ParenExprContext(self, localctx)
+                localctx = CircuitryParser.FuncCallExprContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
-                self.state = 326
-                self.match(CircuitryParser.LPAREN)
                 self.state = 327
-                self.expr(0)
-                self.state = 328
-                self.match(CircuitryParser.RPAREN)
+                self.functionCall()
                 pass
 
             elif la_ == 3:
-                localctx = CircuitryParser.FloatLiteralExprContext(self, localctx)
+                localctx = CircuitryParser.ParenExprContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
+                self.state = 328
+                self.match(CircuitryParser.LPAREN)
+                self.state = 329
+                self.expr(0)
                 self.state = 330
-                self.match(CircuitryParser.FLOAT_LITERAL)
+                self.match(CircuitryParser.RPAREN)
                 pass
 
             elif la_ == 4:
-                localctx = CircuitryParser.StringLiteralExprContext(self, localctx)
-                self._ctx = localctx
-                _prevctx = localctx
-                self.state = 331
-                self.match(CircuitryParser.STRING_LITERAL)
-                pass
-
-            elif la_ == 5:
-                localctx = CircuitryParser.IdExprContext(self, localctx)
+                localctx = CircuitryParser.FloatLiteralExprContext(self, localctx)
                 self._ctx = localctx
                 _prevctx = localctx
                 self.state = 332
+                self.match(CircuitryParser.FLOAT_LITERAL)
+                pass
+
+            elif la_ == 5:
+                localctx = CircuitryParser.StringLiteralExprContext(self, localctx)
+                self._ctx = localctx
+                _prevctx = localctx
+                self.state = 333
+                self.match(CircuitryParser.STRING_LITERAL)
+                pass
+
+            elif la_ == 6:
+                localctx = CircuitryParser.TrueLiteralExprContext(self, localctx)
+                self._ctx = localctx
+                _prevctx = localctx
+                self.state = 334
+                self.match(CircuitryParser.TRUE)
+                pass
+
+            elif la_ == 7:
+                localctx = CircuitryParser.FalseLiteralExprContext(self, localctx)
+                self._ctx = localctx
+                _prevctx = localctx
+                self.state = 335
+                self.match(CircuitryParser.FALSE)
+                pass
+
+            elif la_ == 8:
+                localctx = CircuitryParser.IdExprContext(self, localctx)
+                self._ctx = localctx
+                _prevctx = localctx
+                self.state = 336
                 self.match(CircuitryParser.ID)
                 pass
 
 
             self._ctx.stop = self._input.LT(-1)
-            self.state = 349
+            self.state = 362
             self._errHandler.sync(self)
             _alt = self._interp.adaptivePredict(self._input,25,self._ctx)
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -2831,30 +3047,30 @@ class CircuitryParser ( Parser ):
                     if self._parseListeners is not None:
                         self.triggerExitRuleEvent()
                     _prevctx = localctx
-                    self.state = 347
+                    self.state = 360
                     self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,24,self._ctx)
                     if la_ == 1:
                         localctx = CircuitryParser.ExpExprContext(self, CircuitryParser.ExprContext(self, _parentctx, _parentState))
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 335
-                        if not self.precpred(self._ctx, 9):
+                        self.state = 339
+                        if not self.precpred(self._ctx, 15):
                             from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 9)")
-                        self.state = 336
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 15)")
+                        self.state = 340
                         self.match(CircuitryParser.EXPONENT)
-                        self.state = 337
-                        self.expr(9)
+                        self.state = 341
+                        self.expr(15)
                         pass
 
                     elif la_ == 2:
                         localctx = CircuitryParser.MulDivExprContext(self, CircuitryParser.ExprContext(self, _parentctx, _parentState))
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 338
-                        if not self.precpred(self._ctx, 8):
+                        self.state = 342
+                        if not self.precpred(self._ctx, 14):
                             from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 8)")
-                        self.state = 339
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 14)")
+                        self.state = 343
                         localctx.op = self._input.LT(1)
                         _la = self._input.LA(1)
                         if not(_la==9 or _la==10):
@@ -2862,31 +3078,31 @@ class CircuitryParser ( Parser ):
                         else:
                             self._errHandler.reportMatch(self)
                             self.consume()
-                        self.state = 340
-                        self.expr(9)
+                        self.state = 344
+                        self.expr(15)
                         pass
 
                     elif la_ == 3:
                         localctx = CircuitryParser.ModExprContext(self, CircuitryParser.ExprContext(self, _parentctx, _parentState))
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 341
-                        if not self.precpred(self._ctx, 7):
+                        self.state = 345
+                        if not self.precpred(self._ctx, 13):
                             from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 7)")
-                        self.state = 342
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 13)")
+                        self.state = 346
                         self.match(CircuitryParser.MODULO)
-                        self.state = 343
-                        self.expr(8)
+                        self.state = 347
+                        self.expr(14)
                         pass
 
                     elif la_ == 4:
                         localctx = CircuitryParser.AddSubExprContext(self, CircuitryParser.ExprContext(self, _parentctx, _parentState))
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 344
-                        if not self.precpred(self._ctx, 6):
+                        self.state = 348
+                        if not self.precpred(self._ctx, 12):
                             from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 6)")
-                        self.state = 345
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 12)")
+                        self.state = 349
                         localctx.op = self._input.LT(1)
                         _la = self._input.LA(1)
                         if not(_la==7 or _la==8):
@@ -2894,12 +3110,57 @@ class CircuitryParser ( Parser ):
                         else:
                             self._errHandler.reportMatch(self)
                             self.consume()
-                        self.state = 346
-                        self.expr(7)
+                        self.state = 350
+                        self.expr(13)
+                        pass
+
+                    elif la_ == 5:
+                        localctx = CircuitryParser.RelationalExprContext(self, CircuitryParser.ExprContext(self, _parentctx, _parentState))
+                        self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
+                        self.state = 351
+                        if not self.precpred(self._ctx, 11):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 11)")
+                        self.state = 352
+                        localctx.op = self._input.LT(1)
+                        _la = self._input.LA(1)
+                        if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 2064384) != 0)):
+                            localctx.op = self._errHandler.recoverInline(self)
+                        else:
+                            self._errHandler.reportMatch(self)
+                            self.consume()
+                        self.state = 353
+                        self.expr(12)
+                        pass
+
+                    elif la_ == 6:
+                        localctx = CircuitryParser.AndExprContext(self, CircuitryParser.ExprContext(self, _parentctx, _parentState))
+                        self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
+                        self.state = 354
+                        if not self.precpred(self._ctx, 10):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 10)")
+                        self.state = 355
+                        localctx.op = self.match(CircuitryParser.AND)
+                        self.state = 356
+                        self.expr(11)
+                        pass
+
+                    elif la_ == 7:
+                        localctx = CircuitryParser.OrExprContext(self, CircuitryParser.ExprContext(self, _parentctx, _parentState))
+                        self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
+                        self.state = 357
+                        if not self.precpred(self._ctx, 9):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 9)")
+                        self.state = 358
+                        localctx.op = self.match(CircuitryParser.OR)
+                        self.state = 359
+                        self.expr(10)
                         pass
 
              
-                self.state = 351
+                self.state = 364
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,25,self._ctx)
 
@@ -2959,19 +3220,19 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 352
+            self.state = 365
             self.match(CircuitryParser.ID)
-            self.state = 353
+            self.state = 366
             self.match(CircuitryParser.LPAREN)
-            self.state = 355
+            self.state = 368
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if ((((_la - 1)) & ~0x3f) == 0 and ((1 << (_la - 1)) & -2305843009213693951) != 0):
-                self.state = 354
+            if ((((_la - 1)) & ~0x3f) == 0 and ((1 << (_la - 1)) & -2251799811537764351) != 0):
+                self.state = 367
                 self.functionCallArgs()
 
 
-            self.state = 357
+            self.state = 370
             self.match(CircuitryParser.RPAREN)
         except RecognitionException as re:
             localctx.exception = re
@@ -3035,22 +3296,22 @@ class CircuitryParser ( Parser ):
         self.enterRule(localctx, 54, self.RULE_functionCallArgs)
         self._la = 0 # Token type
         try:
-            self.state = 391
+            self.state = 404
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,31,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 359
+                self.state = 372
                 self.functionCallKeywordArg()
-                self.state = 364
+                self.state = 377
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==35:
-                    self.state = 360
+                    self.state = 373
                     self.match(CircuitryParser.COMMA)
-                    self.state = 361
+                    self.state = 374
                     self.functionCallKeywordArg()
-                    self.state = 366
+                    self.state = 379
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
@@ -3058,17 +3319,17 @@ class CircuitryParser ( Parser ):
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 367
+                self.state = 380
                 self.functionCallPositionalArg()
-                self.state = 372
+                self.state = 385
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==35:
-                    self.state = 368
+                    self.state = 381
                     self.match(CircuitryParser.COMMA)
-                    self.state = 369
+                    self.state = 382
                     self.functionCallPositionalArg()
-                    self.state = 374
+                    self.state = 387
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
@@ -3076,31 +3337,31 @@ class CircuitryParser ( Parser ):
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 375
+                self.state = 388
                 self.functionCallPositionalArg()
-                self.state = 380
+                self.state = 393
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==35:
-                    self.state = 376
+                    self.state = 389
                     self.match(CircuitryParser.COMMA)
-                    self.state = 377
+                    self.state = 390
                     self.functionCallPositionalArg()
-                    self.state = 382
+                    self.state = 395
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 383
+                self.state = 396
                 self.functionCallKeywordArg()
-                self.state = 388
+                self.state = 401
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==35:
-                    self.state = 384
+                    self.state = 397
                     self.match(CircuitryParser.COMMA)
-                    self.state = 385
+                    self.state = 398
                     self.functionCallKeywordArg()
-                    self.state = 390
+                    self.state = 403
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
@@ -3159,11 +3420,11 @@ class CircuitryParser ( Parser ):
         self.enterRule(localctx, 56, self.RULE_functionCallKeywordArg)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 393
+            self.state = 406
             self.match(CircuitryParser.ID)
-            self.state = 394
+            self.state = 407
             self.match(CircuitryParser.ASSIGN)
-            self.state = 395
+            self.state = 408
             self.expr(0)
         except RecognitionException as re:
             localctx.exception = re
@@ -3211,115 +3472,8 @@ class CircuitryParser ( Parser ):
         self.enterRule(localctx, 58, self.RULE_functionCallPositionalArg)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 397
+            self.state = 410
             self.expr(0)
-        except RecognitionException as re:
-            localctx.exception = re
-            self._errHandler.reportError(self, re)
-            self._errHandler.recover(self, re)
-        finally:
-            self.exitRule()
-        return localctx
-
-
-    class IfStatementContext(ParserRuleContext):
-        __slots__ = 'parser'
-
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
-            self.parser = parser
-
-        def IF(self, i:int=None):
-            if i is None:
-                return self.getTokens(CircuitryParser.IF)
-            else:
-                return self.getToken(CircuitryParser.IF, i)
-
-        def conditionWithBlock(self, i:int=None):
-            if i is None:
-                return self.getTypedRuleContexts(CircuitryParser.ConditionWithBlockContext)
-            else:
-                return self.getTypedRuleContext(CircuitryParser.ConditionWithBlockContext,i)
-
-
-        def ELSE(self, i:int=None):
-            if i is None:
-                return self.getTokens(CircuitryParser.ELSE)
-            else:
-                return self.getToken(CircuitryParser.ELSE, i)
-
-        def topologyStatement(self, i:int=None):
-            if i is None:
-                return self.getTypedRuleContexts(CircuitryParser.TopologyStatementContext)
-            else:
-                return self.getTypedRuleContext(CircuitryParser.TopologyStatementContext,i)
-
-
-        def getRuleIndex(self):
-            return CircuitryParser.RULE_ifStatement
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterIfStatement" ):
-                listener.enterIfStatement(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitIfStatement" ):
-                listener.exitIfStatement(self)
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitIfStatement" ):
-                return visitor.visitIfStatement(self)
-            else:
-                return visitor.visitChildren(self)
-
-
-
-
-    def ifStatement(self):
-
-        localctx = CircuitryParser.IfStatementContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 60, self.RULE_ifStatement)
-        self._la = 0 # Token type
-        try:
-            self.enterOuterAlt(localctx, 1)
-            self.state = 399
-            self.match(CircuitryParser.IF)
-            self.state = 400
-            self.conditionWithBlock()
-            self.state = 406
-            self._errHandler.sync(self)
-            _alt = self._interp.adaptivePredict(self._input,32,self._ctx)
-            while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                if _alt==1:
-                    self.state = 401
-                    self.match(CircuitryParser.ELSE)
-                    self.state = 402
-                    self.match(CircuitryParser.IF)
-                    self.state = 403
-                    self.conditionWithBlock() 
-                self.state = 408
-                self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,32,self._ctx)
-
-            self.state = 416
-            self._errHandler.sync(self)
-            _la = self._input.LA(1)
-            if _la==46:
-                self.state = 409
-                self.match(CircuitryParser.ELSE)
-                self.state = 413
-                self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,33,self._ctx)
-                while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                    if _alt==1:
-                        self.state = 410
-                        self.topologyStatement() 
-                    self.state = 415
-                    self._errHandler.sync(self)
-                    _alt = self._interp.adaptivePredict(self._input,33,self._ctx)
-
-
-
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -3382,29 +3536,29 @@ class CircuitryParser ( Parser ):
     def conditionWithBlock(self):
 
         localctx = CircuitryParser.ConditionWithBlockContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 62, self.RULE_conditionWithBlock)
+        self.enterRule(localctx, 60, self.RULE_conditionWithBlock)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 418
+            self.state = 412
             self.match(CircuitryParser.LPAREN)
-            self.state = 419
+            self.state = 413
             self.booleanExpr()
-            self.state = 420
+            self.state = 414
             self.match(CircuitryParser.RPAREN)
-            self.state = 421
+            self.state = 415
             self.match(CircuitryParser.LBRACE)
-            self.state = 425
+            self.state = 419
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while ((((_la - 36)) & ~0x3f) == 0 and ((1 << (_la - 36)) & 268516023) != 0):
-                self.state = 422
+                self.state = 416
                 self.topologyStatement()
-                self.state = 427
+                self.state = 421
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 428
+            self.state = 422
             self.match(CircuitryParser.RBRACE)
         except RecognitionException as re:
             localctx.exception = re
@@ -3465,48 +3619,200 @@ class CircuitryParser ( Parser ):
     def booleanExpr(self):
 
         localctx = CircuitryParser.BooleanExprContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 64, self.RULE_booleanExpr)
+        self.enterRule(localctx, 62, self.RULE_booleanExpr)
         try:
-            self.state = 444
+            self.state = 439
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,36,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,33,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 430
+                self.state = 424
                 self.expr(0)
-                self.state = 431
+                self.state = 425
                 self.relationalOperator()
-                self.state = 432
+                self.state = 426
                 self.expr(0)
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 434
+                self.state = 428
                 self.expr(0)
-                self.state = 435
+                self.state = 429
                 self.match(CircuitryParser.AND)
-                self.state = 436
+                self.state = 430
                 self.expr(0)
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 438
+                self.state = 432
                 self.expr(0)
-                self.state = 439
+                self.state = 433
                 self.match(CircuitryParser.OR)
-                self.state = 440
+                self.state = 434
                 self.expr(0)
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 442
+                self.state = 436
                 self.match(CircuitryParser.NOT)
-                self.state = 443
+                self.state = 437
                 self.expr(0)
                 pass
+
+            elif la_ == 5:
+                self.enterOuterAlt(localctx, 5)
+                self.state = 438
+                self.expr(0)
+                pass
+
+
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+
+    class IfStatementContext(ParserRuleContext):
+        __slots__ = 'parser'
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def IF(self):
+            return self.getToken(CircuitryParser.IF, 0)
+
+        def LPAREN(self):
+            return self.getToken(CircuitryParser.LPAREN, 0)
+
+        def booleanExpr(self):
+            return self.getTypedRuleContext(CircuitryParser.BooleanExprContext,0)
+
+
+        def RPAREN(self):
+            return self.getToken(CircuitryParser.RPAREN, 0)
+
+        def topologyStatement(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(CircuitryParser.TopologyStatementContext)
+            else:
+                return self.getTypedRuleContext(CircuitryParser.TopologyStatementContext,i)
+
+
+        def LBRACE(self, i:int=None):
+            if i is None:
+                return self.getTokens(CircuitryParser.LBRACE)
+            else:
+                return self.getToken(CircuitryParser.LBRACE, i)
+
+        def RBRACE(self, i:int=None):
+            if i is None:
+                return self.getTokens(CircuitryParser.RBRACE)
+            else:
+                return self.getToken(CircuitryParser.RBRACE, i)
+
+        def ELSE(self):
+            return self.getToken(CircuitryParser.ELSE, 0)
+
+        def getRuleIndex(self):
+            return CircuitryParser.RULE_ifStatement
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterIfStatement" ):
+                listener.enterIfStatement(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitIfStatement" ):
+                listener.exitIfStatement(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitIfStatement" ):
+                return visitor.visitIfStatement(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+
+
+    def ifStatement(self):
+
+        localctx = CircuitryParser.IfStatementContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 64, self.RULE_ifStatement)
+        self._la = 0 # Token type
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 441
+            self.match(CircuitryParser.IF)
+            self.state = 442
+            self.match(CircuitryParser.LPAREN)
+            self.state = 443
+            self.booleanExpr()
+            self.state = 444
+            self.match(CircuitryParser.RPAREN)
+            self.state = 454
+            self._errHandler.sync(self)
+            token = self._input.LA(1)
+            if token in [36, 37, 38, 40, 41, 43, 45, 47, 48, 49, 52, 64]:
+                self.state = 445
+                self.topologyStatement()
+                pass
+            elif token in [3]:
+                self.state = 446
+                self.match(CircuitryParser.LBRACE)
+                self.state = 450
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while ((((_la - 36)) & ~0x3f) == 0 and ((1 << (_la - 36)) & 268516023) != 0):
+                    self.state = 447
+                    self.topologyStatement()
+                    self.state = 452
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+
+                self.state = 453
+                self.match(CircuitryParser.RBRACE)
+                pass
+            else:
+                raise NoViableAltException(self)
+
+            self.state = 468
+            self._errHandler.sync(self)
+            la_ = self._interp.adaptivePredict(self._input,38,self._ctx)
+            if la_ == 1:
+                self.state = 456
+                self.match(CircuitryParser.ELSE)
+                self.state = 466
+                self._errHandler.sync(self)
+                token = self._input.LA(1)
+                if token in [36, 37, 38, 40, 41, 43, 45, 47, 48, 49, 52, 64]:
+                    self.state = 457
+                    self.topologyStatement()
+                    pass
+                elif token in [3]:
+                    self.state = 458
+                    self.match(CircuitryParser.LBRACE)
+                    self.state = 462
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    while ((((_la - 36)) & ~0x3f) == 0 and ((1 << (_la - 36)) & 268516023) != 0):
+                        self.state = 459
+                        self.topologyStatement()
+                        self.state = 464
+                        self._errHandler.sync(self)
+                        _la = self._input.LA(1)
+
+                    self.state = 465
+                    self.match(CircuitryParser.RBRACE)
+                    pass
+                else:
+                    raise NoViableAltException(self)
+
 
 
         except RecognitionException as re:
@@ -3570,7 +3876,7 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 446
+            self.state = 470
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 2064384) != 0)):
                 self._errHandler.recoverInline(self)
@@ -3626,9 +3932,9 @@ class CircuitryParser ( Parser ):
         self.enterRule(localctx, 68, self.RULE_whileStatement)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 448
+            self.state = 472
             self.match(CircuitryParser.WHILE)
-            self.state = 449
+            self.state = 473
             self.conditionWithBlock()
         except RecognitionException as re:
             localctx.exception = re
@@ -3705,31 +4011,31 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 451
+            self.state = 475
             self.match(CircuitryParser.DO)
-            self.state = 452
+            self.state = 476
             self.match(CircuitryParser.LBRACE)
-            self.state = 456
+            self.state = 480
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while ((((_la - 36)) & ~0x3f) == 0 and ((1 << (_la - 36)) & 268516023) != 0):
-                self.state = 453
+                self.state = 477
                 self.topologyStatement()
-                self.state = 458
+                self.state = 482
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 459
+            self.state = 483
             self.match(CircuitryParser.RBRACE)
-            self.state = 460
+            self.state = 484
             self.match(CircuitryParser.WHILE)
-            self.state = 461
+            self.state = 485
             self.match(CircuitryParser.LPAREN)
-            self.state = 462
+            self.state = 486
             self.booleanExpr()
-            self.state = 463
+            self.state = 487
             self.match(CircuitryParser.RPAREN)
-            self.state = 464
+            self.state = 488
             self.match(CircuitryParser.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
@@ -3814,47 +4120,47 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 466
+            self.state = 490
             self.match(CircuitryParser.FOR)
-            self.state = 467
+            self.state = 491
             self.match(CircuitryParser.LPAREN)
-            self.state = 469
+            self.state = 493
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==64:
-                self.state = 468
+                self.state = 492
                 self.forInit()
 
 
-            self.state = 471
+            self.state = 495
             self.match(CircuitryParser.SEMICOLON)
-            self.state = 472
+            self.state = 496
             self.booleanExpr()
-            self.state = 473
+            self.state = 497
             self.match(CircuitryParser.SEMICOLON)
-            self.state = 475
+            self.state = 499
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==64:
-                self.state = 474
+                self.state = 498
                 self.forUpdate()
 
 
-            self.state = 477
+            self.state = 501
             self.match(CircuitryParser.RPAREN)
-            self.state = 478
+            self.state = 502
             self.match(CircuitryParser.LBRACE)
-            self.state = 482
+            self.state = 506
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while ((((_la - 36)) & ~0x3f) == 0 and ((1 << (_la - 36)) & 268516023) != 0):
-                self.state = 479
+                self.state = 503
                 self.topologyStatement()
-                self.state = 484
+                self.state = 508
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 485
+            self.state = 509
             self.match(CircuitryParser.RBRACE)
         except RecognitionException as re:
             localctx.exception = re
@@ -3905,18 +4211,18 @@ class CircuitryParser ( Parser ):
         localctx = CircuitryParser.ForInitContext(self, self._ctx, self.state)
         self.enterRule(localctx, 74, self.RULE_forInit)
         try:
-            self.state = 489
+            self.state = 513
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,41,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,43,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 487
+                self.state = 511
                 self.letAssignment()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 488
+                self.state = 512
                 self.assignmentStatement()
                 pass
 
@@ -3967,7 +4273,7 @@ class CircuitryParser ( Parser ):
         self.enterRule(localctx, 76, self.RULE_forUpdate)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 491
+            self.state = 515
             self.assignmentStatement()
         except RecognitionException as re:
             localctx.exception = re
@@ -4042,35 +4348,35 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 493
+            self.state = 517
             self.match(CircuitryParser.SWITCH)
-            self.state = 494
+            self.state = 518
             self.match(CircuitryParser.LPAREN)
-            self.state = 495
+            self.state = 519
             self.expr(0)
-            self.state = 496
+            self.state = 520
             self.match(CircuitryParser.RPAREN)
-            self.state = 497
+            self.state = 521
             self.match(CircuitryParser.LBRACE)
-            self.state = 501
+            self.state = 525
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==53:
-                self.state = 498
+                self.state = 522
                 self.caseStatement()
-                self.state = 503
+                self.state = 527
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 505
+            self.state = 529
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==54:
-                self.state = 504
+                self.state = 528
                 self.defaultStatement()
 
 
-            self.state = 507
+            self.state = 531
             self.match(CircuitryParser.RBRACE)
         except RecognitionException as re:
             localctx.exception = re
@@ -4132,19 +4438,19 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 509
+            self.state = 533
             self.match(CircuitryParser.CASE)
-            self.state = 510
+            self.state = 534
             self.expr(0)
-            self.state = 511
+            self.state = 535
             self.match(CircuitryParser.COLON)
-            self.state = 515
+            self.state = 539
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while ((((_la - 36)) & ~0x3f) == 0 and ((1 << (_la - 36)) & 268516023) != 0):
-                self.state = 512
+                self.state = 536
                 self.topologyStatement()
-                self.state = 517
+                self.state = 541
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -4204,17 +4510,17 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 518
+            self.state = 542
             self.match(CircuitryParser.DEFAULT)
-            self.state = 519
+            self.state = 543
             self.match(CircuitryParser.COLON)
-            self.state = 523
+            self.state = 547
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while ((((_la - 36)) & ~0x3f) == 0 and ((1 << (_la - 36)) & 268516023) != 0):
-                self.state = 520
+                self.state = 544
                 self.topologyStatement()
-                self.state = 525
+                self.state = 549
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -4287,27 +4593,27 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 526
+            self.state = 550
             self.match(CircuitryParser.FN)
-            self.state = 527
+            self.state = 551
             self.match(CircuitryParser.ID)
-            self.state = 528
+            self.state = 552
             self.match(CircuitryParser.LPAREN)
-            self.state = 530
+            self.state = 554
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==64:
-                self.state = 529
+                self.state = 553
                 self.functionParams()
 
 
-            self.state = 532
+            self.state = 556
             self.match(CircuitryParser.RPAREN)
-            self.state = 533
+            self.state = 557
             self.match(CircuitryParser.LBRACE)
-            self.state = 534
+            self.state = 558
             self.functionBody()
-            self.state = 535
+            self.state = 559
             self.match(CircuitryParser.RBRACE)
         except RecognitionException as re:
             localctx.exception = re
@@ -4365,17 +4671,17 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 537
+            self.state = 561
             self.functionParam()
-            self.state = 542
+            self.state = 566
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==35:
-                self.state = 538
+                self.state = 562
                 self.match(CircuitryParser.COMMA)
-                self.state = 539
+                self.state = 563
                 self.functionParam()
-                self.state = 544
+                self.state = 568
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -4432,15 +4738,15 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 545
+            self.state = 569
             self.match(CircuitryParser.ID)
-            self.state = 548
+            self.state = 572
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==21:
-                self.state = 546
+                self.state = 570
                 self.match(CircuitryParser.ASSIGN)
-                self.state = 547
+                self.state = 571
                 self.expr(0)
 
 
@@ -4498,17 +4804,17 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 553
+            self.state = 577
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while ((((_la - 36)) & ~0x3f) == 0 and ((1 << (_la - 36)) & 268516023) != 0):
-                self.state = 550
+                self.state = 574
                 self.topologyStatement()
-                self.state = 555
+                self.state = 579
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 556
+            self.state = 580
             self.returnStatement()
         except RecognitionException as re:
             localctx.exception = re
@@ -4562,11 +4868,11 @@ class CircuitryParser ( Parser ):
         self.enterRule(localctx, 92, self.RULE_returnStatement)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 558
+            self.state = 582
             self.match(CircuitryParser.RETURN)
-            self.state = 559
+            self.state = 583
             self.expr(0)
-            self.state = 560
+            self.state = 584
             self.match(CircuitryParser.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
@@ -4647,39 +4953,39 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 562
+            self.state = 586
             self.match(CircuitryParser.SUBCIRCUIT)
-            self.state = 563
+            self.state = 587
             self.match(CircuitryParser.ID)
-            self.state = 564
+            self.state = 588
             self.match(CircuitryParser.LPAREN)
-            self.state = 566
+            self.state = 590
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==64:
-                self.state = 565
+                self.state = 589
                 self.subcircuitParams()
 
 
-            self.state = 568
+            self.state = 592
             self.match(CircuitryParser.RPAREN)
-            self.state = 569
+            self.state = 593
             self.match(CircuitryParser.COLON)
-            self.state = 570
+            self.state = 594
             self.nodeList()
-            self.state = 571
+            self.state = 595
             self.match(CircuitryParser.LBRACE)
-            self.state = 575
+            self.state = 599
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while ((((_la - 36)) & ~0x3f) == 0 and ((1 << (_la - 36)) & 268516023) != 0):
-                self.state = 572
+                self.state = 596
                 self.topologyStatement()
-                self.state = 577
+                self.state = 601
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 578
+            self.state = 602
             self.match(CircuitryParser.RBRACE)
         except RecognitionException as re:
             localctx.exception = re
@@ -4737,17 +5043,17 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 580
+            self.state = 604
             self.subcircuitParam()
-            self.state = 585
+            self.state = 609
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==35:
-                self.state = 581
+                self.state = 605
                 self.match(CircuitryParser.COMMA)
-                self.state = 582
+                self.state = 606
                 self.subcircuitParam()
-                self.state = 587
+                self.state = 611
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -4804,15 +5110,15 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 588
+            self.state = 612
             self.match(CircuitryParser.ID)
-            self.state = 591
+            self.state = 615
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==21:
-                self.state = 589
+                self.state = 613
                 self.match(CircuitryParser.ASSIGN)
-                self.state = 590
+                self.state = 614
                 self.expr(0)
 
 
@@ -4876,21 +5182,21 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 593
+            self.state = 617
             self.simulationType()
-            self.state = 594
+            self.state = 618
             self.match(CircuitryParser.LPAREN)
-            self.state = 596
+            self.state = 620
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if ((((_la - 1)) & ~0x3f) == 0 and ((1 << (_la - 1)) & -2305843009213693951) != 0):
-                self.state = 595
+            if ((((_la - 1)) & ~0x3f) == 0 and ((1 << (_la - 1)) & -2251799811537764351) != 0):
+                self.state = 619
                 self.functionCallArgs()
 
 
-            self.state = 598
+            self.state = 622
             self.match(CircuitryParser.RPAREN)
-            self.state = 599
+            self.state = 623
             self.match(CircuitryParser.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
@@ -4944,7 +5250,7 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 601
+            self.state = 625
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 1008806316530991104) != 0)):
                 self._errHandler.recoverInline(self)
@@ -4999,9 +5305,9 @@ class CircuitryParser ( Parser ):
         self.enterRule(localctx, 104, self.RULE_measurementStatement)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 603
+            self.state = 627
             self.match(CircuitryParser.MEASURE)
-            self.state = 604
+            self.state = 628
             self.match(CircuitryParser.ID)
         except RecognitionException as re:
             localctx.exception = re
@@ -5072,23 +5378,23 @@ class CircuitryParser ( Parser ):
         self.enterRule(localctx, 106, self.RULE_drawingStatement)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 606
+            self.state = 630
             self.match(CircuitryParser.POS)
-            self.state = 607
+            self.state = 631
             self.match(CircuitryParser.ID)
-            self.state = 608
+            self.state = 632
             self.match(CircuitryParser.ASSIGN)
-            self.state = 609
+            self.state = 633
             self.match(CircuitryParser.LPAREN)
-            self.state = 610
+            self.state = 634
             self.match(CircuitryParser.FLOAT_LITERAL)
-            self.state = 611
+            self.state = 635
             self.match(CircuitryParser.COMMA)
-            self.state = 612
+            self.state = 636
             self.match(CircuitryParser.FLOAT_LITERAL)
-            self.state = 613
+            self.state = 637
             self.match(CircuitryParser.RPAREN)
-            self.state = 614
+            self.state = 638
             self.match(CircuitryParser.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
@@ -5112,19 +5418,31 @@ class CircuitryParser ( Parser ):
 
     def expr_sempred(self, localctx:ExprContext, predIndex:int):
             if predIndex == 0:
-                return self.precpred(self._ctx, 9)
+                return self.precpred(self._ctx, 15)
          
 
             if predIndex == 1:
-                return self.precpred(self._ctx, 8)
+                return self.precpred(self._ctx, 14)
          
 
             if predIndex == 2:
-                return self.precpred(self._ctx, 7)
+                return self.precpred(self._ctx, 13)
          
 
             if predIndex == 3:
-                return self.precpred(self._ctx, 6)
+                return self.precpred(self._ctx, 12)
+         
+
+            if predIndex == 4:
+                return self.precpred(self._ctx, 11)
+         
+
+            if predIndex == 5:
+                return self.precpred(self._ctx, 10)
+         
+
+            if predIndex == 6:
+                return self.precpred(self._ctx, 9)
          
 
 
