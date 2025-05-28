@@ -22,6 +22,7 @@ class CircuitBuilder(CircuitryParserListener):
         self.components = []
         self.aliases = {}
         self.variables = {}
+        self.functions = {}  # function name -> {'params': [...], 'body': ctx.expr()}
 
     def exitAliasStatement(self, ctx):
         for alias in ctx.aliasAssignment():
@@ -58,7 +59,61 @@ class CircuitBuilder(CircuitryParserListener):
 
         self.components.append(Component(ctype, name, value, nodes))
 
+    def exitFunctionStatement(self, ctx):
+        fname = ctx.ID().getText()
+        params = [param.getText() for param in ctx.parameterList().ID()]
+        expr = ctx.expr()  # Assuming fn returns a single expression
+        self.functions[fname] = {'params': params, 'body': expr}
+
     def eval_expr(self, ctx):
+        # Function call
+        if isinstance(ctx, CircuitryParser.FuncCallExprContext):
+            func_name = ctx.functionCall().ID().getText()
+            call_args_ctx = ctx.functionCall().functionCallArgs()
+
+            if func_name not in self.functions:
+                raise ValueError(f"Undefined function: {func_name}")
+
+            func_def = self.functions[func_name]
+            param_names = func_def['params']
+            param_count = len(param_names)
+
+            # Initialize args map
+            arg_values = {}
+
+            # If there are any arguments
+            if call_args_ctx:
+                for arg_ctx in call_args_ctx.functionCallArg():
+                    if arg_ctx.ASSIGN():
+                        # Keyword argument: name = value
+                        key = arg_ctx.ID().getText()
+                        val = self.eval_expr(arg_ctx.expr())
+                        if key not in param_names:
+                            raise ValueError(f"Function {func_name} got unknown keyword argument: {key}")
+                        arg_values[key] = val
+                    else:
+                        # Positional argument
+                        idx = len(arg_values)
+                        if idx >= param_count:
+                            raise ValueError(
+                                f"Function {func_name} takes {param_count} arguments, but more were given.")
+                        key = param_names[idx]
+                        val = self.eval_expr(arg_ctx.expr())
+                        arg_values[key] = val
+
+            # Ensure all parameters are filled
+            missing = [p for p in param_names if p not in arg_values]
+            if missing:
+                raise ValueError(f"Missing arguments for function {func_name}: {missing}")
+
+            # Temporarily override variable context
+            old_vars = self.variables.copy()
+            self.variables.update(arg_values)
+
+            result = self.eval_expr(func_def['body'])
+            self.variables = old_vars
+            return result
+
         if ctx is None:
             return 0.0
 
