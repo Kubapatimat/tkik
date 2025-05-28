@@ -10,7 +10,7 @@ else:
 
 def serializedATN():
     return [
-        4,1,67,641,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,67,654,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,
         2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,
         7,20,2,21,7,21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,26,7,26,
@@ -52,22 +52,23 @@ def serializedATN():
         34,1,35,1,35,1,35,5,35,479,8,35,10,35,12,35,482,9,35,1,35,1,35,1,
         35,1,35,1,35,1,35,1,35,1,36,1,36,1,36,3,36,494,8,36,1,36,1,36,1,
         36,1,36,3,36,500,8,36,1,36,1,36,1,36,5,36,505,8,36,10,36,12,36,508,
-        9,36,1,36,1,36,1,37,1,37,3,37,514,8,37,1,38,1,38,1,39,1,39,1,39,
-        1,39,1,39,1,39,5,39,524,8,39,10,39,12,39,527,9,39,1,39,3,39,530,
-        8,39,1,39,1,39,1,40,1,40,1,40,1,40,5,40,538,8,40,10,40,12,40,541,
-        9,40,1,41,1,41,1,41,5,41,546,8,41,10,41,12,41,549,9,41,1,42,1,42,
-        1,42,1,42,3,42,555,8,42,1,42,1,42,1,42,1,42,1,42,1,43,1,43,1,43,
-        5,43,565,8,43,10,43,12,43,568,9,43,1,44,1,44,1,44,3,44,573,8,44,
-        1,45,5,45,576,8,45,10,45,12,45,579,9,45,1,45,1,45,1,46,1,46,1,46,
-        1,46,1,47,1,47,1,47,1,47,3,47,591,8,47,1,47,1,47,1,47,1,47,1,47,
-        5,47,598,8,47,10,47,12,47,601,9,47,1,47,1,47,1,48,1,48,1,48,5,48,
-        608,8,48,10,48,12,48,611,9,48,1,49,1,49,1,49,3,49,616,8,49,1,50,
-        1,50,1,50,3,50,621,8,50,1,50,1,50,1,50,1,51,1,51,1,52,1,52,1,52,
+        9,36,1,36,1,36,1,37,1,37,1,37,1,37,1,37,1,37,1,37,1,37,1,37,3,37,
+        521,8,37,1,38,1,38,1,38,1,38,1,38,1,38,3,38,529,8,38,1,39,1,39,1,
+        39,1,39,1,39,1,39,5,39,537,8,39,10,39,12,39,540,9,39,1,39,3,39,543,
+        8,39,1,39,1,39,1,40,1,40,1,40,1,40,5,40,551,8,40,10,40,12,40,554,
+        9,40,1,41,1,41,1,41,5,41,559,8,41,10,41,12,41,562,9,41,1,42,1,42,
+        1,42,1,42,3,42,568,8,42,1,42,1,42,1,42,1,42,1,42,1,43,1,43,1,43,
+        5,43,578,8,43,10,43,12,43,581,9,43,1,44,1,44,1,44,3,44,586,8,44,
+        1,45,5,45,589,8,45,10,45,12,45,592,9,45,1,45,1,45,1,46,1,46,1,46,
+        1,46,1,47,1,47,1,47,1,47,3,47,604,8,47,1,47,1,47,1,47,1,47,1,47,
+        5,47,611,8,47,10,47,12,47,614,9,47,1,47,1,47,1,48,1,48,1,48,5,48,
+        621,8,48,10,48,12,48,624,9,48,1,49,1,49,1,49,3,49,629,8,49,1,50,
+        1,50,1,50,3,50,634,8,50,1,50,1,50,1,50,1,51,1,51,1,52,1,52,1,52,
         1,53,1,53,1,53,1,53,1,53,1,53,1,53,1,53,1,53,1,53,1,53,0,1,50,54,
         0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,
         46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,
         90,92,94,96,98,100,102,104,106,0,7,2,0,7,8,64,64,1,0,28,29,1,0,21,
-        27,1,0,9,10,1,0,7,8,1,0,15,20,1,0,57,59,672,0,111,1,0,0,0,2,140,
+        27,1,0,9,10,1,0,7,8,1,0,15,20,1,0,57,59,688,0,111,1,0,0,0,2,140,
         1,0,0,0,4,164,1,0,0,0,6,166,1,0,0,0,8,177,1,0,0,0,10,181,1,0,0,0,
         12,192,1,0,0,0,14,196,1,0,0,0,16,204,1,0,0,0,18,206,1,0,0,0,20,225,
         1,0,0,0,22,227,1,0,0,0,24,229,1,0,0,0,26,240,1,0,0,0,28,248,1,0,
@@ -76,10 +77,10 @@ def serializedATN():
         1,0,0,0,48,322,1,0,0,0,50,337,1,0,0,0,52,365,1,0,0,0,54,404,1,0,
         0,0,56,406,1,0,0,0,58,410,1,0,0,0,60,412,1,0,0,0,62,439,1,0,0,0,
         64,441,1,0,0,0,66,470,1,0,0,0,68,472,1,0,0,0,70,475,1,0,0,0,72,490,
-        1,0,0,0,74,513,1,0,0,0,76,515,1,0,0,0,78,517,1,0,0,0,80,533,1,0,
-        0,0,82,542,1,0,0,0,84,550,1,0,0,0,86,561,1,0,0,0,88,569,1,0,0,0,
-        90,577,1,0,0,0,92,582,1,0,0,0,94,586,1,0,0,0,96,604,1,0,0,0,98,612,
-        1,0,0,0,100,617,1,0,0,0,102,625,1,0,0,0,104,627,1,0,0,0,106,630,
+        1,0,0,0,74,520,1,0,0,0,76,528,1,0,0,0,78,530,1,0,0,0,80,546,1,0,
+        0,0,82,555,1,0,0,0,84,563,1,0,0,0,86,574,1,0,0,0,88,582,1,0,0,0,
+        90,590,1,0,0,0,92,595,1,0,0,0,94,599,1,0,0,0,96,617,1,0,0,0,98,625,
+        1,0,0,0,100,630,1,0,0,0,102,638,1,0,0,0,104,640,1,0,0,0,106,643,
         1,0,0,0,108,110,3,2,1,0,109,108,1,0,0,0,110,113,1,0,0,0,111,109,
         1,0,0,0,111,112,1,0,0,0,112,117,1,0,0,0,113,111,1,0,0,0,114,116,
         3,4,2,0,115,114,1,0,0,0,116,119,1,0,0,0,117,115,1,0,0,0,117,118,
@@ -200,47 +201,51 @@ def serializedATN():
         500,3,76,38,0,499,498,1,0,0,0,499,500,1,0,0,0,500,501,1,0,0,0,501,
         502,5,2,0,0,502,506,5,3,0,0,503,505,3,4,2,0,504,503,1,0,0,0,505,
         508,1,0,0,0,506,504,1,0,0,0,506,507,1,0,0,0,507,509,1,0,0,0,508,
-        506,1,0,0,0,509,510,5,4,0,0,510,73,1,0,0,0,511,514,3,12,6,0,512,
-        514,3,44,22,0,513,511,1,0,0,0,513,512,1,0,0,0,514,75,1,0,0,0,515,
-        516,3,44,22,0,516,77,1,0,0,0,517,518,5,52,0,0,518,519,5,1,0,0,519,
-        520,3,50,25,0,520,521,5,2,0,0,521,525,5,3,0,0,522,524,3,80,40,0,
-        523,522,1,0,0,0,524,527,1,0,0,0,525,523,1,0,0,0,525,526,1,0,0,0,
-        526,529,1,0,0,0,527,525,1,0,0,0,528,530,3,82,41,0,529,528,1,0,0,
-        0,529,530,1,0,0,0,530,531,1,0,0,0,531,532,5,4,0,0,532,79,1,0,0,0,
-        533,534,5,53,0,0,534,535,3,50,25,0,535,539,5,34,0,0,536,538,3,4,
-        2,0,537,536,1,0,0,0,538,541,1,0,0,0,539,537,1,0,0,0,539,540,1,0,
-        0,0,540,81,1,0,0,0,541,539,1,0,0,0,542,543,5,54,0,0,543,547,5,34,
-        0,0,544,546,3,4,2,0,545,544,1,0,0,0,546,549,1,0,0,0,547,545,1,0,
-        0,0,547,548,1,0,0,0,548,83,1,0,0,0,549,547,1,0,0,0,550,551,5,38,
-        0,0,551,552,5,64,0,0,552,554,5,1,0,0,553,555,3,86,43,0,554,553,1,
-        0,0,0,554,555,1,0,0,0,555,556,1,0,0,0,556,557,5,2,0,0,557,558,5,
-        3,0,0,558,559,3,90,45,0,559,560,5,4,0,0,560,85,1,0,0,0,561,566,3,
-        88,44,0,562,563,5,35,0,0,563,565,3,88,44,0,564,562,1,0,0,0,565,568,
-        1,0,0,0,566,564,1,0,0,0,566,567,1,0,0,0,567,87,1,0,0,0,568,566,1,
-        0,0,0,569,572,5,64,0,0,570,571,5,21,0,0,571,573,3,50,25,0,572,570,
-        1,0,0,0,572,573,1,0,0,0,573,89,1,0,0,0,574,576,3,4,2,0,575,574,1,
-        0,0,0,576,579,1,0,0,0,577,575,1,0,0,0,577,578,1,0,0,0,578,580,1,
-        0,0,0,579,577,1,0,0,0,580,581,3,92,46,0,581,91,1,0,0,0,582,583,5,
-        39,0,0,583,584,3,50,25,0,584,585,5,33,0,0,585,93,1,0,0,0,586,587,
-        5,43,0,0,587,588,5,64,0,0,588,590,5,1,0,0,589,591,3,96,48,0,590,
-        589,1,0,0,0,590,591,1,0,0,0,591,592,1,0,0,0,592,593,5,2,0,0,593,
-        594,5,34,0,0,594,595,3,18,9,0,595,599,5,3,0,0,596,598,3,4,2,0,597,
-        596,1,0,0,0,598,601,1,0,0,0,599,597,1,0,0,0,599,600,1,0,0,0,600,
-        602,1,0,0,0,601,599,1,0,0,0,602,603,5,4,0,0,603,95,1,0,0,0,604,609,
-        3,98,49,0,605,606,5,35,0,0,606,608,3,98,49,0,607,605,1,0,0,0,608,
-        611,1,0,0,0,609,607,1,0,0,0,609,610,1,0,0,0,610,97,1,0,0,0,611,609,
-        1,0,0,0,612,615,5,64,0,0,613,614,5,21,0,0,614,616,3,50,25,0,615,
-        613,1,0,0,0,615,616,1,0,0,0,616,99,1,0,0,0,617,618,3,102,51,0,618,
-        620,5,1,0,0,619,621,3,54,27,0,620,619,1,0,0,0,620,621,1,0,0,0,621,
-        622,1,0,0,0,622,623,5,2,0,0,623,624,5,33,0,0,624,101,1,0,0,0,625,
-        626,7,6,0,0,626,103,1,0,0,0,627,628,5,60,0,0,628,629,5,64,0,0,629,
-        105,1,0,0,0,630,631,5,61,0,0,631,632,5,64,0,0,632,633,5,21,0,0,633,
-        634,5,1,0,0,634,635,5,62,0,0,635,636,5,35,0,0,636,637,5,62,0,0,637,
-        638,5,2,0,0,638,639,5,33,0,0,639,107,1,0,0,0,57,111,117,123,129,
+        506,1,0,0,0,509,510,5,4,0,0,510,73,1,0,0,0,511,512,5,37,0,0,512,
+        521,3,12,6,0,513,521,3,12,6,0,514,515,5,64,0,0,515,521,3,46,23,0,
+        516,517,5,64,0,0,517,518,3,48,24,0,518,519,3,50,25,0,519,521,1,0,
+        0,0,520,511,1,0,0,0,520,513,1,0,0,0,520,514,1,0,0,0,520,516,1,0,
+        0,0,521,75,1,0,0,0,522,523,5,64,0,0,523,529,3,46,23,0,524,525,5,
+        64,0,0,525,526,3,48,24,0,526,527,3,50,25,0,527,529,1,0,0,0,528,522,
+        1,0,0,0,528,524,1,0,0,0,529,77,1,0,0,0,530,531,5,52,0,0,531,532,
+        5,1,0,0,532,533,3,50,25,0,533,534,5,2,0,0,534,538,5,3,0,0,535,537,
+        3,80,40,0,536,535,1,0,0,0,537,540,1,0,0,0,538,536,1,0,0,0,538,539,
+        1,0,0,0,539,542,1,0,0,0,540,538,1,0,0,0,541,543,3,82,41,0,542,541,
+        1,0,0,0,542,543,1,0,0,0,543,544,1,0,0,0,544,545,5,4,0,0,545,79,1,
+        0,0,0,546,547,5,53,0,0,547,548,3,50,25,0,548,552,5,34,0,0,549,551,
+        3,4,2,0,550,549,1,0,0,0,551,554,1,0,0,0,552,550,1,0,0,0,552,553,
+        1,0,0,0,553,81,1,0,0,0,554,552,1,0,0,0,555,556,5,54,0,0,556,560,
+        5,34,0,0,557,559,3,4,2,0,558,557,1,0,0,0,559,562,1,0,0,0,560,558,
+        1,0,0,0,560,561,1,0,0,0,561,83,1,0,0,0,562,560,1,0,0,0,563,564,5,
+        38,0,0,564,565,5,64,0,0,565,567,5,1,0,0,566,568,3,86,43,0,567,566,
+        1,0,0,0,567,568,1,0,0,0,568,569,1,0,0,0,569,570,5,2,0,0,570,571,
+        5,3,0,0,571,572,3,90,45,0,572,573,5,4,0,0,573,85,1,0,0,0,574,579,
+        3,88,44,0,575,576,5,35,0,0,576,578,3,88,44,0,577,575,1,0,0,0,578,
+        581,1,0,0,0,579,577,1,0,0,0,579,580,1,0,0,0,580,87,1,0,0,0,581,579,
+        1,0,0,0,582,585,5,64,0,0,583,584,5,21,0,0,584,586,3,50,25,0,585,
+        583,1,0,0,0,585,586,1,0,0,0,586,89,1,0,0,0,587,589,3,4,2,0,588,587,
+        1,0,0,0,589,592,1,0,0,0,590,588,1,0,0,0,590,591,1,0,0,0,591,593,
+        1,0,0,0,592,590,1,0,0,0,593,594,3,92,46,0,594,91,1,0,0,0,595,596,
+        5,39,0,0,596,597,3,50,25,0,597,598,5,33,0,0,598,93,1,0,0,0,599,600,
+        5,43,0,0,600,601,5,64,0,0,601,603,5,1,0,0,602,604,3,96,48,0,603,
+        602,1,0,0,0,603,604,1,0,0,0,604,605,1,0,0,0,605,606,5,2,0,0,606,
+        607,5,34,0,0,607,608,3,18,9,0,608,612,5,3,0,0,609,611,3,4,2,0,610,
+        609,1,0,0,0,611,614,1,0,0,0,612,610,1,0,0,0,612,613,1,0,0,0,613,
+        615,1,0,0,0,614,612,1,0,0,0,615,616,5,4,0,0,616,95,1,0,0,0,617,622,
+        3,98,49,0,618,619,5,35,0,0,619,621,3,98,49,0,620,618,1,0,0,0,621,
+        624,1,0,0,0,622,620,1,0,0,0,622,623,1,0,0,0,623,97,1,0,0,0,624,622,
+        1,0,0,0,625,628,5,64,0,0,626,627,5,21,0,0,627,629,3,50,25,0,628,
+        626,1,0,0,0,628,629,1,0,0,0,629,99,1,0,0,0,630,631,3,102,51,0,631,
+        633,5,1,0,0,632,634,3,54,27,0,633,632,1,0,0,0,633,634,1,0,0,0,634,
+        635,1,0,0,0,635,636,5,2,0,0,636,637,5,33,0,0,637,101,1,0,0,0,638,
+        639,7,6,0,0,639,103,1,0,0,0,640,641,5,60,0,0,641,642,5,64,0,0,642,
+        105,1,0,0,0,643,644,5,61,0,0,644,645,5,64,0,0,645,646,5,21,0,0,646,
+        647,5,1,0,0,647,648,5,62,0,0,648,649,5,35,0,0,649,650,5,62,0,0,650,
+        651,5,2,0,0,651,652,5,33,0,0,652,107,1,0,0,0,58,111,117,123,129,
         135,146,164,172,187,211,223,225,231,242,253,259,267,271,282,293,
         299,307,318,337,360,362,368,377,385,393,401,404,419,439,450,454,
-        462,466,468,480,493,499,506,513,525,529,539,547,554,566,572,577,
-        590,599,609,615,620
+        462,466,468,480,493,499,506,520,528,538,542,552,560,567,579,585,
+        590,603,612,622,628,633
     ]
 
 class CircuitryParser ( Parser ):
@@ -4127,7 +4132,7 @@ class CircuitryParser ( Parser ):
             self.state = 493
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            if _la==64:
+            if _la==37 or _la==64:
                 self.state = 492
                 self.forInit()
 
@@ -4178,31 +4183,123 @@ class CircuitryParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def letAssignment(self):
-            return self.getTypedRuleContext(CircuitryParser.LetAssignmentContext,0)
-
-
-        def assignmentStatement(self):
-            return self.getTypedRuleContext(CircuitryParser.AssignmentStatementContext,0)
-
 
         def getRuleIndex(self):
             return CircuitryParser.RULE_forInit
 
+     
+        def copyFrom(self, ctx:ParserRuleContext):
+            super().copyFrom(ctx)
+
+
+
+    class ForInitLetContext(ForInitContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ForInitContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def LET(self):
+            return self.getToken(CircuitryParser.LET, 0)
+        def letAssignment(self):
+            return self.getTypedRuleContext(CircuitryParser.LetAssignmentContext,0)
+
+
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterForInit" ):
-                listener.enterForInit(self)
+            if hasattr( listener, "enterForInitLet" ):
+                listener.enterForInitLet(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitForInit" ):
-                listener.exitForInit(self)
+            if hasattr( listener, "exitForInitLet" ):
+                listener.exitForInitLet(self)
 
         def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitForInit" ):
-                return visitor.visitForInit(self)
+            if hasattr( visitor, "visitForInitLet" ):
+                return visitor.visitForInitLet(self)
             else:
                 return visitor.visitChildren(self)
 
+
+    class ForInitAssignContext(ForInitContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ForInitContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def letAssignment(self):
+            return self.getTypedRuleContext(CircuitryParser.LetAssignmentContext,0)
+
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterForInitAssign" ):
+                listener.enterForInitAssign(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitForInitAssign" ):
+                listener.exitForInitAssign(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitForInitAssign" ):
+                return visitor.visitForInitAssign(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+    class ForInitBinOpContext(ForInitContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ForInitContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def ID(self):
+            return self.getToken(CircuitryParser.ID, 0)
+        def binaryAssignmentOperator(self):
+            return self.getTypedRuleContext(CircuitryParser.BinaryAssignmentOperatorContext,0)
+
+        def expr(self):
+            return self.getTypedRuleContext(CircuitryParser.ExprContext,0)
+
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterForInitBinOp" ):
+                listener.enterForInitBinOp(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitForInitBinOp" ):
+                listener.exitForInitBinOp(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitForInitBinOp" ):
+                return visitor.visitForInitBinOp(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+    class ForInitIncDecContext(ForInitContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ForInitContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def ID(self):
+            return self.getToken(CircuitryParser.ID, 0)
+        def unaryAssignmentOperator(self):
+            return self.getTypedRuleContext(CircuitryParser.UnaryAssignmentOperatorContext,0)
+
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterForInitIncDec" ):
+                listener.enterForInitIncDec(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitForInitIncDec" ):
+                listener.exitForInitIncDec(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitForInitIncDec" ):
+                return visitor.visitForInitIncDec(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -4211,19 +4308,43 @@ class CircuitryParser ( Parser ):
         localctx = CircuitryParser.ForInitContext(self, self._ctx, self.state)
         self.enterRule(localctx, 74, self.RULE_forInit)
         try:
-            self.state = 513
+            self.state = 520
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,43,self._ctx)
             if la_ == 1:
+                localctx = CircuitryParser.ForInitLetContext(self, localctx)
                 self.enterOuterAlt(localctx, 1)
                 self.state = 511
+                self.match(CircuitryParser.LET)
+                self.state = 512
                 self.letAssignment()
                 pass
 
             elif la_ == 2:
+                localctx = CircuitryParser.ForInitAssignContext(self, localctx)
                 self.enterOuterAlt(localctx, 2)
-                self.state = 512
-                self.assignmentStatement()
+                self.state = 513
+                self.letAssignment()
+                pass
+
+            elif la_ == 3:
+                localctx = CircuitryParser.ForInitIncDecContext(self, localctx)
+                self.enterOuterAlt(localctx, 3)
+                self.state = 514
+                self.match(CircuitryParser.ID)
+                self.state = 515
+                self.unaryAssignmentOperator()
+                pass
+
+            elif la_ == 4:
+                localctx = CircuitryParser.ForInitBinOpContext(self, localctx)
+                self.enterOuterAlt(localctx, 4)
+                self.state = 516
+                self.match(CircuitryParser.ID)
+                self.state = 517
+                self.binaryAssignmentOperator()
+                self.state = 518
+                self.expr(0)
                 pass
 
 
@@ -4243,27 +4364,71 @@ class CircuitryParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def assignmentStatement(self):
-            return self.getTypedRuleContext(CircuitryParser.AssignmentStatementContext,0)
-
 
         def getRuleIndex(self):
             return CircuitryParser.RULE_forUpdate
 
+     
+        def copyFrom(self, ctx:ParserRuleContext):
+            super().copyFrom(ctx)
+
+
+
+    class ForUpdateIncDecContext(ForUpdateContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ForUpdateContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def ID(self):
+            return self.getToken(CircuitryParser.ID, 0)
+        def unaryAssignmentOperator(self):
+            return self.getTypedRuleContext(CircuitryParser.UnaryAssignmentOperatorContext,0)
+
+
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterForUpdate" ):
-                listener.enterForUpdate(self)
+            if hasattr( listener, "enterForUpdateIncDec" ):
+                listener.enterForUpdateIncDec(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitForUpdate" ):
-                listener.exitForUpdate(self)
+            if hasattr( listener, "exitForUpdateIncDec" ):
+                listener.exitForUpdateIncDec(self)
 
         def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitForUpdate" ):
-                return visitor.visitForUpdate(self)
+            if hasattr( visitor, "visitForUpdateIncDec" ):
+                return visitor.visitForUpdateIncDec(self)
             else:
                 return visitor.visitChildren(self)
 
+
+    class ForUpdateBinOpContext(ForUpdateContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a CircuitryParser.ForUpdateContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def ID(self):
+            return self.getToken(CircuitryParser.ID, 0)
+        def binaryAssignmentOperator(self):
+            return self.getTypedRuleContext(CircuitryParser.BinaryAssignmentOperatorContext,0)
+
+        def expr(self):
+            return self.getTypedRuleContext(CircuitryParser.ExprContext,0)
+
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterForUpdateBinOp" ):
+                listener.enterForUpdateBinOp(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitForUpdateBinOp" ):
+                listener.exitForUpdateBinOp(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitForUpdateBinOp" ):
+                return visitor.visitForUpdateBinOp(self)
+            else:
+                return visitor.visitChildren(self)
 
 
 
@@ -4272,9 +4437,30 @@ class CircuitryParser ( Parser ):
         localctx = CircuitryParser.ForUpdateContext(self, self._ctx, self.state)
         self.enterRule(localctx, 76, self.RULE_forUpdate)
         try:
-            self.enterOuterAlt(localctx, 1)
-            self.state = 515
-            self.assignmentStatement()
+            self.state = 528
+            self._errHandler.sync(self)
+            la_ = self._interp.adaptivePredict(self._input,44,self._ctx)
+            if la_ == 1:
+                localctx = CircuitryParser.ForUpdateIncDecContext(self, localctx)
+                self.enterOuterAlt(localctx, 1)
+                self.state = 522
+                self.match(CircuitryParser.ID)
+                self.state = 523
+                self.unaryAssignmentOperator()
+                pass
+
+            elif la_ == 2:
+                localctx = CircuitryParser.ForUpdateBinOpContext(self, localctx)
+                self.enterOuterAlt(localctx, 2)
+                self.state = 524
+                self.match(CircuitryParser.ID)
+                self.state = 525
+                self.binaryAssignmentOperator()
+                self.state = 526
+                self.expr(0)
+                pass
+
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -4348,35 +4534,35 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 517
+            self.state = 530
             self.match(CircuitryParser.SWITCH)
-            self.state = 518
+            self.state = 531
             self.match(CircuitryParser.LPAREN)
-            self.state = 519
+            self.state = 532
             self.expr(0)
-            self.state = 520
+            self.state = 533
             self.match(CircuitryParser.RPAREN)
-            self.state = 521
+            self.state = 534
             self.match(CircuitryParser.LBRACE)
-            self.state = 525
+            self.state = 538
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==53:
-                self.state = 522
+                self.state = 535
                 self.caseStatement()
-                self.state = 527
+                self.state = 540
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 529
+            self.state = 542
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==54:
-                self.state = 528
+                self.state = 541
                 self.defaultStatement()
 
 
-            self.state = 531
+            self.state = 544
             self.match(CircuitryParser.RBRACE)
         except RecognitionException as re:
             localctx.exception = re
@@ -4438,19 +4624,19 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 533
+            self.state = 546
             self.match(CircuitryParser.CASE)
-            self.state = 534
+            self.state = 547
             self.expr(0)
-            self.state = 535
+            self.state = 548
             self.match(CircuitryParser.COLON)
-            self.state = 539
+            self.state = 552
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while ((((_la - 36)) & ~0x3f) == 0 and ((1 << (_la - 36)) & 268516023) != 0):
-                self.state = 536
+                self.state = 549
                 self.topologyStatement()
-                self.state = 541
+                self.state = 554
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -4510,17 +4696,17 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 542
+            self.state = 555
             self.match(CircuitryParser.DEFAULT)
-            self.state = 543
+            self.state = 556
             self.match(CircuitryParser.COLON)
-            self.state = 547
+            self.state = 560
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while ((((_la - 36)) & ~0x3f) == 0 and ((1 << (_la - 36)) & 268516023) != 0):
-                self.state = 544
+                self.state = 557
                 self.topologyStatement()
-                self.state = 549
+                self.state = 562
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -4593,27 +4779,27 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 550
+            self.state = 563
             self.match(CircuitryParser.FN)
-            self.state = 551
+            self.state = 564
             self.match(CircuitryParser.ID)
-            self.state = 552
+            self.state = 565
             self.match(CircuitryParser.LPAREN)
-            self.state = 554
+            self.state = 567
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==64:
-                self.state = 553
+                self.state = 566
                 self.functionParams()
 
 
-            self.state = 556
+            self.state = 569
             self.match(CircuitryParser.RPAREN)
-            self.state = 557
+            self.state = 570
             self.match(CircuitryParser.LBRACE)
-            self.state = 558
+            self.state = 571
             self.functionBody()
-            self.state = 559
+            self.state = 572
             self.match(CircuitryParser.RBRACE)
         except RecognitionException as re:
             localctx.exception = re
@@ -4671,17 +4857,17 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 561
+            self.state = 574
             self.functionParam()
-            self.state = 566
+            self.state = 579
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==35:
-                self.state = 562
+                self.state = 575
                 self.match(CircuitryParser.COMMA)
-                self.state = 563
+                self.state = 576
                 self.functionParam()
-                self.state = 568
+                self.state = 581
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -4738,15 +4924,15 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 569
+            self.state = 582
             self.match(CircuitryParser.ID)
-            self.state = 572
+            self.state = 585
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==21:
-                self.state = 570
+                self.state = 583
                 self.match(CircuitryParser.ASSIGN)
-                self.state = 571
+                self.state = 584
                 self.expr(0)
 
 
@@ -4804,17 +4990,17 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 577
+            self.state = 590
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while ((((_la - 36)) & ~0x3f) == 0 and ((1 << (_la - 36)) & 268516023) != 0):
-                self.state = 574
+                self.state = 587
                 self.topologyStatement()
-                self.state = 579
+                self.state = 592
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 580
+            self.state = 593
             self.returnStatement()
         except RecognitionException as re:
             localctx.exception = re
@@ -4868,11 +5054,11 @@ class CircuitryParser ( Parser ):
         self.enterRule(localctx, 92, self.RULE_returnStatement)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 582
+            self.state = 595
             self.match(CircuitryParser.RETURN)
-            self.state = 583
+            self.state = 596
             self.expr(0)
-            self.state = 584
+            self.state = 597
             self.match(CircuitryParser.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
@@ -4953,39 +5139,39 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 586
+            self.state = 599
             self.match(CircuitryParser.SUBCIRCUIT)
-            self.state = 587
+            self.state = 600
             self.match(CircuitryParser.ID)
-            self.state = 588
+            self.state = 601
             self.match(CircuitryParser.LPAREN)
-            self.state = 590
+            self.state = 603
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==64:
-                self.state = 589
+                self.state = 602
                 self.subcircuitParams()
 
 
-            self.state = 592
+            self.state = 605
             self.match(CircuitryParser.RPAREN)
-            self.state = 593
+            self.state = 606
             self.match(CircuitryParser.COLON)
-            self.state = 594
+            self.state = 607
             self.nodeList()
-            self.state = 595
+            self.state = 608
             self.match(CircuitryParser.LBRACE)
-            self.state = 599
+            self.state = 612
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while ((((_la - 36)) & ~0x3f) == 0 and ((1 << (_la - 36)) & 268516023) != 0):
-                self.state = 596
+                self.state = 609
                 self.topologyStatement()
-                self.state = 601
+                self.state = 614
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 602
+            self.state = 615
             self.match(CircuitryParser.RBRACE)
         except RecognitionException as re:
             localctx.exception = re
@@ -5043,17 +5229,17 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 604
+            self.state = 617
             self.subcircuitParam()
-            self.state = 609
+            self.state = 622
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==35:
-                self.state = 605
+                self.state = 618
                 self.match(CircuitryParser.COMMA)
-                self.state = 606
+                self.state = 619
                 self.subcircuitParam()
-                self.state = 611
+                self.state = 624
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -5110,15 +5296,15 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 612
+            self.state = 625
             self.match(CircuitryParser.ID)
-            self.state = 615
+            self.state = 628
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==21:
-                self.state = 613
+                self.state = 626
                 self.match(CircuitryParser.ASSIGN)
-                self.state = 614
+                self.state = 627
                 self.expr(0)
 
 
@@ -5182,21 +5368,21 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 617
+            self.state = 630
             self.simulationType()
-            self.state = 618
+            self.state = 631
             self.match(CircuitryParser.LPAREN)
-            self.state = 620
+            self.state = 633
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if ((((_la - 1)) & ~0x3f) == 0 and ((1 << (_la - 1)) & -2251799811537764351) != 0):
-                self.state = 619
+                self.state = 632
                 self.functionCallArgs()
 
 
-            self.state = 622
+            self.state = 635
             self.match(CircuitryParser.RPAREN)
-            self.state = 623
+            self.state = 636
             self.match(CircuitryParser.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re
@@ -5250,7 +5436,7 @@ class CircuitryParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 625
+            self.state = 638
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 1008806316530991104) != 0)):
                 self._errHandler.recoverInline(self)
@@ -5305,9 +5491,9 @@ class CircuitryParser ( Parser ):
         self.enterRule(localctx, 104, self.RULE_measurementStatement)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 627
+            self.state = 640
             self.match(CircuitryParser.MEASURE)
-            self.state = 628
+            self.state = 641
             self.match(CircuitryParser.ID)
         except RecognitionException as re:
             localctx.exception = re
@@ -5378,23 +5564,23 @@ class CircuitryParser ( Parser ):
         self.enterRule(localctx, 106, self.RULE_drawingStatement)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 630
+            self.state = 643
             self.match(CircuitryParser.POS)
-            self.state = 631
+            self.state = 644
             self.match(CircuitryParser.ID)
-            self.state = 632
+            self.state = 645
             self.match(CircuitryParser.ASSIGN)
-            self.state = 633
+            self.state = 646
             self.match(CircuitryParser.LPAREN)
-            self.state = 634
+            self.state = 647
             self.match(CircuitryParser.FLOAT_LITERAL)
-            self.state = 635
+            self.state = 648
             self.match(CircuitryParser.COMMA)
-            self.state = 636
+            self.state = 649
             self.match(CircuitryParser.FLOAT_LITERAL)
-            self.state = 637
+            self.state = 650
             self.match(CircuitryParser.RPAREN)
-            self.state = 638
+            self.state = 651
             self.match(CircuitryParser.SEMICOLON)
         except RecognitionException as re:
             localctx.exception = re

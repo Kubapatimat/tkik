@@ -485,21 +485,57 @@ class CircuitryParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CircuitryParser#forInit.
-    def enterForInit(self, ctx:CircuitryParser.ForInitContext):
+    # Enter a parse tree produced by CircuitryParser#ForInitLet.
+    def enterForInitLet(self, ctx:CircuitryParser.ForInitLetContext):
         pass
 
-    # Exit a parse tree produced by CircuitryParser#forInit.
-    def exitForInit(self, ctx:CircuitryParser.ForInitContext):
+    # Exit a parse tree produced by CircuitryParser#ForInitLet.
+    def exitForInitLet(self, ctx:CircuitryParser.ForInitLetContext):
         pass
 
 
-    # Enter a parse tree produced by CircuitryParser#forUpdate.
-    def enterForUpdate(self, ctx:CircuitryParser.ForUpdateContext):
+    # Enter a parse tree produced by CircuitryParser#ForInitAssign.
+    def enterForInitAssign(self, ctx:CircuitryParser.ForInitAssignContext):
         pass
 
-    # Exit a parse tree produced by CircuitryParser#forUpdate.
-    def exitForUpdate(self, ctx:CircuitryParser.ForUpdateContext):
+    # Exit a parse tree produced by CircuitryParser#ForInitAssign.
+    def exitForInitAssign(self, ctx:CircuitryParser.ForInitAssignContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#ForInitIncDec.
+    def enterForInitIncDec(self, ctx:CircuitryParser.ForInitIncDecContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#ForInitIncDec.
+    def exitForInitIncDec(self, ctx:CircuitryParser.ForInitIncDecContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#ForInitBinOp.
+    def enterForInitBinOp(self, ctx:CircuitryParser.ForInitBinOpContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#ForInitBinOp.
+    def exitForInitBinOp(self, ctx:CircuitryParser.ForInitBinOpContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#ForUpdateIncDec.
+    def enterForUpdateIncDec(self, ctx:CircuitryParser.ForUpdateIncDecContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#ForUpdateIncDec.
+    def exitForUpdateIncDec(self, ctx:CircuitryParser.ForUpdateIncDecContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#ForUpdateBinOp.
+    def enterForUpdateBinOp(self, ctx:CircuitryParser.ForUpdateBinOpContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#ForUpdateBinOp.
+    def exitForUpdateBinOp(self, ctx:CircuitryParser.ForUpdateBinOpContext):
         pass
 
 

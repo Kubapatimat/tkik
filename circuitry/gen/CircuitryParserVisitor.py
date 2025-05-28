@@ -274,13 +274,33 @@ class CircuitryParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by CircuitryParser#forInit.
-    def visitForInit(self, ctx:CircuitryParser.ForInitContext):
+    # Visit a parse tree produced by CircuitryParser#ForInitLet.
+    def visitForInitLet(self, ctx:CircuitryParser.ForInitLetContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by CircuitryParser#forUpdate.
-    def visitForUpdate(self, ctx:CircuitryParser.ForUpdateContext):
+    # Visit a parse tree produced by CircuitryParser#ForInitAssign.
+    def visitForInitAssign(self, ctx:CircuitryParser.ForInitAssignContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#ForInitIncDec.
+    def visitForInitIncDec(self, ctx:CircuitryParser.ForInitIncDecContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#ForInitBinOp.
+    def visitForInitBinOp(self, ctx:CircuitryParser.ForInitBinOpContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#ForUpdateIncDec.
+    def visitForUpdateIncDec(self, ctx:CircuitryParser.ForUpdateIncDecContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#ForUpdateBinOp.
+    def visitForUpdateBinOp(self, ctx:CircuitryParser.ForUpdateBinOpContext):
         return self.visitChildren(ctx)
 
 

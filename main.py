@@ -19,7 +19,6 @@ def main():
     parser.addErrorListener(FriendlyErrorListener())
     tree = parser.program()
 
-
     builder = CircuitBuilder()
     walker = ParseTreeWalker()
     walker.walk(builder, tree)
@@ -47,5 +46,3 @@ if __name__ == "__main__":
         print(f"Semantic error: {e}")
     except Exception as e:
         print(f"Unexpected error: {e}")
-
-

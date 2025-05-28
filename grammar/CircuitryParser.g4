@@ -237,16 +237,28 @@ doWhileStatement
 
 // For statement
 forStatement
-    : FOR LPAREN forInit? SEMICOLON booleanExpr SEMICOLON forUpdate? RPAREN LBRACE topologyStatement* RBRACE
-    ;
+  : FOR LPAREN
+      forInit?
+      SEMICOLON
+      booleanExpr
+      SEMICOLON
+      forUpdate?
+    RPAREN
+    LBRACE topologyStatement* RBRACE
+  ;
+
 
 forInit
-    : letAssignment
-    | assignmentStatement
+    : LET letAssignment               # ForInitLet
+    | letAssignment                   # ForInitAssign
+    | ID unaryAssignmentOperator      # ForInitIncDec
+    | ID binaryAssignmentOperator expr# ForInitBinOp
     ;
 
+
 forUpdate
-    : assignmentStatement
+    : ID unaryAssignmentOperator      # ForUpdateIncDec
+    | ID binaryAssignmentOperator expr# ForUpdateBinOp
     ;
 
 // Switch statement
