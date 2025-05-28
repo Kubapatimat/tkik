@@ -56,7 +56,7 @@ class CircuitBuilder(CircuitryParserListener):
             elif kind == "SubNodeContext":
                 nodes.append(mapping.getText())
             else:
-                raise ValueError(f"Unknown nodeMapping type: {kind}")
+                raise ValueError(f"Unknown nodeMapping type: {kind}, line: {ctx.start.line}, column: {ctx.start.column}")
 
         self.components.append(Component(ctype, name, value, nodes))
 
@@ -96,15 +96,15 @@ class CircuitBuilder(CircuitryParserListener):
                             kwargs[key] = val
                         else:
                             raise ValueError(
-                                f"Unexpected argument in call to built-in '{func_name}': {child.getText()}")
+                                f"Unexpected argument in call to built-in '{func_name}': {child.getText()}, line: {ctx.start.line}, column: {ctx.start.column}")
 
                 try:
                     return builtin_func(*args, **kwargs)
                 except TypeError as e:
-                    raise ValueError(f"Error calling built-in '{func_name}': {e}")
+                    raise ValueError(f"Error calling built-in '{func_name}': {e}, line: {ctx.start.line}, column: {ctx.start.column}")
 
             if func_name not in self.functions:
-                raise ValueError(f"Undefined function: {func_name}")
+                raise ValueError(f"Undefined function: {func_name}, line: {ctx.start.line}, column: {ctx.start.column}")
 
             func_def = self.functions[func_name]
             param_names = func_def['params']
@@ -119,21 +119,21 @@ class CircuitBuilder(CircuitryParserListener):
                         key = child.ID().getText()
                         val = self.eval_expr(child.expr())
                         if key not in param_names:
-                            raise ValueError(f"Function {func_name} got unknown keyword argument: {key}")
+                            raise ValueError(f"Function {func_name} got unknown keyword argument: {key}, line: {ctx.start.line}, column: {ctx.start.column}")
                         arg_values[key] = val
                     elif isinstance(child, CircuitryParser.FunctionCallPositionalArgContext):
                         idx = len(arg_values)
                         if idx >= param_count:
-                            raise ValueError(f"Function {func_name} takes {param_count} arguments, but more were given.")
+                            raise ValueError(f"Function {func_name} takes {param_count} arguments, but more were given, line: {ctx.start.line}, column: {ctx.start.column}")
                         key = param_names[idx]
                         val = self.eval_expr(child.expr())
                         arg_values[key] = val
                     else:
-                        raise ValueError(f"Unexpected argument in functionCallArgs for {func_name}")
+                        raise ValueError(f"Unexpected argument in functionCallArgs for {func_name}, line: {ctx.start.line}, column: {ctx.start.column}")
 
             missing = [p for p in param_names if p not in arg_values]
             if missing:
-                raise ValueError(f"Missing arguments for function {func_name}: {missing}")
+                raise ValueError(f"Missing arguments for function {func_name}: {missing}, line: {ctx.start.line}, column: {ctx.start.column}")
 
             old_vars = self.variables.copy()
             self.variables.update(arg_values)
@@ -147,7 +147,7 @@ class CircuitBuilder(CircuitryParserListener):
         if hasattr(ctx, 'op') and ctx.op is not None:
             subexprs = [c for c in ctx.children if isinstance(c, CircuitryParser.ExprContext)]
             if len(subexprs) != 2:
-                raise ValueError("Expected binary operation with two operands.")
+                raise ValueError(f"Expected binary operation with two operands, line: {ctx.start.line}, column: {ctx.start.column}")
             left = self.eval_expr(subexprs[0])
             right = self.eval_expr(subexprs[1])
             op = ctx.op.text
@@ -157,12 +157,12 @@ class CircuitBuilder(CircuitryParserListener):
             elif op == '/': return left / right
             elif op == '^': return left ** right
             elif op == '%': return left % right
-            else: raise ValueError(f"Unsupported operator: {op}")
+            else: raise ValueError(f"Unsupported operator: {op}, line: {ctx.start.line}, column: {ctx.start.column}")
 
         if ctx.getChildCount() == 3 and ctx.getChild(0).getText() == '(' and ctx.getChild(2).getText() == ')':
             subexprs = [c for c in ctx.children if isinstance(c, CircuitryParser.ExprContext)]
             if not subexprs:
-                raise ValueError("Empty parentheses in expression.")
+                raise ValueError(f"Empty parentheses in expression, line: {ctx.start.line}, column: {ctx.start.column}")
             return self.eval_expr(subexprs[0])
 
         if ctx.getChildCount() == 1:
@@ -174,6 +174,6 @@ class CircuitBuilder(CircuitryParserListener):
                 try:
                     return parse_value(text)
                 except ValueError:
-                    raise ValueError(f"Undefined variable or invalid value: {text}")
+                    raise ValueError(f"Undefined variable or invalid value: {text}, line: {ctx.start.line}, column: {ctx.start.column}")
 
-        raise ValueError(f"Unsupported expression: {ctx.getText()}")
+        raise ValueError(f"Unsupported expression: {ctx.getText()}, line: {ctx.start.line}, column: {ctx.start.column}")

@@ -1,11 +1,13 @@
 import sys
 
-from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker
+from antlr4 import FileStream, CommonTokenStream, ParseTreeWalker, InputStream
 
 from circuitry.builder import CircuitBuilder
 from circuitry.mna_solver import build_mna
 from circuitry.gen.CircuitryLexer import CircuitryLexer
 from circuitry.gen.CircuitryParser import CircuitryParser
+
+from circuitry.error_listener import FriendlyErrorListener
 
 
 def main():
@@ -14,6 +16,9 @@ def main():
     stream = CommonTokenStream(lexer)
     parser = CircuitryParser(stream)
     tree = parser.program()
+
+    parser.removeErrorListeners()
+    parser.addErrorListener(FriendlyErrorListener())
 
     builder = CircuitBuilder()
     walker = ParseTreeWalker()
@@ -33,5 +38,14 @@ def main():
         print(f"  {vs.name}: {sol[n + k]:.6f} A")
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    try:
+        main()
+    except SyntaxError as e:
+        print(f"Syntax error: {e}")
+    except ValueError as e:
+        print(f"Semantic error: {e}")
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+
+
