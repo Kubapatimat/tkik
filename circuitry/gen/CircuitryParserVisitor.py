@@ -1,4 +1,4 @@
-# Generated from ../grammar/CircuitryParser.g4 by ANTLR 4.13.2
+# Generated from E:/Studia/AGH/Semestr 4/ISI/TKIK/tkik/grammar/CircuitryParser.g4 by ANTLR 4.13.2
 from antlr4 import *
 if "." in __name__:
     from .CircuitryParser import CircuitryParser
@@ -19,8 +19,8 @@ class CircuitryParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by CircuitryParser#topologyStatement.
-    def visitTopologyStatement(self, ctx:CircuitryParser.TopologyStatementContext):
+    # Visit a parse tree produced by CircuitryParser#circuitStatement.
+    def visitCircuitStatement(self, ctx:CircuitryParser.CircuitStatementContext):
         return self.visitChildren(ctx)
 
 
@@ -219,6 +219,11 @@ class CircuitryParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by CircuitryParser#expressionStatement.
+    def visitExpressionStatement(self, ctx:CircuitryParser.ExpressionStatementContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by CircuitryParser#functionCall.
     def visitFunctionCall(self, ctx:CircuitryParser.FunctionCallContext):
         return self.visitChildren(ctx)
@@ -226,6 +231,11 @@ class CircuitryParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by CircuitryParser#functionCallArgs.
     def visitFunctionCallArgs(self, ctx:CircuitryParser.FunctionCallArgsContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#functionCallArg.
+    def visitFunctionCallArg(self, ctx:CircuitryParser.FunctionCallArgContext):
         return self.visitChildren(ctx)
 
 
@@ -239,16 +249,6 @@ class CircuitryParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by CircuitryParser#conditionWithBlock.
-    def visitConditionWithBlock(self, ctx:CircuitryParser.ConditionWithBlockContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by CircuitryParser#booleanExpr.
-    def visitBooleanExpr(self, ctx:CircuitryParser.BooleanExprContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by CircuitryParser#ifStatement.
     def visitIfStatement(self, ctx:CircuitryParser.IfStatementContext):
         return self.visitChildren(ctx)
@@ -256,6 +256,11 @@ class CircuitryParserVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by CircuitryParser#relationalOperator.
     def visitRelationalOperator(self, ctx:CircuitryParser.RelationalOperatorContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by CircuitryParser#block.
+    def visitBlock(self, ctx:CircuitryParser.BlockContext):
         return self.visitChildren(ctx)
 
 
@@ -334,8 +339,8 @@ class CircuitryParserVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by CircuitryParser#functionBody.
-    def visitFunctionBody(self, ctx:CircuitryParser.FunctionBodyContext):
+    # Visit a parse tree produced by CircuitryParser#functionBlock.
+    def visitFunctionBlock(self, ctx:CircuitryParser.FunctionBlockContext):
         return self.visitChildren(ctx)
 
 

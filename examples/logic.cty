@@ -1,7 +1,3 @@
-
-// alias masy
-alias GND = 0;
-
 // definiujemy flagę logiczną
 let flag = true && !false;  // flag → True (1)
 

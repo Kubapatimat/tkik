@@ -1,262 +1,399 @@
-from antlr4 import ParseTreeWalker, TerminalNode
+import logging
+import operator
+
 from circuitry.component import Component
-from circuitry.evaluator import parse_value
 from circuitry.gen.CircuitryParser import CircuitryParser
-from circuitry.gen.CircuitryParserListener import CircuitryParserListener
-import math
+from circuitry.gen.CircuitryParserVisitor import CircuitryParserVisitor
+from circuitry.stdlib.math import internal_builtins
+from circuitry.utils import engineering_str_to_float
 
-def text_of(node):
-    return node if isinstance(node, str) else node.getText()
+logger = logging.getLogger(__name__)
 
-def get_id_text(mapping, index=0):
-    if isinstance(mapping, str):
-        return mapping
-    ids = mapping.ID()
-    if isinstance(ids, list):
-        return text_of(ids[index])
-    else:
-        return text_of(ids)
 
-class CircuitBuilder(CircuitryParserListener):
+class CircuitBuilderVisitor(CircuitryParserVisitor):
     def __init__(self):
-        self.components   = []
-        self.aliases      = {}
-        self.variables    = {"pi": math.pi}
-        self.builtins     = {
-            "sqrt": math.sqrt,
-            "sine": lambda **kwargs: {"type": "sine", **kwargs}
+        self.imports = []
+        self.aliases = {}
+        self.components = []
+        self.functions = {}
+        self.subcircuits = {}
+        self.simulations = []
+
+        # lexical scopes stack
+        self.scopes = [{}]
+
+        self._arithmetic_ops = {
+            '+': operator.add, '-': operator.sub,
+            '*': operator.mul, '/': operator.truediv,
+            '%': operator.mod, '^': operator.pow,
         }
-        self.functions    = {}
-        self._cond_stack  = [True]
+        self._relational_ops = {
+            '==': operator.eq, '!=': operator.ne,
+            '<': operator.lt, '<=': operator.le,
+            '>': operator.gt, '>=': operator.ge,
+        }
 
+    # ─────────────────── Scope Helpers ──────────────────────────
+    def push_scope(self):
+        self.scopes.append({})
 
-    def _collecting(self):
-        return all(self._cond_stack)
+    def pop_scope(self):
+        self.scopes.pop()
 
-    # --- ALIAS ---
-    def exitAliasStatement(self, ctx:CircuitryParser.AliasStatementContext):
-        if not self._collecting(): return
-        for aliasCtx in ctx.aliasAssignment():
-            name = text_of(aliasCtx.ID())
-            rhs  = aliasCtx.expr()
-            if isinstance(rhs, CircuitryParser.IdExprContext):
-                val = text_of(rhs)
+    def current_scope(self):
+        return self.scopes[-1]
+
+    def assign(self, name, value):
+        # update existing or define in current
+        for scope in reversed(self.scopes):
+            if name in scope:
+                scope[name] = value
+                return
+        self.current_scope()[name] = value
+
+    def resolve(self, name):
+        for scope in reversed(self.scopes):
+            if name in scope:
+                return scope[name]
+        return self.aliases.get(name, name)
+
+    def _to_number(self, v):
+        if isinstance(v, str):
+            resolved = self.resolve(v)
+            if not isinstance(resolved, str):
+                v = resolved
             else:
-                val = str(self.eval_expr(rhs))
-            self.aliases[name] = val
+                try:
+                    return engineering_str_to_float(v)
+                except ValueError:
+                    raise TypeError(f"Cannot resolve or convert '{v}' to a number")
+        if isinstance(v, (int, float)):
+            return v
+        raise TypeError(f"Cannot convert {v!r} to a number")
 
-    # --- LET ---
-    def exitLetStatement(self, ctx:CircuitryParser.LetStatementContext):
-        if not self._collecting(): return
-        for letCtx in ctx.letAssignment():
-            name = text_of(letCtx.ID())
-            val  = self.eval_expr(letCtx.expr())
-            self.variables[name] = val
+    # ─────────────────── Entry Point ────────────────────────────
+    def visitProgram(self, ctx: CircuitryParser.ProgramContext):
+        for imp in ctx.importStatement():
+            self.visit(imp)
+        for stmt in ctx.circuitStatement():
+            self.visit(stmt)
+        for stmt in ctx.measurementStatement():
+            self.visit(stmt)
+        for stmt in ctx.simulationStatement():
+            self.visit(stmt)
+        for stmt in ctx.drawingStatement():
+            self.visit(stmt)
 
-    # --- COMPONENT ---
-    def exitComponentStatement(self, ctx:CircuitryParser.ComponentStatementContext):
-        if not self._collecting(): return
-        ctype = text_of(ctx.componentType().ID())
-        name  = text_of(ctx.ID())
-        value = self.eval_expr(ctx.expr())
-        nodes = []
-        for mapping in ctx.nodeList().nodeMapping():
-            kind = type(mapping).__name__
-            if kind == "DirectNodeContext":
-                nodes.append(get_id_text(mapping, 0))
-            elif kind == "RemappedNodeContext":
-                nodes.append(get_id_text(mapping, 1))
-            elif kind == "SubNodeContext":
-                nodes.append(text_of(mapping.getText()))
-            else:
-                raise ValueError(f"Unknown nodeMapping type: {kind}")
-        self.components.append(Component(ctype, name, value, nodes))
+    # ─────────────────── Import ──────────────────────────────────
+    def visitImportStatement(self, ctx: CircuitryParser.ImportStatementContext):
+        self.imports.extend(t.getText() for t in ctx.ID())
 
-    # --- ASSIGNMENT STATEMENTS ---
-    def exitAssignmentStatement(self, ctx:CircuitryParser.AssignmentStatementContext):
-        if not self._collecting(): return
-        var = text_of(ctx.ID())
-        if ctx.unaryAssignmentOperator():  # ++ or --
+    # ─────────────────── Alias & Let ────────────────────────────
+    def visitAliasStatement(self, ctx: CircuitryParser.AliasStatementContext):
+        for asn in ctx.aliasAssignment():
+            name, target = self.visit(asn)
+            self.aliases[name] = target
+
+    def visitAliasAssignment(self, ctx: CircuitryParser.AliasAssignmentContext):
+        return ctx.ID(0).getText(), ctx.ID(1).getText()
+
+    def visitLetStatement(self, ctx: CircuitryParser.LetStatementContext):
+        for lasn in ctx.letAssignment():
+            name, val = self.visit(lasn)
+            self.assign(name, val)
+
+    def visitLetAssignment(self, ctx: CircuitryParser.LetAssignmentContext):
+        return ctx.ID().getText(), self.visit(ctx.expr())
+
+    # ─────────────────── Assignment ──────────────────────────────
+    def visitAssignmentStatement(self, ctx: CircuitryParser.AssignmentStatementContext):
+        var = ctx.ID().getText()
+        if ctx.unaryAssignmentOperator():
             op = ctx.unaryAssignmentOperator().getText()
-            self.variables[var] = self.variables.get(var, 0) + (1 if op == '++' else -1)
+            curr = self.resolve(var)
+            self.assign(var, curr + 1 if op == '++' else curr - 1)
         else:
-            rhs = self.eval_expr(ctx.expr())
-            self.variables[var] = rhs
+            op = ctx.binaryAssignmentOperator().getText()
+            val = self.visit(ctx.expr())
+            if op == '=':
+                self.assign(var, val)
+            else:
+                curr = self.resolve(var)
+                fn = self._arithmetic_ops[op[:-1]]
+                self.assign(var, fn(curr, val))
 
-    # --- FUNCTION DEFINITION ---
-    def exitFunctionDefinition(self, ctx:CircuitryParser.FunctionDefinitionContext):
-        if not self._collecting(): return
-        fname  = text_of(ctx.ID())
-        params = [
-            text_of(p.ID())
-            for p in (ctx.functionParams().functionParam() if ctx.functionParams() else [])
-        ]
-        body = ctx.functionBody().returnStatement().expr()
-        self.functions[fname] = {"params": params, "body": body}
+    # ─────────────────── Expression Statement ───────────────────
+    def visitExpressionStatement(self, ctx: CircuitryParser.ExpressionStatementContext):
+        # Evaluate and discard
+        self.visit(ctx.expr())
 
-    # --- IF / ELSE STACKING ---
-    def enterConditionWithBlock(self, ctx:CircuitryParser.ConditionWithBlockContext):
-        cond = self.eval_bool(ctx.booleanExpr())
-        self._cond_stack.append(cond)
+    # ─────────────────── Control Flow ────────────────────────────
+    def visitBlock(self, ctx: CircuitryParser.BlockContext):
+        self.push_scope()
+        for stmt in ctx.circuitStatement():
+            self.visit(stmt)
+        self.pop_scope()
 
-    def exitConditionWithBlock(self, ctx:CircuitryParser.ConditionWithBlockContext):
-        self._cond_stack.pop()
+    def visitIfStatement(self, ctx: CircuitryParser.IfStatementContext):
+        if self.visit(ctx.expr()):
+            self.visit(ctx.block(0))
+        elif ctx.ELSE():
+            self.visit(ctx.block(1))
 
-    def exitIfStatement(self, ctx:CircuitryParser.IfStatementContext):
-        while len(self._cond_stack) > 1:
-            self._cond_stack.pop()
+    def visitWhileStatement(self, ctx: CircuitryParser.WhileStatementContext):
+        while self.visit(ctx.expr()):
+            self.visit(ctx.block())
 
-    # --- FOR LOOP ---
-    def exitForStatement(self, ctx: CircuitryParser.ForStatementContext):
-        if not self._collecting():
-            return
+    def visitDoWhileStatement(self, ctx: CircuitryParser.DoWhileStatementContext):
+        while True:
+            self.visit(ctx.block())
+            if not self.visit(ctx.expr()):
+                break
 
-        # ———————————————————————————————————————————————
-        # 1) pull out the two header assignments (i = …) if present
-        # ———————————————————————————————————————————————
-        assigns = ctx.getTypedRuleContexts(CircuitryParser.AssignmentStatementContext)
-        initAssign   = assigns[0] if len(assigns) > 0 else None
-        updateAssign = assigns[1] if len(assigns) > 1 else None
+    def visitForStatement(self, ctx: CircuitryParser.ForStatementContext):
+        self.push_scope()
+        if ctx.forInit():
+            self.visit(ctx.forInit())
+        # allow empty condition as true
+        cond_ctx = ctx.expr()
+        while (self.visit(cond_ctx) if cond_ctx else True):
+            self.visit(ctx.block())
+            if ctx.forUpdate():
+                self.visit(ctx.forUpdate())
+        self.pop_scope()
 
-        if initAssign:
-            self.exitAssignmentStatement(initAssign)
+    # ─── forInit variants ─────────────────────────────────────────
+    def visitForInitLet(self, ctx: CircuitryParser.ForInitLetContext):
+        name, val = self.visit(ctx.letAssignment())
+        self.assign(name, val)
 
-        cond_ctx   = ctx.booleanExpr()
-        body_stmts = ctx.topologyStatement()
+    def visitForInitAssign(self, ctx: CircuitryParser.ForInitAssignContext):
+        name, val = self.visit(ctx.letAssignment())
+        self.assign(name, val)
 
-        # ———————————————————————————————————————————————
-        # 2) loop
-        # ———————————————————————————————————————————————
-        while self.eval_bool(cond_ctx):
-            for stmt in body_stmts:
-                # manually dispatch the right exitXXX
-                if stmt.aliasStatement():
-                    self.exitAliasStatement(stmt.aliasStatement())
-                elif stmt.letStatement():
-                    self.exitLetStatement(stmt.letStatement())
-                elif stmt.componentStatement():
-                    self.exitComponentStatement(stmt.componentStatement())
-                elif stmt.assignmentStatement():
-                    self.exitAssignmentStatement(stmt.assignmentStatement())
-                elif stmt.ifStatement():
-                    self.exitIfStatement(stmt.ifStatement())
-                # … and so on for seriesStatement, parallelStatement, etc.
+    def visitForInitIncDec(self, ctx: CircuitryParser.ForInitIncDecContext):
+        var = ctx.ID().getText();
+        op = ctx.unaryAssignmentOperator().getText()
+        curr = self.resolve(var)
+        self.assign(var, curr + 1 if op == '++' else curr - 1)
 
-            if updateAssign:
-                self.exitAssignmentStatement(updateAssign)
+    def visitForInitBinOp(self, ctx: CircuitryParser.ForInitBinOpContext):
+        var = ctx.ID().getText();
+        op = ctx.binaryAssignmentOperator().getText()
+        val = self.visit(ctx.expr())
+        if op == '=':
+            self.assign(var, val)
+        else:
+            curr = self.resolve(var)
+            fn = self._arithmetic_ops[op[:-1]]
+            self.assign(var, fn(curr, val))
 
-    # --- BOOLEAN EVALUATION ---
-    def eval_bool(self, bctx:CircuitryParser.BooleanExprContext) -> bool:
-        if bctx.relationalOperator():
-            l  = self.eval_expr(bctx.expr(0))
-            r  = self.eval_expr(bctx.expr(1))
-            op = text_of(bctx.relationalOperator())
-            return {"==":l==r,"!=":l!=r,"<":l<r,">":l>r,"<=":l<=r,">=":l>=r}[op]
-        if bctx.AND():
-            return self.eval_expr(bctx.expr(0)) and self.eval_expr(bctx.expr(1))
-        if bctx.OR():
-            return self.eval_expr(bctx.expr(0)) or self.eval_expr(bctx.expr(1))
-        if bctx.NOT():
-            return not self.eval_expr(bctx.expr(0))
-        return bool(self.eval_expr(bctx.expr(0)))
+    # ─── forUpdate variants ──────────────────────────────────────
+    def visitForUpdateIncDec(self, ctx: CircuitryParser.ForUpdateIncDecContext):
+        self.visitForInitIncDec(ctx)
 
-    # --- EXPRESSION EVALUATOR ---
-    def eval_expr(self, ctx):
-        # function calls
-        if isinstance(ctx, CircuitryParser.FuncCallExprContext):
-            fc      = ctx.functionCall()
-            fname   = text_of(fc.ID())
-            args_ctx = fc.functionCallArgs()
-            if fname in self.builtins:
-                fn, args, kwargs = self.builtins[fname], [], {}
-                if args_ctx:
-                    for ch in args_ctx.children:
-                        if text_of(ch) == ',': continue
-                        if isinstance(ch, CircuitryParser.FunctionCallPositionalArgContext):
-                            args.append(self.eval_expr(ch.expr()))
-                        else:
-                            key = text_of(ch.ID())
-                            kwargs[key] = self.eval_expr(ch.expr())
-                return fn(*args, **kwargs)
-            if fname not in self.functions:
-                raise ValueError(f"Undefined function: {fname}")
-            fdef = self.functions[fname]
-            vals = {}
-            idx  = 0
-            if args_ctx:
-                for ch in args_ctx.children:
-                    if text_of(ch) == ',': continue
-                    if isinstance(ch, CircuitryParser.FunctionCallKeywordArgContext):
-                        key = text_of(ch.ID())
-                        vals[key] = self.eval_expr(ch.expr())
-                    else:
-                        param = fdef['params'][idx]
-                        vals[param] = self.eval_expr(ch.expr())
-                        idx += 1
-            for p in fdef['params']:
-                if p not in vals:
-                    raise ValueError(f"Missing argument: {p}")
-            old_vars = self.variables.copy()
-            self.variables.update(vals)
-            res = self.eval_expr(fdef['body'])
-            self.variables = old_vars
+    def visitForUpdateBinOp(self, ctx: CircuitryParser.ForUpdateBinOpContext):
+        self.visitForInitBinOp(ctx)
+
+    def visitSwitchStatement(self, ctx: CircuitryParser.SwitchStatementContext):
+        key = self.visit(ctx.expr())
+        for case in ctx.caseStatement():
+            if self.visit(case.expr()) == key:
+                self.visit(case.block())
+                return
+        if ctx.defaultStatement():
+            self.visit(ctx.defaultStatement().block())
+
+    # ─────────────────── Components ───────────────────────────────
+    def visitComponentStatement(self, ctx: CircuitryParser.ComponentStatementContext):
+        ctype = ctx.componentType().getText()
+        cname = ctx.ID().getText()
+        val = self.visit(ctx.expr())
+        nodes = [self.visit(n) for n in ctx.nodeList().nodeMapping()]
+        self.components.append(Component(ctype, cname, val, nodes))
+
+    def visitDirectNode(self, ctx: CircuitryParser.DirectNodeContext):
+        return ctx.ID().getText()
+
+    def visitRemappedNode(self, ctx: CircuitryParser.RemappedNodeContext):
+        return (ctx.ID(0).getText(), ctx.ID(1).getText())
+
+    def visitSubNode(self, ctx: CircuitryParser.SubNodeContext):
+        base = ctx.ID().getText();
+        suf = ''.join(d.getText() for d in ctx.dottedNode())
+        return f"{base}{suf}"
+
+    # ─── Series & Parallel ────────────────────────────────────────
+    def visitSeriesStatement(self, ctx: CircuitryParser.SeriesStatementContext):
+        nodes = [self.visit(n) for n in ctx.nodeList().nodeMapping()]
+        elems = [self.visit(e) for e in ctx.seriesBody().seriesElement()]
+        for _, ctype, cname, val, rev in elems:
+            lst = list(reversed(nodes)) if rev else nodes
+            self.components.append(Component(ctype, cname, val, lst))
+
+    def visitParallelStatement(self, ctx: CircuitryParser.ParallelStatementContext):
+        nodes = [self.visit(n) for n in ctx.nodeList().nodeMapping()]
+        elems = [self.visit(e) for e in ctx.parallelBody().parallelElement()]
+        for _, ctype, cname, val, rev in elems:
+            lst = list(reversed(nodes)) if rev else nodes
+            self.components.append(Component(ctype, cname, val, lst))
+
+    def visitSeriesAssignment(self, ctx: CircuitryParser.SeriesAssignmentContext):
+        return ("seriesElem",
+                ctx.componentType().getText(),
+                ctx.ID().getText(),
+                self.visit(ctx.expr()),
+                bool(ctx.REVERSED()))
+
+    def visitParallelAssignment(self, ctx: CircuitryParser.ParallelAssignmentContext):
+        return ("parallelElem",
+                ctx.componentType().getText(),
+                ctx.ID().getText(),
+                self.visit(ctx.expr()),
+                bool(ctx.REVERSED()))
+
+    # ─── Functions & Subcircuits ─────────────────────────────────
+    def visitFunctionDefinition(self, ctx: CircuitryParser.FunctionDefinitionContext):
+        name = ctx.ID().getText()
+        params = [p.ID().getText() for p in ctx.functionParams().functionParam()] if ctx.functionParams() else []
+        self.functions[name] = (params, ctx.functionBlock())
+
+    def visitFunctionBlock(self, ctx: CircuitryParser.FunctionBlockContext):
+        self.push_scope()
+        for child in ctx.children:
+            # circuitStatement or returnStatement
+            if hasattr(child, 'circuitStatement'):
+                for stmt in child.circuitStatement():
+                    self.visit(stmt)
+            elif hasattr(child, 'RETURN'):
+                res = self.visit(child)
+                self.pop_scope()
+                return res
+        self.pop_scope()
+
+    def visitReturnStatement(self, ctx: CircuitryParser.ReturnStatementContext):
+        return self.visit(ctx.expr())
+
+    def visitFuncCallExpr(self, ctx):
+        name = ctx.functionCall().ID().getText()
+        args = self.visitFunctionCallArgs(ctx.functionCall().functionCallArgs()) \
+            if ctx.functionCall().functionCallArgs() else {}
+
+        # Check internal built-ins first
+        if name in internal_builtins:
+            # Call internal built-in function with args
+            res = internal_builtins[name](args)
+
+            # If internal log, return None explicitly (already done)
+            if name == "print":
+                return None
             return res
 
-        # boolean literals
-        if isinstance(ctx, CircuitryParser.TrueLiteralExprContext):
-            return True
-        if isinstance(ctx, CircuitryParser.FalseLiteralExprContext):
-            return False
+        # User-defined function
+        if name in self.functions:
+            params, body = self.functions[name]
+            self.push_scope()
+            for p, v in zip(params, args.get('_pos', [])):
+                self.assign(p, v)
+            res = self.visitFunctionBlock(body)
+            self.pop_scope()
+            return res
 
-        # relational → 1/0
-        if isinstance(ctx, CircuitryParser.RelationalExprContext):
-            l = self.eval_expr(ctx.expr(0))
-            r = self.eval_expr(ctx.expr(1))
-            t = ctx.op.type
-            return {
-                CircuitryParser.LESS:          1 if l < r else 0,
-                CircuitryParser.GREATER:       1 if l > r else 0,
-                CircuitryParser.LESS_EQUAL:    1 if l <= r else 0,
-                CircuitryParser.GREATER_EQUAL: 1 if l >= r else 0,
-                CircuitryParser.EQUAL:         1 if l == r else 0,
-                CircuitryParser.NOT_EQUAL:     1 if l != r else 0
-            }[t]
+        # Fallback: maybe just return args for now
+        return args
 
-        # logical in expressions
-        if isinstance(ctx, CircuitryParser.NotExprContext):
-            return not self.eval_expr(ctx.expr())
-        if isinstance(ctx, (CircuitryParser.AndExprContext, CircuitryParser.OrExprContext)):
-            l = self.eval_expr(ctx.expr(0))
-            r = self.eval_expr(ctx.expr(1))
-            return (l and r) if ctx.op.type == CircuitryParser.AND else (l or r)
+    def visitSubcircuitDefinition(self, ctx: CircuitryParser.SubcircuitDefinitionContext):
+        name = ctx.ID().getText()
+        params = [p.ID().getText() for p in ctx.subcircuitParams().subcircuitParam()] if ctx.subcircuitParams() else []
+        body = ctx.block().circuitStatement()
+        self.functions[name] = (params, body)
 
-        # arithmetic
-        if hasattr(ctx, 'op') and ctx.op is not None:
-            l = self.eval_expr(ctx.expr(0))
-            r = self.eval_expr(ctx.expr(1))
-            t = ctx.op.type
-            return {
-                CircuitryParser.PLUS:     l + r,
-                CircuitryParser.MINUS:    l - r,
-                CircuitryParser.MULTIPLY: l * r,
-                CircuitryParser.DIVIDE:   l / r,
-                CircuitryParser.EXPONENT: l ** r,
-                CircuitryParser.MODULO:   l % r
-            }[t]
+    def visitFunctionCallArgs(self, ctx: CircuitryParser.FunctionCallArgsContext):
+        d = {}
+        for arg in ctx.functionCallArg():
+            # keyword: ID ASSIGN expr
+            print("FunctionCallArg children texts:", [arg.getChild(i).getText() for i in range(arg.getChildCount())])
+            if arg.getChildCount() == 3 and arg.getChild(1).getText() == '=':
+                key = arg.getChild(0).getText()
+                val = self.visit(arg.getChild(2))
+                d[key] = val
+            else:
+                # positional: single child expr
+                pos_val = self.visit(arg.getChild(0))
+                d.setdefault('_pos', []).append(pos_val)
+        return d
 
-        # parentheses
-        if ctx.getChildCount() == 3 and text_of(ctx.getChild(0)) == '(':
-            inner = next(c for c in ctx.children if hasattr(c, 'expr'))
-            return self.eval_expr(inner)
+    # ─── Simulation & Measurement ────────────────────────────────
+    def visitSimulationStatement(self, ctx: CircuitryParser.SimulationStatementContext):
+        sim_type = ctx.simulationType().getText().upper()
+        args = self.visitFunctionCallArgs(ctx.functionCallArgs()) if ctx.functionCallArgs() else {}
 
-        # single token
-        if ctx.getChildCount() == 1:
-            tok = text_of(ctx)
-            if tok in self.variables:
-                return self.variables[tok]
-            try:
-                return parse_value(tok)
-            except ValueError:
-                raise ValueError(f"Unknown literal or variable: {tok}")
+        self.simulations.append({
+            'type': sim_type,
+            'params': args['_pos'] if '_pos' in args else {},
+        })
 
-        raise ValueError(f"Cannot evaluate expression: {text_of(ctx)}")
+        logger.debug(f"Added simulation: {sim_type} with parameters {args}")
+
+    def visitMeasurementStatement(self, ctx: CircuitryParser.MeasurementStatementContext):
+        logger.debug("Measure %s", ctx.ID().getText())
+
+    # ─── Drawing ──────────────────────────────────────────────────
+    def visitDrawingStatement(self, ctx: CircuitryParser.DrawingStatementContext):
+        name = ctx.ID().getText()
+        x = engineering_str_to_float(ctx.FLOAT_LITERAL(0).getText())
+        y = engineering_str_to_float(ctx.FLOAT_LITERAL(1).getText())
+        logger.debug("Draw %s at (%.3g, %.3g)", name, x, y)
+
+    # ─── Expressions ─────────────────────────────────────────────
+    def visitFloatLiteralExpr(self, ctx):
+        return engineering_str_to_float(ctx.FLOAT_LITERAL().getText())
+
+    def visitStringLiteralExpr(self, ctx):
+        return ctx.STRING_LITERAL().getText()[1:-1]
+
+    def visitTrueLiteralExpr(self, ctx):
+        return True
+
+    def visitFalseLiteralExpr(self, ctx):
+        return False
+
+    def visitIdExpr(self, ctx: CircuitryParser.IdExprContext):
+        return self.resolve(ctx.ID().getText())
+
+    def visitParenExpr(self, ctx):
+        return self.visit(ctx.expr())
+
+    def visitAddSubExpr(self, ctx):
+        a = self._to_number(self.visit(ctx.expr(0)))
+        b = self._to_number(self.visit(ctx.expr(1)))
+        return self._arithmetic_ops[ctx.op.text](a, b)
+
+    def visitMulDivExpr(self, ctx):
+        a = self._to_number(self.visit(ctx.expr(0)))
+        b = self._to_number(self.visit(ctx.expr(1)))
+        return self._arithmetic_ops[ctx.op.text](a, b)
+
+    def visitModExpr(self, ctx):
+        a = self._to_number(self.visit(ctx.expr(0)))
+        b = self._to_number(self.visit(ctx.expr(1)))
+        return self._arithmetic_ops['%'](a, b)
+
+    def visitExpExpr(self, ctx):
+        a = self._to_number(self.visit(ctx.expr(0)))
+        b = self._to_number(self.visit(ctx.expr(1)))
+        return self._arithmetic_ops['^'](a, b)
+
+    def visitRelationalExpr(self, ctx: CircuitryParser.RelationalExprContext):
+        l = self._to_number(self.visit(ctx.expr(0)))
+        r = self._to_number(self.visit(ctx.expr(1)))
+        return self._relational_ops[ctx.op.text](l, r)
+
+    def visitAndExpr(self, ctx):
+        return bool(self.visit(ctx.expr(0))) and bool(self.visit(ctx.expr(1)))
+
+    def visitOrExpr(self, ctx):
+        return bool(self.visit(ctx.expr(0))) or bool(self.visit(ctx.expr(1)))
+
+    def visitNotExpr(self, ctx):
+        return not bool(self.visit(ctx.expr()))

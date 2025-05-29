@@ -1,0 +1,13 @@
+fn resonance_frequency(L, C) {
+    return 1 / (2 * 3.1415 * sqrt(L * C));
+}
+
+let R = 1k, L = 1, C = 1m;
+let freq = resonance_frequency(L, C);
+
+V V = 10 : n1, GND;
+R R = R : n1, n2;
+L L = L : n2, n3;
+C C = C : n3, GND;
+
+ac(freq);

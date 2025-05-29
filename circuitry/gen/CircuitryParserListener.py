@@ -1,4 +1,4 @@
-# Generated from ../grammar/CircuitryParser.g4 by ANTLR 4.13.2
+# Generated from E:/Studia/AGH/Semestr 4/ISI/TKIK/tkik/grammar/CircuitryParser.g4 by ANTLR 4.13.2
 from antlr4 import *
 if "." in __name__:
     from .CircuitryParser import CircuitryParser
@@ -26,12 +26,12 @@ class CircuitryParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CircuitryParser#topologyStatement.
-    def enterTopologyStatement(self, ctx:CircuitryParser.TopologyStatementContext):
+    # Enter a parse tree produced by CircuitryParser#circuitStatement.
+    def enterCircuitStatement(self, ctx:CircuitryParser.CircuitStatementContext):
         pass
 
-    # Exit a parse tree produced by CircuitryParser#topologyStatement.
-    def exitTopologyStatement(self, ctx:CircuitryParser.TopologyStatementContext):
+    # Exit a parse tree produced by CircuitryParser#circuitStatement.
+    def exitCircuitStatement(self, ctx:CircuitryParser.CircuitStatementContext):
         pass
 
 
@@ -386,6 +386,15 @@ class CircuitryParserListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by CircuitryParser#expressionStatement.
+    def enterExpressionStatement(self, ctx:CircuitryParser.ExpressionStatementContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#expressionStatement.
+    def exitExpressionStatement(self, ctx:CircuitryParser.ExpressionStatementContext):
+        pass
+
+
     # Enter a parse tree produced by CircuitryParser#functionCall.
     def enterFunctionCall(self, ctx:CircuitryParser.FunctionCallContext):
         pass
@@ -401,6 +410,15 @@ class CircuitryParserListener(ParseTreeListener):
 
     # Exit a parse tree produced by CircuitryParser#functionCallArgs.
     def exitFunctionCallArgs(self, ctx:CircuitryParser.FunctionCallArgsContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#functionCallArg.
+    def enterFunctionCallArg(self, ctx:CircuitryParser.FunctionCallArgContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#functionCallArg.
+    def exitFunctionCallArg(self, ctx:CircuitryParser.FunctionCallArgContext):
         pass
 
 
@@ -422,24 +440,6 @@ class CircuitryParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CircuitryParser#conditionWithBlock.
-    def enterConditionWithBlock(self, ctx:CircuitryParser.ConditionWithBlockContext):
-        pass
-
-    # Exit a parse tree produced by CircuitryParser#conditionWithBlock.
-    def exitConditionWithBlock(self, ctx:CircuitryParser.ConditionWithBlockContext):
-        pass
-
-
-    # Enter a parse tree produced by CircuitryParser#booleanExpr.
-    def enterBooleanExpr(self, ctx:CircuitryParser.BooleanExprContext):
-        pass
-
-    # Exit a parse tree produced by CircuitryParser#booleanExpr.
-    def exitBooleanExpr(self, ctx:CircuitryParser.BooleanExprContext):
-        pass
-
-
     # Enter a parse tree produced by CircuitryParser#ifStatement.
     def enterIfStatement(self, ctx:CircuitryParser.IfStatementContext):
         pass
@@ -455,6 +455,15 @@ class CircuitryParserListener(ParseTreeListener):
 
     # Exit a parse tree produced by CircuitryParser#relationalOperator.
     def exitRelationalOperator(self, ctx:CircuitryParser.RelationalOperatorContext):
+        pass
+
+
+    # Enter a parse tree produced by CircuitryParser#block.
+    def enterBlock(self, ctx:CircuitryParser.BlockContext):
+        pass
+
+    # Exit a parse tree produced by CircuitryParser#block.
+    def exitBlock(self, ctx:CircuitryParser.BlockContext):
         pass
 
 
@@ -593,12 +602,12 @@ class CircuitryParserListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by CircuitryParser#functionBody.
-    def enterFunctionBody(self, ctx:CircuitryParser.FunctionBodyContext):
+    # Enter a parse tree produced by CircuitryParser#functionBlock.
+    def enterFunctionBlock(self, ctx:CircuitryParser.FunctionBlockContext):
         pass
 
-    # Exit a parse tree produced by CircuitryParser#functionBody.
-    def exitFunctionBody(self, ctx:CircuitryParser.FunctionBodyContext):
+    # Exit a parse tree produced by CircuitryParser#functionBlock.
+    def exitFunctionBlock(self, ctx:CircuitryParser.FunctionBlockContext):
         pass
 
 

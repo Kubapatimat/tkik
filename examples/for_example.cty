@@ -1,12 +1,10 @@
-// examples/for_example.cty
-alias GND = 0;
 let N = 5;
 let total = 0;
 
-for (i = 1; i <= N; i = i + 1) {
+for (let i = 1; i <= N; i = i + 1) {
     let value = i * 10;
     total = total + value;
 }
 
-R R1 = total : N, GND;
-V V1 = 5     : N, GND;
+R R1 = total : n1, GND;
+V V1 = 5     : n1, GND;

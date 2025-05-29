@@ -8,7 +8,7 @@ options {
 }
 
 program
-    : importStatement* topologyStatement* measurementStatement* simulationStatement* drawingStatement* EOF
+    : importStatement* circuitStatement* measurementStatement* simulationStatement* drawingStatement* EOF
     ;
 
 // ────────────────────────────────── Import Section ───────────────────────────────────
@@ -17,13 +17,14 @@ importStatement
     ;
 
 // ───────────────────────────── Circuit Topology Section ──────────────────────────────
-topologyStatement
+circuitStatement
     : aliasStatement
     | letStatement
     | componentStatement
     | seriesStatement
     | parallelStatement
     | assignmentStatement
+    | expressionStatement
     | ifStatement
     | whileStatement
     | doWhileStatement
@@ -39,7 +40,7 @@ aliasStatement
     ;
 
 aliasAssignment
-    : ID ASSIGN expr
+    : ID ASSIGN ID
     ;
 
 // Let statement
@@ -144,38 +145,39 @@ binaryAssignmentOperator
     ;
 
 expr
-    // wykładnicze i arytmetyka dotychczasowa...
-    : <assoc = right> expr EXPONENT expr     # ExpExpr
-    | expr op=(MULTIPLY|DIVIDE) expr         # MulDivExpr
-    | expr MODULO expr                       # ModExpr
-    | expr op=(PLUS|MINUS) expr              # AddSubExpr
-    | expr op=(EQUAL|NOT_EQUAL|LESS|GREATER|LESS_EQUAL|GREATER_EQUAL) expr  # RelationalExpr
-    // --- NOWOŚĆ: operacje logiczne mają niższy priorytet niż arytmetyka ---
-    | expr op=AND expr                       # AndExpr
-    | expr op=OR expr                        # OrExpr
-    | NOT expr                               # NotExpr
-
-    // nawiasy, wywołania itp.
-    | functionCall                           # FuncCallExpr
-    | LPAREN expr RPAREN                     # ParenExpr
-    | FLOAT_LITERAL                          # FloatLiteralExpr
-    | STRING_LITERAL                         # StringLiteralExpr
-    | TRUE                                   # TrueLiteralExpr
-    | FALSE                                  # FalseLiteralExpr
-    | ID                                     # IdExpr
+    : <assoc = right> expr EXPONENT expr                                               # ExpExpr
+    | expr op = (MULTIPLY | DIVIDE) expr                                               # MulDivExpr
+    | expr MODULO expr                                                                 # ModExpr
+    | expr op = (PLUS | MINUS) expr                                                    # AddSubExpr
+    | expr op = (EQUAL | NOT_EQUAL | LESS | GREATER | LESS_EQUAL | GREATER_EQUAL) expr # RelationalExpr
+    | expr op = AND expr                                                               # AndExpr
+    | expr op = OR expr                                                                # OrExpr
+    | NOT expr                                                                         # NotExpr
+    | functionCall                                                                     # FuncCallExpr
+    | LPAREN expr RPAREN                                                               # ParenExpr
+    | FLOAT_LITERAL                                                                    # FloatLiteralExpr
+    | STRING_LITERAL                                                                   # StringLiteralExpr
+    | TRUE                                                                             # TrueLiteralExpr
+    | FALSE                                                                            # FalseLiteralExpr
+    | ID                                                                               # IdExpr
     ;
 
+// Expression statement
+expressionStatement
+    : expr SEMICOLON
+    ;
 
 functionCall
     : ID LPAREN functionCallArgs? RPAREN
     ;
 
 functionCallArgs
-    : functionCallKeywordArg (COMMA functionCallKeywordArg)*
-    | functionCallPositionalArg (COMMA functionCallPositionalArg)*
-    | functionCallPositionalArg (COMMA functionCallPositionalArg)* functionCallKeywordArg (
-        COMMA functionCallKeywordArg
-    )*
+    : functionCallArg (COMMA functionCallArg)*
+    ;
+
+functionCallArg
+    : functionCallKeywordArg
+    | functionCallPositionalArg
     ;
 
 functionCallKeywordArg
@@ -186,34 +188,9 @@ functionCallPositionalArg
     : expr
     ;
 
-
-
-
-
-
-conditionWithBlock
-    : LPAREN booleanExpr RPAREN LBRACE topologyStatement* RBRACE
-    ;
-
-booleanExpr
-    : expr relationalOperator expr
-    | expr AND expr
-    | expr OR expr
-    | NOT expr
-    | expr
-    ;
+// If statement
 ifStatement
-    : IF LPAREN booleanExpr RPAREN
-        (   // jeden statement
-            topologyStatement
-        |   // blok { … }
-            LBRACE topologyStatement* RBRACE
-        )
-      ( ELSE
-          (   topologyStatement
-          |   LBRACE topologyStatement* RBRACE
-          )
-      )?
+    : IF LPAREN expr RPAREN block (ELSE block)?
     ;
 
 relationalOperator
@@ -225,40 +202,35 @@ relationalOperator
     | GREATER_EQUAL
     ;
 
+block
+    : LBRACE circuitStatement* RBRACE
+    ;
+
 // While statement
 whileStatement
-    : WHILE conditionWithBlock
+    : WHILE LPAREN expr RPAREN block
     ;
 
 // Do while statement
 doWhileStatement
-    : DO LBRACE topologyStatement* RBRACE WHILE LPAREN booleanExpr RPAREN SEMICOLON
+    : DO block WHILE LPAREN expr RPAREN SEMICOLON
     ;
 
 // For statement
 forStatement
-  : FOR LPAREN
-      forInit?
-      SEMICOLON
-      booleanExpr
-      SEMICOLON
-      forUpdate?
-    RPAREN
-    LBRACE topologyStatement* RBRACE
-  ;
-
-
-forInit
-    : LET letAssignment               # ForInitLet
-    | letAssignment                   # ForInitAssign
-    | ID unaryAssignmentOperator      # ForInitIncDec
-    | ID binaryAssignmentOperator expr# ForInitBinOp
+    : FOR LPAREN forInit? SEMICOLON expr? SEMICOLON forUpdate? RPAREN block
     ;
 
+forInit
+    : LET letAssignment                # ForInitLet
+    | letAssignment                    # ForInitAssign
+    | ID unaryAssignmentOperator       # ForInitIncDec
+    | ID binaryAssignmentOperator expr # ForInitBinOp
+    ;
 
 forUpdate
-    : ID unaryAssignmentOperator      # ForUpdateIncDec
-    | ID binaryAssignmentOperator expr# ForUpdateBinOp
+    : ID unaryAssignmentOperator       # ForUpdateIncDec
+    | ID binaryAssignmentOperator expr # ForUpdateBinOp
     ;
 
 // Switch statement
@@ -267,16 +239,16 @@ switchStatement
     ;
 
 caseStatement
-    : CASE expr COLON topologyStatement*
+    : CASE expr COLON block
     ;
 
 defaultStatement
-    : DEFAULT COLON topologyStatement*
+    : DEFAULT COLON block
     ;
 
 // Function definition
 functionDefinition
-    : FN ID LPAREN functionParams? RPAREN LBRACE functionBody RBRACE
+    : FN ID LPAREN functionParams? RPAREN functionBlock
     ;
 
 functionParams
@@ -287,8 +259,8 @@ functionParam
     : ID (ASSIGN expr)?
     ;
 
-functionBody
-    : topologyStatement* returnStatement
+functionBlock
+    : LBRACE (circuitStatement | returnStatement)* RBRACE
     ;
 
 returnStatement
@@ -297,7 +269,7 @@ returnStatement
 
 // Subcircuit definition
 subcircuitDefinition
-    : SUBCIRCUIT ID LPAREN subcircuitParams? RPAREN COLON nodeList LBRACE topologyStatement* RBRACE
+    : SUBCIRCUIT ID LPAREN subcircuitParams? RPAREN COLON nodeList LBRACE circuitStatement* RBRACE
     ;
 
 subcircuitParams

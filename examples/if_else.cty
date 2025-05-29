@@ -1,19 +1,21 @@
 // examples/if_example.cty
 
-alias GND = 0;
 let includeR1 = true;
 let includeR2 = false;
 
 // jeśli includeR1 == true, wstawimy R1
 if (includeR1 == true) {
+    print("Wstawiam R1");
     R R1 = 100 : N, GND;
 }
 
 // druga instrukcja if z else
 if (includeR2 == true) {
+    print("Wstawiam R2");
     R R2 = 200 : N, GND;
 } else {
     // jeśli nie includeR2, wstawimy R3
+    print("Wstawiam R3");
     R R3 = 300 : N, GND;
 }
 

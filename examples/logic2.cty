@@ -1,8 +1,5 @@
 // examples/simple_logic.cty
 
-// alias masy
-alias GND = 0;
-
 // definiujemy dwie zmienne numeryczne
 let a = 3;
 let b = 7;
