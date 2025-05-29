@@ -16,7 +16,7 @@ series S2 : IN, GND {
     C C4 = 1μ,        // 1 μF (alternative syntax for 1u)
     C C5 = 1n,        // 1 nF
     C C6 = 1p,        // 1 pF
-    C C7 = 1f        // 1 fF
+    C C7 = 1f         // 1 fF
 };
 
 transient(3μ);

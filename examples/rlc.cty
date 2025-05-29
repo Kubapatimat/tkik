@@ -6,9 +6,9 @@ let R = 1k, L = 1, C = 1m;
 
 alias GND = n0;
 
-V V1 = sine(vdc=0, amplitude=10, f=freq) : n1, n0;
+V V1 = 10 : n1, n0;
 R R1 = R : n1, n2;
 L L1 = L : n2, n3;
 C C1 = C : n3, n0;
 
-transient(stop);
+ac(freq);

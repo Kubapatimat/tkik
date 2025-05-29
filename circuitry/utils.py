@@ -25,7 +25,7 @@ def engineering_str_to_float(s):
         pass
 
     # Regex to separate numeric part and suffix
-    match = re.match(r'^([\d.]+)([a-zA-Zμ]*)$', s)
+    match = re.match(r'^([0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?)([fpnuμmkKMGT]?)$', s)
     if not match:
         raise ValueError(f"Invalid engineering notation: '{s}'")
 

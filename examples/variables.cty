@@ -8,3 +8,5 @@ R R1 = R_top      : IN, OUT;          // Resistor R1 is between node IN(+) and O
 R R2 = R_bottom   : OUT, GND;         // Resistor R2 is between node OUT(+) and GND(-)
 R R3 = R_side     : IN, GND;          // Resistor R3 is between node IN(+) and GND(-)
 R R4 = R_side / 2 : IN, GND;          // Resistor R4 is parallel to R3 and has half the value of R3
+
+dc();
