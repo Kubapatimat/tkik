@@ -18,8 +18,8 @@ def to_int(v):
 
 
 def _print(args):
-    msg = " ".join(str(v) for v in args.get('_pos', []))
-    print(f"[LOG]: {msg}")
+    msg = "".join(str(v) for v in args.get('_pos', []))
+    print(f"{msg}")
 
 
 def buf(args):

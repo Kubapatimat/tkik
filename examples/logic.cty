@@ -7,3 +7,5 @@ V V1 = 5 : N, GND;
 // rezystor, którego wartość to flag*100 Ω
 // czyli jeżeli flag==true → 100 Ω, w przeciwnym razie 0 Ω
 R R1 = flag * 100 : N, GND;
+
+print("Wartość rezystora R1: ", flag * 100, "Ω");

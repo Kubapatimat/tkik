@@ -8,3 +8,5 @@ for (let i = 1; i <= N; i = i + 1) {
 
 R R1 = total : n1, GND;
 V V1 = 5     : n1, GND;
+
+print("Suma wartości: ", total);

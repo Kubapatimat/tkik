@@ -312,7 +312,6 @@ class CircuitBuilderVisitor(CircuitryParserVisitor):
         d = {}
         for arg in ctx.functionCallArg():
             # keyword: ID ASSIGN expr
-            print("FunctionCallArg children texts:", [arg.getChild(i).getText() for i in range(arg.getChildCount())])
             if arg.getChildCount() == 3 and arg.getChild(1).getText() == '=':
                 key = arg.getChild(0).getText()
                 val = self.visit(arg.getChild(2))
