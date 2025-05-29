@@ -11,9 +11,9 @@ fn resonance_frequency(L, C) {
 let R = 1k, L = 1, C = 1m;
 let freq = resonance_frequency(L, C);
 
-V V = sine(vdc=0, amplitude=10, f=freq) : n1, GND;
+V V = 10 : n1, GND;
 R R = R : n1, n2;
 L L = L : n2, n3;
 C C = C : n3, GND;
 
-transient(3μ);
+ac(freq);

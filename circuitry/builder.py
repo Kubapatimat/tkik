@@ -1,4 +1,5 @@
 import logging
+import math
 import operator
 
 from circuitry.component import Component
@@ -20,7 +21,7 @@ class CircuitBuilderVisitor(CircuitryParserVisitor):
         self.simulations = []
 
         # lexical scopes stack
-        self.scopes = [{}]
+        self.scopes = [{'pi': math.pi}]
 
         self._arithmetic_ops = {
             '+': operator.add, '-': operator.sub,
