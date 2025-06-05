@@ -35,13 +35,14 @@ def main():
     lexer = CircuitryLexer(input_stream)
     stream = CommonTokenStream(lexer)
     parser = CircuitryParser(stream)
+    listener = FriendlyErrorListener(input_stream)
     parser.removeErrorListeners()
-    parser.addErrorListener(FriendlyErrorListener(input_stream))
+    parser.addErrorListener(listener)
     try:
         tree = parser.program()
     except SyntaxError:
         sys.exit(1)
-
+    listener.reportAllErrorsAndExitIfNeeded()
     visitor = CircuitBuilderVisitor()
     visitor.visit(tree)
 
