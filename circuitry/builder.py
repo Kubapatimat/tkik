@@ -2,6 +2,7 @@ import logging
 import math
 import operator
 
+from circuitry import error_listener
 from circuitry.component import Component
 from circuitry.gen.CircuitryParser import CircuitryParser
 from circuitry.gen.CircuitryParserVisitor import CircuitryParserVisitor
@@ -12,16 +13,19 @@ logger = logging.getLogger(__name__)
 
 
 class CircuitBuilderVisitor(CircuitryParserVisitor):
-    def __init__(self):
+    def __init__(self, error_listener):
+        # wartości
+        self.scopes = [{'pi': math.pi}]
+        # śledzenie definicji/wykorzystania dla warningów
+        self.symbols = [{}]
+        self.error_listener = error_listener
+
         self.imports = []
         self.aliases = {}
         self.components = []
         self.functions = {}
         self.subcircuits = {}
         self.simulations = []
-
-        # lexical scopes stack
-        self.scopes = [{'pi': math.pi}]
 
         self._arithmetic_ops = {
             '+': operator.add, '-': operator.sub,
@@ -37,19 +41,50 @@ class CircuitBuilderVisitor(CircuitryParserVisitor):
     # ─────────────────── Scope Helpers ──────────────────────────
     def push_scope(self):
         self.scopes.append({})
+        self.symbols.append({})
 
     def pop_scope(self):
+        # przed zniszczeniem zakresu, wypisz warningi dla niewykorzystanych
+        current = self.symbols[-1]
+        for name, info in current.items():
+            if not info["used"]:
+                line, col = info["defined"]
+                val = info["value"]
+                self.error_listener.warning(
+                    line, col,
+                    f"Zmiennej '{name}' nigdy nie użyto. Wartość przypisana to {val!r}."
+                )
+        # usunięcie zakresu
+        self.symbols.pop()
         self.scopes.pop()
 
     def current_scope(self):
         return self.scopes[-1]
 
-    def assign(self, name, value):
-        # update existing or define in current
+    def assign(self, name, value, ctx=None):
+        # 1) Rejestracja definicji i wartości w symbols
+        top = self.symbols[-1]
+        if name not in top:
+            if ctx is not None:
+                token = ctx.ID().getSymbol()
+                defined_at = (token.line, token.column)
+            else:
+                defined_at = (0, 0)
+            top[name] = {
+                "defined": defined_at,
+                "used": False,
+                "value": value
+            }
+        else:
+            # jeśli ponowna definicja, aktualizujemy tylko wartość
+            top[name]["value"] = value
+
+        # 2) Standardowe przypisanie wartości w self.scopes
         for scope in reversed(self.scopes):
             if name in scope:
                 scope[name] = value
                 return
+        # jeśli nie istniało wcześniej, dodajemy do bieżącego zakresu
         self.current_scope()[name] = value
 
     def resolve(self, name):
@@ -86,25 +121,41 @@ class CircuitBuilderVisitor(CircuitryParserVisitor):
             self.visit(stmt)
 
     # ─────────────────── Import ──────────────────────────────────
-    def visitImportStatement(self, ctx: CircuitryParser.ImportStatementContext):
+    def visitImportStatement(self, ctx):
         self.imports.extend(t.getText() for t in ctx.ID())
 
     # ─────────────────── Alias & Let ────────────────────────────
-    def visitAliasStatement(self, ctx: CircuitryParser.AliasStatementContext):
+    def visitAliasStatement(self, ctx):
         for asn in ctx.aliasAssignment():
             name, target = self.visit(asn)
             self.aliases[name] = target
 
-    def visitAliasAssignment(self, ctx: CircuitryParser.AliasAssignmentContext):
+    def visitAliasAssignment(self, ctx):
         return ctx.ID(0).getText(), ctx.ID(1).getText()
 
-    def visitLetStatement(self, ctx: CircuitryParser.LetStatementContext):
+    def visitLetStatement(self, ctx):
         for lasn in ctx.letAssignment():
             name, val = self.visit(lasn)
-            self.assign(name, val)
 
     def visitLetAssignment(self, ctx: CircuitryParser.LetAssignmentContext):
-        return ctx.ID().getText(), self.visit(ctx.expr())
+        name = ctx.ID().getText()
+        val = self.visit(ctx.expr())
+
+        # 1) przypisz i zarejestruj zmienną
+        self.assign(name, val, ctx)
+
+        # 2) wykryj stałe wyrażenie: bool, int, float lub string
+        if isinstance(val, (bool, int, float, str)):
+            token = ctx.ID().getSymbol()
+            # dla stringów usuń np. cudzysłowy w wyświetleniu
+            display_val = f'"{val}"' if isinstance(val, str) else val
+            self.error_listener.warning(
+                token.line,
+                token.column,
+                f"Wyrażenie dla '{name}' zawsze zwraca wartość {display_val}."
+            )
+
+        return name, val
 
     # ─────────────────── Assignment ──────────────────────────────
     def visitAssignmentStatement(self, ctx: CircuitryParser.AssignmentStatementContext):
@@ -112,16 +163,28 @@ class CircuitBuilderVisitor(CircuitryParserVisitor):
         if ctx.unaryAssignmentOperator():
             op = ctx.unaryAssignmentOperator().getText()
             curr = self.resolve(var)
-            self.assign(var, curr + 1 if op == '++' else curr - 1)
+            new_val = curr + 1 if op == '++' else curr - 1
+            self.assign(var, new_val, ctx)
         else:
             op = ctx.binaryAssignmentOperator().getText()
             val = self.visit(ctx.expr())
             if op == '=':
-                self.assign(var, val)
+                # 1) przypisz z kontekstem
+                self.assign(var, val, ctx)
+
+                # 2) warning jeśli czysta stała
+                if isinstance(val, (bool, int, float, str)):
+                    token = ctx.ID().getSymbol()
+                    display = f'"{val}"' if isinstance(val, str) else val
+                    self.error_listener.warning(
+                        token.line, token.column,
+                        f"Przypisanie do '{var}' zawsze daje wartość {display}."
+                    )
             else:
                 curr = self.resolve(var)
                 fn = self._arithmetic_ops[op[:-1]]
-                self.assign(var, fn(curr, val))
+                new_val = fn(curr, val)
+                self.assign(var, new_val, ctx)
 
     # ─────────────────── Expression Statement ───────────────────
     def visitExpressionStatement(self, ctx: CircuitryParser.ExpressionStatementContext):
@@ -358,8 +421,14 @@ class CircuitBuilderVisitor(CircuitryParserVisitor):
     def visitFalseLiteralExpr(self, ctx):
         return False
 
-    def visitIdExpr(self, ctx: CircuitryParser.IdExprContext):
-        return self.resolve(ctx.ID().getText())
+    def visitIdExpr(self, ctx):
+        name = ctx.ID().getText()
+        # oznacz, że użyto tej zmiennej
+        for scope in reversed(self.symbols):
+            if name in scope:
+                scope[name]["used"] = True
+                break
+        return self.resolve(name)
 
     def visitParenExpr(self, ctx):
         return self.visit(ctx.expr())

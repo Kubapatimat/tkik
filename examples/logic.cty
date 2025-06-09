@@ -1,11 +1,11 @@
 // definiujemy flagę logiczną
-let flag = true && !false;  // flag → True (1)
+let flag = true;
 
 // źródło 5 V
 V V1 = 5 : N, GND;
-
+V4 = 3;
 // rezystor, którego wartość to flag*100 Ω
-// czyli jeżeli flag==true → 100 Ω, w przeciwnym razie 0 Ω
 R R1 = flag * 100 : N, GND;
 
+// wypisujemy wartość
 print("Wartość rezystora R1: ", flag * 100, "Ω");
