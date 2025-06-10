@@ -427,8 +427,16 @@ class CircuitBuilderVisitor(CircuitryParserVisitor):
         for scope in reversed(self.symbols):
             if name in scope:
                 scope[name]["used"] = True
-                break
-        return self.resolve(name)
+                return self.resolve(name)
+        
+        # variable not declared, throw semantic error
+        token = ctx.ID().getSymbol()
+        self.error_listener.semanticError(
+            token.line,
+            token.column,
+            f"Variable '{name}' is used but was never declared."
+        )
+        return None 
 
     def visitParenExpr(self, ctx):
         return self.visit(ctx.expr())

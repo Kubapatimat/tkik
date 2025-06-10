@@ -10,6 +10,7 @@ class FriendlyErrorListener(ErrorListener):
         self.had_error = False
         self.warnings = []
 
+
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
         RED    = "\033[31m"
         BOLD   = "\033[1m"
@@ -37,6 +38,7 @@ class FriendlyErrorListener(ErrorListener):
             print(pointer)
         print()
 
+
     def warning(self, line: int, column: int, msg: str):
         YELLOW = "\033[33m"
         BOLD   = "\033[1m"
@@ -50,6 +52,22 @@ class FriendlyErrorListener(ErrorListener):
         print(header)
         print(f"    {details}")
         print()
+
+
+    def semanticError(self, line: int, column: int, msg: str):
+        RED    = "\033[31m"
+        BOLD   = "\033[1m"
+        RESET  = "\033[0m"
+        ICON   = "❌"
+
+        self.had_error = True
+
+        header = f"{RED}{BOLD}{ICON} Semantic error at line {line}, column {column}:{RESET}"
+        details = f"{RED}{msg}{RESET}"
+        print(header)
+        print(f"    {details}")
+        print()
+
 
     def reportAllErrors(self) -> bool:
         """
