@@ -153,7 +153,48 @@ Dyrektywy rysowania w [grammar/Draw.g4](./grammar/Draw.g4)
    [`grammar/CircuitryParser.g4`](./grammar/CircuitryParser.g4)
 
 ---
+## Jak uruchomić GUI z edytorem
+Poniższe instrukcje dodają interaktywny edytor DSL w tkinter z:
+- Syntax highlighting
+- Numeracją linii
+- Motywem Dark/Light
+- Autocomplete (Ctrl+Space)
+- Uruchamianiem analizy/symulacji
+### Uruchomienie GUI
+1. Otwórz terminal w katalogu projektu.
+2. Uruchom 
+```bash
+python circuitry.py
+```
+3. Pojawi się okno z edytorem DSL
+![img.png](okno_edytora.png)
 
+### Edytor
+
+- Wklej lub wpisz kod DSL .cty w polu tekstowym.
+![img.png](okno_z_kodem.png)
+- Syntax highlighting (automatycznie przy wpisywaniu/wklejaniu):
+  - Komentarze (//..., /*...*/) w kolorze komentarza.
+  - Stringi w kolorze stringów.
+  - Słowa kluczowe DSL:
+  `alias`, `let`, `fn`, `return`, `if`, `else`, `for`, `while`,`switch`, `case`, `default`, `true`, `false`, `transient`,` ac`, `dc`, `measure`, `pos`, itd.
+  - Literały liczbowe w dedykowanym kolorze.
+  - Operatory wyróżnione.
+- Numeracja linii: gutter po lewej, zsynchronizowany z przewijaniem.
+- Motyw: w menu Theme wybierz Dark lub Light, zmienia tło i kolory.
+### Inteligentne podpowiadanie:
+- Fokus w edytorze.
+- Naciśnij `Ctrl+Space`:
+  - Wyświetla popup z propozycjami.
+  - Propozycje:
+    - Słowa kluczowe z gramatyki DSL.
+    - Symbole zdefiniowane w edytorze: zmienne (let), aliasy, nazwy komponentów, funkcje, subcircuity — zbierane dynamicznie przez visitor.
+    Wybierz strzałkami i Enter lub kliknij myszką, by wstawić.
+    Prefix przed kursorem zostaje zastąpiony.
+    ### Tak to działa:
+    ![img.png](podpowiadanie.png)
+  
+---
 ## Narzędzia i zależności
 
 - **Język implementacji:** Python 3.10+  
