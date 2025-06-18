@@ -1,16 +1,21 @@
+# File: circuitry.py
 #!/usr/bin/env python3
 """
-Circuitry Editor i Symulacja z podświetlaniem składni, numeracją linii, tematem (dark/light)
-oraz podstawowym autocomplete (Ctrl+Space) dla słów kluczowych i symboli zdefiniowanych w kodzie.
+Circuitry: moduł zawierający GUI edytora i symulacji układów, wraz z obsługą błędów i warningów.
+Zawiera:
+- FriendlyErrorListener (ANTLR ErrorListener)
+- process_circuit_content
+- SymbolCollectorVisitor
+- TextHandler (logowanie do Tkinter)
+- CircuitEditorGUI
+- main()
 
+Aby użyć: `python circuitry.py`
 Wymaga:
-- tkinter (w standardzie Pythona)
+- tkinter
 - antlr4 Runtime i wygenerowane pliki CircuitryLexer, CircuitryParser, CircuitryParserVisitor
-- moduły circuitry.builder, circuitry.error_listener, circuitry.utils, circuitry.mna itd.
-
-Zapisz np. jako `circuit_editor.py` i uruchom `python circuit_editor.py`.
+- moduły circuitry.builder, circuitry.utils, circuitry.mna
 """
-
 import threading
 import sys
 import logging
@@ -18,23 +23,111 @@ import io
 import re
 import tkinter as tk
 from tkinter import scrolledtext, messagebox
-
 from antlr4 import InputStream, CommonTokenStream
 
 # Importy z Twojego modułu Circuitry:
-from circuitry.builder import CircuitBuilderVisitor
-from circuitry.error_listener import FriendlyErrorListener
-from circuitry.gen.CircuitryLexer import CircuitryLexer
-from circuitry.gen.CircuitryParser import CircuitryParser
-from circuitry.gen.CircuitryParserVisitor import CircuitryParserVisitor
-from circuitry.utils import to_polar_str
+# Zakładamy, że pliki wygenerowane przez ANTLR są dostępne w module circuitry.gen
+try:
+    from circuitry.builder import CircuitBuilderVisitor
+    from circuitry.utils import to_polar_str
+    from circuitry.gen.CircuitryLexer import CircuitryLexer
+    from circuitry.gen.CircuitryParser import CircuitryParser
+    from circuitry.gen.CircuitryParserVisitor import CircuitryParserVisitor
+except ImportError:
+    # Jeśli moduł inaczej zorganizowany, użytkownik powinien dostosować importy
+    raise
 import math
+from antlr4.error.ErrorListener import ErrorListener
 
+# ---------- FriendlyErrorListener ----------
+class FriendlyErrorListener(ErrorListener):
+    def __init__(self, input_stream: InputStream, print_errors: bool = False, suppress_warnings: bool = True):
+        super().__init__()
+        data = input_stream.getText(0, input_stream.size)
+        self.lines = data.splitlines()
+        self.had_error = False
+        self.warnings = []
+        self.errors = []  # zbieramy błędy składniowe i semantyczne
+        self.print_errors = print_errors
+        self.suppress_warnings = suppress_warnings
 
+    def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
+        self.had_error = True
+        error_info = {
+            'type': 'syntax',
+            'line': line,
+            'column': column,
+            'msg': msg,
+        }
+        self.errors.append(error_info)
+        if self.print_errors:
+            RED    = "\033[31m"
+            BOLD   = "\033[1m"
+            YELLOW = "\033[33m"
+            RESET  = "\033[0m"
+            ICON   = "❌"
+            header = f"{RED}{BOLD}{ICON} Syntax error at line {line}, column {column}:{RESET}"
+            details = f"{RED}{msg}{RESET}"
+            src_line = ""
+            if 1 <= line <= len(self.lines):
+                src_line = self.lines[line - 1].replace("\t", "    ")
+            pointer = ""
+            if src_line:
+                pointer = " " * (column + 4) + f"{YELLOW}^{RESET}"
+            print(header)
+            print(f"    {details}")
+            if src_line:
+                print(f"    {src_line}")
+                print(pointer)
+            print()
+
+    def warning(self, line: int, column: int, msg: str):
+        # Zbieramy warningi, ale nie drukujemy, jeśli suppress_warnings=True
+        self.warnings.append((line, column, msg))
+        if not self.suppress_warnings:
+            YELLOW = "\033[33m"
+            BOLD   = "\033[1m"
+            RESET  = "\033[0m"
+            ICON   = "⚠️"
+            header = f"{YELLOW}{BOLD}{ICON} Warning at line {line}, column {column}:{RESET}"
+            details = f"{YELLOW}{msg}{RESET}"
+            print(header)
+            print(f"    {details}\n")
+
+    def semanticError(self, line: int, column: int, msg: str):
+        self.had_error = True
+        error_info = {
+            'type': 'semantic',
+            'line': line,
+            'column': column,
+            'msg': msg,
+        }
+        self.errors.append(error_info)
+        if self.print_errors:
+            RED    = "\033[31m"
+            BOLD   = "\033[1m"
+            RESET  = "\033[0m"
+            ICON   = "❌"
+            header = f"{RED}{BOLD}{ICON} Semantic error at line {line}, column {column}:{RESET}"
+            details = f"{RED}{msg}{RESET}"
+            print(header)
+            print(f"    {details}\n")
+
+    def reportAllErrors(self) -> bool:
+        if self.had_error:
+            if self.print_errors:
+                print("Kompilacja przerwana z powodu błędów składniowych lub semantycznych.")
+            return True
+        return False
+
+    def getErrors(self):
+        return self.errors
+
+# ---------- process_circuit_content ----------
 def process_circuit_content(content: str):
     """
     Przetwarza tekst z edytora jako definicję układu.
-    Zwraca tuple: (success: bool, warnings: list of (line, col, msg), raw_output: str).
+    Zwraca tuple: (success: bool, warnings: list of (line, col, msg), errors: list, raw_output: str).
     """
     old_stdout = sys.stdout
     old_stderr = sys.stderr
@@ -48,11 +141,12 @@ def process_circuit_content(content: str):
         if not content.strip():
             print("Error: Definicja układu jest pusta.")
             success = False
-            return success, [], str_io.getvalue()
+            return success, [], [], str_io.getvalue()
 
         # Parsowanie ANTLR z treści
         input_stream = InputStream(content)
-        listener = FriendlyErrorListener(input_stream)
+        # suppress_warnings=True, print_errors=False
+        listener = FriendlyErrorListener(input_stream, print_errors=False, suppress_warnings=True)
 
         lexer = CircuitryLexer(input_stream)
         lexer.removeErrorListeners()
@@ -65,18 +159,23 @@ def process_circuit_content(content: str):
 
         tree = parser.program()
 
-        # Sprawdź błędy składni
+        # Sprawdź błędy składni lub semantyczne
         if listener.reportAllErrors():
             success = False
             warnings = getattr(listener, 'warnings', [])
-            return success, warnings, str_io.getvalue()
+            errors = listener.getErrors()
+            return success, warnings, errors, str_io.getvalue()
 
         # Wizyta semantyczna
         visitor = CircuitBuilderVisitor(error_listener=listener)
         visitor.visit(tree)
 
-        # Zbierz semantyczne warningi
+        # Zbierz semantyczne warningi i błędy
         warnings = getattr(listener, 'warnings', [])
+        errors = listener.getErrors()
+        if errors:
+            success = False
+            return success, warnings, errors, str_io.getvalue()
 
         # Symulacje
         simulations = visitor.simulations
@@ -142,81 +241,66 @@ def process_circuit_content(content: str):
                     i_str = f"{i:.6f} A" if i is not None else "N/A"
                 print(f"  {comp.name}: Voltage = {v_str}, Current = {i_str}")
 
-        return success, warnings, str_io.getvalue()
+        return success, warnings, errors, str_io.getvalue()
 
     except Exception as e:
         print(f"Nieoczekiwany błąd: {e}", file=sys.stderr)
         success = False
         warnings = getattr(listener, 'warnings', []) if listener else []
-        return success, warnings, str_io.getvalue()
+        errors = listener.getErrors() if listener else []
+        return success, warnings, errors, str_io.getvalue()
     finally:
         sys.stdout = old_stdout
         sys.stderr = old_stderr
 
-
-# Opcjonalnie: własny prosty visitor do zbierania symboli w collect_symbols:
+# ---------- SymbolCollectorVisitor ----------
 class SymbolCollectorVisitor(CircuitryParserVisitor):
-    """
-    Visitor zbierający nazwy zmiennych, aliasów, komponentów, funkcji, subcircuitów itd.
-    Dostosuj metody wg potrzeb i wg wygenerowanej hierarchii kontekstów.
-    """
+    """Visitor zbierający nazwy zmiennych, aliasów, komponentów, funkcji, subcircuitów."""
     def __init__(self):
         super().__init__()
         self.symbols = set()
 
-    def visitLetStatement(self, ctx: CircuitryParser.LetStatementContext):
+    def visitLetStatement(self, ctx):
         # letStatement: LET letAssignment (COMMA letAssignment)* SEMICOLON
         for laCtx in ctx.letAssignment():
-            # letAssignment: ID ASSIGN expr
             id_term = laCtx.ID()
             if id_term:
                 name = id_term.getText()
                 self.symbols.add(name)
         return self.visitChildren(ctx)
 
-    def visitAliasStatement(self, ctx: CircuitryParser.AliasStatementContext):
-        # aliasStatement: ALIAS aliasAssignment (COMMA aliasAssignment)* SEMICOLON
+    def visitAliasStatement(self, ctx):
         for aaCtx in ctx.aliasAssignment():
-            # aliasAssignment: ID ASSIGN ID
             id0 = aaCtx.ID(0)
             if id0:
                 self.symbols.add(id0.getText())
         return self.visitChildren(ctx)
 
-    def visitComponentStatement(self, ctx: CircuitryParser.ComponentStatementContext):
-        # componentStatement: componentType ID ASSIGN expr COLON nodeList SEMICOLON
+    def visitComponentStatement(self, ctx):
         ids = ctx.ID()
-        # Pierwsze ID to typ, drugie to nazwa instancji
         if len(ids) >= 2:
             inst_name = ids[1].getText()
             self.symbols.add(inst_name)
         return self.visitChildren(ctx)
 
-    def visitFunctionDefinition(self, ctx: CircuitryParser.FunctionDefinitionContext):
-        # functionDefinition: FN ID LPAREN ...
+    def visitFunctionDefinition(self, ctx):
         id_term = ctx.ID()
         if id_term:
-            name = id_term.getText()
-            self.symbols.add(name)
+            self.symbols.add(id_term.getText())
         return self.visitChildren(ctx)
 
-    def visitSubcircuitDefinition(self, ctx: CircuitryParser.SubcircuitDefinitionContext):
-        # subcircuitDefinition: SUBCIRCUIT ID LPAREN ...
+    def visitSubcircuitDefinition(self, ctx):
         id_term = ctx.ID()
         if id_term:
-            name = id_term.getText()
-            self.symbols.add(name)
+            self.symbols.add(id_term.getText())
         return self.visitChildren(ctx)
 
-    # Dodaj inne metody zbierające nazwy (np. case labels, parametry funkcji itp.) jeśli potrzebujesz.
-
-
+# ---------- TextHandler ----------
 class TextHandler(logging.Handler):
     """Handler logujący do tkinter.Text lub scrolledtext."""
     def __init__(self, text_widget):
         super().__init__()
         self.text_widget = text_widget
-
     def emit(self, record):
         msg = self.format(record)
         def append():
@@ -227,7 +311,7 @@ class TextHandler(logging.Handler):
         except RuntimeError:
             pass
 
-
+# ---------- CircuitEditorGUI ----------
 class CircuitEditorGUI:
     def __init__(self, root):
         self.root = root
@@ -255,18 +339,15 @@ class CircuitEditorGUI:
         editor_frame = tk.Frame(frame_editor)
         editor_frame.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-        # Gutter z numerami linii
         self.line_numbers = tk.Text(
             editor_frame, width=4, padx=3, takefocus=0, border=0,
             state='disabled'
         )
         self.line_numbers.pack(side=tk.LEFT, fill=tk.Y)
 
-        # Główny edytor
         self.editor = tk.Text(editor_frame, wrap=tk.WORD, undo=True)
         self.editor.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        # Scrollbar współdzielony
         self.scrollbar = tk.Scrollbar(editor_frame, orient=tk.VERTICAL, command=self._on_scroll)
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.editor.configure(yscrollcommand=self._on_yscroll)
@@ -280,7 +361,6 @@ class CircuitEditorGUI:
         lbl2.pack(anchor=tk.W, padx=5, pady=(5,0))
         self.output = scrolledtext.ScrolledText(frame_output, wrap=tk.WORD, height=10, state=tk.NORMAL)
         self.output.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
-        # Tag do pogrubienia
         bold_font = ('TkDefaultFont', 10, 'bold')
         self.output.tag_configure('bold', font=bold_font)
         paned.add(frame_output, stretch='always')
@@ -295,12 +375,12 @@ class CircuitEditorGUI:
         btn_clear_output = tk.Button(frame_buttons, text="Wyczyść logi", command=lambda: self.output.delete(1.0, tk.END))
         btn_clear_output.pack(side=tk.LEFT, padx=5)
 
-        # Handler logowania (opcjonalnie)
+        # Handler logowania
         self.text_handler = TextHandler(self.output)
         formatter = logging.Formatter('%(message)s')
         self.text_handler.setFormatter(formatter)
 
-        # --- Lista statycznych słów kluczowych dla autocomplete ---
+        # Statyczne słowa kluczowe dla autocomplete
         self.static_keywords = [
             'alias','let','fn','return','series','parallel','reversed','subcircuit',
             'import','if','else','for','while','do','break','continue',
@@ -308,14 +388,11 @@ class CircuitEditorGUI:
             'measure','pos'
         ]
 
-        # --- Syntax highlighting patterns ---
-        # Bazowane na tokenach z gramatyki
+        # Syntax highlighting patterns
         multiline_comment_pattern = r'/\*[\s\S]*?\*/'
         line_comment_pattern = r'//.*'
         string_pattern = r'"([^"\\]|\\.)*"'
-        # Słowa kluczowe regex: \b(?:kw1|kw2|...)\b
         kw_pattern = r'\b(?:' + '|'.join(re.escape(kw) for kw in self.static_keywords) + r')\b'
-        # Float literal z optional underscore, exponent, suffix
         float_pattern = (
             r'\b[+-]?'
             r'(?:\d[\d_]*)'
@@ -324,10 +401,7 @@ class CircuitEditorGUI:
             r'(?:[fpnu\u03BCmkKMGTP])?'
             r'\b'
         )
-        # Operatory
         operator_pattern = r'(\b&&\b|\|\||==|!=|<=|>=|\+\+|--|\+=|-=|\*=|/=|%=|\^=|->|[+\-*/%^!:<>=])'
-
-        # Kolejność: najpierw nie-komentarze, potem komentarze na końcu
         self.syntax_patterns = [
             (re.compile(string_pattern), 'string'),
             (re.compile(kw_pattern), 'keyword'),
@@ -336,29 +410,24 @@ class CircuitEditorGUI:
             (re.compile(multiline_comment_pattern), 'comment'),
             (re.compile(line_comment_pattern), 'comment'),
         ]
-        # Konfiguracja tagów; kolory nadamy w apply_theme
         self.editor.tag_configure('comment', foreground='#6a9955')
         self.editor.tag_configure('string', foreground='#ce9178')
         self.editor.tag_configure('keyword', foreground='#569cd6')
         self.editor.tag_configure('number', foreground='#b5cea8')
         self.editor.tag_configure('operator', foreground='#d4d4d4')
 
-        # --- Bindowania ---
-        # Podświetlanie składni i numeracja linii
+        # Bindowania
         self.editor.bind('<KeyRelease>', self._on_key_release)
         self.editor.bind('<<Modified>>', self._on_modified)
-        self.editor.bind('<MouseWheel>', self._on_scroll_event)  # Windows
-        self.editor.bind('<Button-4>', self._on_scroll_event)    # Linux scroll up
-        self.editor.bind('<Button-5>', self._on_scroll_event)    # Linux scroll down
+        self.editor.bind('<MouseWheel>', self._on_scroll_event)
+        self.editor.bind('<Button-4>', self._on_scroll_event)
+        self.editor.bind('<Button-5>', self._on_scroll_event)
         self.editor.bind('<Configure>', lambda e: self._update_line_numbers())
-
-        # Autocomplete: Ctrl+Space
         self.editor.bind('<Control-space>', self.show_autocomplete)
 
         # Inicjalne ustawienia
         self.apply_theme()
         self._update_line_numbers()
-        # Wstępne podświetlenie (jeśli w edytorze już coś jest)
         self.highlight_syntax()
 
     def set_theme(self, theme_name):
@@ -366,17 +435,14 @@ class CircuitEditorGUI:
             return
         self.theme = theme_name
         self.apply_theme()
-        # po zmianie motywu odśwież highlight
         self.highlight_syntax()
 
     def apply_theme(self):
-        """Ustaw kolory widgetów i tagów wg motywu."""
         if self.theme == 'dark':
             editor_bg = '#1e1e1e'; editor_fg = '#d4d4d4'
             gutter_bg = '#2b2b2b'; gutter_fg = '#858585'
             output_bg = '#252526'; output_fg = '#e5e5e5'
             select_bg = '#264f78'; insert_color = '#ffffff'
-            # kolory tagów
             self.editor.tag_configure('comment', foreground='#6a9955')
             self.editor.tag_configure('string', foreground='#ce9178')
             self.editor.tag_configure('keyword', foreground='#569cd6')
@@ -392,15 +458,9 @@ class CircuitEditorGUI:
             self.editor.tag_configure('keyword', foreground='#0000ff')
             self.editor.tag_configure('number', foreground='#098658')
             self.editor.tag_configure('operator', foreground='#333333')
-
-        # Ustawienia widgetów
-        self.editor.config(bg=editor_bg, fg=editor_fg,
-                           insertbackground=insert_color,
-                           selectbackground=select_bg)
+        self.editor.config(bg=editor_bg, fg=editor_fg, insertbackground=insert_color, selectbackground=select_bg)
         self.line_numbers.config(bg=gutter_bg, fg=gutter_fg)
-        self.output.config(bg=output_bg, fg=output_fg,
-                           insertbackground=insert_color,
-                           selectbackground=select_bg)
+        self.output.config(bg=output_bg, fg=output_fg, insertbackground=insert_color, selectbackground=select_bg)
         try:
             bg_root = editor_bg if self.theme=='dark' else '#f0f0f0'
             self.root.config(bg=bg_root)
@@ -432,54 +492,34 @@ class CircuitEditorGUI:
             self.editor.edit_modified(False)
 
     def _on_key_release(self, event=None):
-        # Zamknij autocomplete, gdy poruszamy kursorem
         if event and event.keysym in ('Up', 'Down', 'Left', 'Right', 'Return', 'Escape'):
             self._hide_popup()
         else:
-            # Podświetl składnię
             self.editor.after_idle(self.highlight_syntax)
         self._update_line_numbers()
 
     def highlight_syntax(self):
-        """
-        Podświetla składnię według regexów w self.syntax_patterns.
-        Komentarze nakładamy jako ostatnie, by mieć priorytet.
-        """
         text = self.editor.get('1.0', 'end-1c')
-        # Usuń stare tagi
         for _, tag in self.syntax_patterns:
             self.editor.tag_remove(tag, '1.0', tk.END)
         # Najpierw nie-komentarze
         for pattern, tag in self.syntax_patterns:
-            if tag == 'comment':
-                continue
+            if tag == 'comment': continue
             for m in pattern.finditer(text):
-                start_idx = m.start()
-                end_idx = m.end()
-                start = f"1.0 + {start_idx}c"
-                end = f"1.0 + {end_idx}c"
-                try:
-                    self.editor.tag_add(tag, start, end)
-                except tk.TclError:
-                    pass
+                start = f"1.0 + {m.start()}c"
+                end = f"1.0 + {m.end()}c"
+                try: self.editor.tag_add(tag, start, end)
+                except tk.TclError: pass
         # Potem komentarze
         for pattern, tag in self.syntax_patterns:
-            if tag != 'comment':
-                continue
+            if tag != 'comment': continue
             for m in pattern.finditer(text):
-                start_idx = m.start()
-                end_idx = m.end()
-                start = f"1.0 + {start_idx}c"
-                end = f"1.0 + {end_idx}c"
-                try:
-                    self.editor.tag_add(tag, start, end)
-                except tk.TclError:
-                    pass
-        # Priorytet
-        try:
-            self.editor.tag_raise('comment')
-        except Exception:
-            pass
+                start = f"1.0 + {m.start()}c"
+                end = f"1.0 + {m.end()}c"
+                try: self.editor.tag_add(tag, start, end)
+                except tk.TclError: pass
+        try: self.editor.tag_raise('comment')
+        except Exception: pass
 
     def _update_line_numbers(self):
         line_count = int(self.editor.index('end-1c').split('.')[0])
@@ -506,32 +546,28 @@ class CircuitEditorGUI:
         thread.start()
 
     def _run_thread(self, content):
-        success, warnings, raw_output = process_circuit_content(content)
-        self.root.after(0, lambda: self.display_result(success, warnings, raw_output))
+        success, warnings, errors, raw_output = process_circuit_content(content)
+        self.root.after(0, lambda: self.display_result(success, warnings, errors, raw_output))
 
-    def display_result(self, success: bool, warnings: list, raw_output: str):
-        # Wstaw warningi semantyczne na górze
-        if warnings:
-            for (line, col, msg) in warnings:
-                text = f"⚠️ Warning at line {line}, column {col}:\n    {msg}\n\n"
-                self.output.insert(tk.END, text)
-            self.output.insert(tk.END, "-"*40 + "\n")
-        # Filtrowanie inline-warningów
-        lines = raw_output.splitlines()
-        filtered = []
-        i = 0
-        while i < len(lines):
-            line = lines[i]
-            if 'Warning at line' in line:
-                i += 1
-                while i < len(lines) and (lines[i].startswith(' ') or lines[i].strip()=='' or '\x1b' in lines[i]):
+    def display_result(self, success: bool, warnings: list, errors: list, raw_output: str):
+        # Nie wyświetlamy warningów
+        if errors:
+            self.output.insert(tk.END, "❌ Wystąpiły błędy w definicji. Analiza przerwana.\n")
+        else:
+            lines = raw_output.splitlines()
+            filtered = []
+            i = 0
+            while i < len(lines):
+                line = lines[i]
+                if 'Warning at line' in line:
                     i += 1
-            else:
-                filtered.append(line)
-                i += 1
-        for l in filtered:
-            self.output.insert(tk.END, l + "\n")
-        # Pogrub ostatniej niepustej linii
+                    while i < len(lines) and (lines[i].startswith(' ') or lines[i].strip()=='' or '\x1b' in lines[i]):
+                        i += 1
+                else:
+                    filtered.append(line)
+                    i += 1
+            for l in filtered:
+                self.output.insert(tk.END, l + "\n")
         all_text = self.output.get(1.0, tk.END).splitlines()
         for idx in range(len(all_text)-1, -1, -1):
             if all_text[idx].strip():
@@ -541,18 +577,13 @@ class CircuitEditorGUI:
                 self.output.tag_add('bold', start, end)
                 break
         self.output.see(tk.END)
-        if success:
+        if success and not errors:
             messagebox.showinfo("Gotowe", "Analiza zakończona pomyślnie.")
         else:
             messagebox.showwarning("Zakończono", "Analiza zakończona z błędami. Sprawdź logi.")
         self.running = False
 
     def collect_symbols(self):
-        """
-        Parsuje aktualną zawartość edytora i zwraca zbiór nazw zdefiniowanych:
-        aliasy, zmienne let, komponenty, funkcje, subcircuity.
-        Używa SymbolCollectorVisitor dla wydajności.
-        """
         content = self.editor.get('1.0', tk.END)
         symbols = set()
         try:
@@ -566,21 +597,15 @@ class CircuitEditorGUI:
             parser.removeErrorListeners()
             parser.addErrorListener(listener)
             tree = parser.program()
-
             collector = SymbolCollectorVisitor()
             collector.visit(tree)
             symbols = collector.symbols
         except Exception:
-            # Błąd składni lub inny: zwracamy pusty lub co udało się zebrać
             pass
         return symbols
 
     def show_autocomplete(self, event=None):
-        """
-        Wywoływane na Ctrl+Space: wyciąga prefix przed kursorem i pokazuje listę sugestii.
-        """
-        # Uzyskaj pozycję kursora i tekst przed nim w bieżącej linii
-        idx = self.editor.index(tk.INSERT)  # "line.col"
+        idx = self.editor.index(tk.INSERT)
         line_no, col = idx.split('.')
         line_start = f"{line_no}.0"
         text_before = self.editor.get(line_start, idx)
@@ -592,34 +617,21 @@ class CircuitEditorGUI:
         else:
             prefix = ''
             start_index = idx
-
-        # Statyczne
         suggestions = []
         for kw in self.static_keywords:
-            if prefix == '' or kw.startswith(prefix):
-                suggestions.append(kw)
-        # Dynamiczne
+            if prefix == '' or kw.startswith(prefix): suggestions.append(kw)
         symbols = self.collect_symbols()
         for s in symbols:
-            if prefix == '' or s.startswith(prefix):
-                suggestions.append(s)
-        # Unikalne, posortowane
+            if prefix == '' or s.startswith(prefix): suggestions.append(s)
         suggestions = sorted(set(suggestions), key=lambda x: x.lower())
-        if not suggestions:
-            return "break"
-        # Pokaż popup
+        if not suggestions: return "break"
         self._show_popup(suggestions, start_index, prefix)
         return "break"
 
     def _show_popup(self, suggestions, start_index, prefix):
-        # Usuń istniejący
         if hasattr(self, 'autocomplete_popup') and self.autocomplete_popup:
-            try:
-                self.autocomplete_popup.destroy()
-            except Exception:
-                pass
-
-        # Pozycja w pikselach
+            try: self.autocomplete_popup.destroy()
+            except: pass
         try:
             bbox = self.editor.bbox(tk.INSERT)
             if bbox:
@@ -632,63 +644,45 @@ class CircuitEditorGUI:
         except Exception:
             abs_x = self.editor.winfo_rootx()
             abs_y = self.editor.winfo_rooty()
-
         popup = tk.Toplevel(self.root)
         popup.wm_overrideredirect(True)
         popup.wm_geometry(f"+{abs_x}+{abs_y}")
-
         lb = tk.Listbox(popup, exportselection=False)
         lb.pack(side=tk.LEFT, fill=tk.BOTH)
-
-        for item in suggestions:
-            lb.insert(tk.END, item)
-
+        for item in suggestions: lb.insert(tk.END, item)
         if len(suggestions) > 10:
             scrollbar = tk.Scrollbar(popup, orient=tk.VERTICAL, command=lb.yview)
             scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
             lb.config(yscrollcommand=scrollbar.set)
-
         self.autocomplete_popup = popup
         self.autocomplete_listbox = lb
         self.autocomplete_start_index = start_index
         self.autocomplete_prefix = prefix
-
-        # Styl popup wg motywu
         if self.theme == 'dark':
             lb.config(bg='#2b2b2b', fg='#d4d4d4', selectbackground='#264f78')
         else:
             lb.config(bg='#ffffff', fg='#000000', selectbackground='#cce8ff')
-
         lb.focus_set()
         lb.selection_set(0)
-
         lb.bind("<Return>", self._autocomplete_select)
         lb.bind("<Double-Button-1>", self._autocomplete_select)
         lb.bind("<Escape>", lambda e: self._hide_popup())
         lb.bind("<Up>", self._on_popup_up)
         lb.bind("<Down>", self._on_popup_down)
-
-        # Kliknięcie w edytor poza popup usuwa popup
         self.editor.bind("<Button-1>", lambda e: self._hide_popup())
 
     def _hide_popup(self):
         if hasattr(self, 'autocomplete_popup') and self.autocomplete_popup:
-            try:
-                self.autocomplete_popup.destroy()
-            except Exception:
-                pass
+            try: self.autocomplete_popup.destroy()
+            except: pass
         self.autocomplete_popup = None
         self.autocomplete_listbox = None
-        # Odbindowanie, aby nie zostawał stale
-        try:
-            self.editor.unbind("<Button-1>")
-        except Exception:
-            pass
+        try: self.editor.unbind("<Button-1>")
+        except: pass
 
     def _on_popup_up(self, event):
         lb = self.autocomplete_listbox
-        if not lb:
-            return "break"
+        if not lb: return "break"
         idx = lb.curselection()
         if idx:
             i = idx[0]
@@ -699,8 +693,7 @@ class CircuitEditorGUI:
 
     def _on_popup_down(self, event):
         lb = self.autocomplete_listbox
-        if not lb:
-            return "break"
+        if not lb: return "break"
         idx = lb.curselection()
         if idx:
             i = idx[0]
@@ -711,11 +704,9 @@ class CircuitEditorGUI:
 
     def _autocomplete_select(self, event):
         lb = self.autocomplete_listbox
-        if not lb:
-            return "break"
+        if not lb: return "break"
         sel = lb.curselection()
-        if not sel:
-            return "break"
+        if not sel: return "break"
         text = lb.get(sel[0])
         try:
             self.editor.delete(self.autocomplete_start_index, tk.INSERT)
@@ -725,12 +716,11 @@ class CircuitEditorGUI:
         self._hide_popup()
         return "break"
 
-
-def main_gui():
+# ---------- main ----------
+def main():
     root = tk.Tk()
     gui = CircuitEditorGUI(root)
     root.mainloop()
 
-
 if __name__ == "__main__":
-    main_gui()
+    main()
