@@ -7,8 +7,7 @@ interpreter języka opisu obwodów elektrycznych z analizą  i rysowaniem.
 - Antoni Pater - antonipater@student.agh.edu.pl
 
 ### Ogólne cele  
-- Umożliwić użytkownikowi zapis obwodu w prostym pliku tekstowym.  
-- Po uruchomieniu zwrócić „output” w postaci wykresów napięć/prądów oraz diagramu obwodu.  
+- Umożliwić użytkownikowi zapis obwodu w prostym pliku tekstowym.   
 - Nie wymaga kompilacji – wszystkie obliczenia odbywają się w pamięci podczas uruchomienia.
 
 ---
@@ -18,31 +17,64 @@ interpreter języka opisu obwodów elektrycznych z analizą  i rysowaniem.
 **Planowany wynik działania programu** 
 - **Wejście**: plik tekstowy ([`examples/`](./examples/)).  
 ```
-let freq = 50;
-let period = 1 / freq;
-let stop = 10 * period;
+let includeR1 = true;
+let includeR2 = false;
 
-let R = 1k, L = 1, C = 1m;
+if (includeR1) {
+    print("Wstawiam R1");
+    R R1 = 100 : N, GND;
+} else {
+    print("Wstawiam R1_pom");
+    R R1_pom = 1000 : N, GND;
+}
 
-alias GND = n0;
+if (includeR2) {
+    print("Wstawiam R2");
+    R R2 = 200 : N, GND;
+} else {
+    print("Nie wstawiam R2, wstawiam R3");
+    R R3 = 300 : N, GND;
+}
 
-V V1 = sine(vdc=0, amplitude=10, f=freq) : n1, n0;
-R R1 = R : n1, n2;
-L L1 = L : n2, n3;
-C C1 = C : n3, n0;
+let useSeries = false;
+if (includeR1) {
+    if (useSeries) {
+        print("Wstawiam szeregowo R4 i R5");
+        R R4 = 400 : N, GND;
+        R R5 = 500 : N, GND;
+    } else {
+        print("Wstawiam tylko R6");
+        R R6 = 600 : N, GND;
+    }
+}
 
-transient(stop);
-```
-```
-draw
-resistor R1 from (0,0) to (2,0) label "10Ω"
-inductor L1 from (2,0) to (4,0) label "5mH"
-capacitor C1 from (4,0) to (6,0) label "2μF"
+V V1 = 10 : N, GND;
+
+dc();
 ```
 
 - **Wyjście**:  
-  - Wykresy transient w formacie PNG w katalogu `output/`.  
-  - Diagram SVG/PNG z dyrektyw `draw`.
+```
+Wstawiam R1
+
+Nie wstawiam R2, wstawiam R3
+
+Wstawiam tylko R6
+
+=== Symulacja DC ===
+Ground: GND = 0 V
+Node voltages:
+  N: 10.000000 V
+
+Voltage source currents:
+  V1: I_A  A
+
+Element voltages i prądy:
+  R1: Voltage = 10.000000 V, Current = 0.100000 A
+  R3: Voltage = 10.000000 V, Current = 0.033333 A
+  R6: Voltage = 10.000000 V, Current = 0.016667 A
+
+```
 
 ### Planowany język implementacji  
 - Python ≥ 3.10
@@ -140,8 +172,7 @@ Poniżej pełna lista tokenów zdefiniowanych w pliku [grammar/CircuitryLexer.g4
 | `MULTILINE_COMMENT` | `'/*' .*? '*/' -> skip`                                                                                                          | Komentarz wielolinijkowy (pomijany)                    |
 | `WS`                | `[ \t\r\n]+ -> skip`                                                                                                             | Białe znaki (pomijane)                                 |
 
-Szczegóły reguł składniowych parsera w [grammar/CircuitryParser.g4](./grammar/CircuitryParser.g4)  
-Dyrektywy rysowania w [grammar/Draw.g4](./grammar/Draw.g4)  
+ 
 
 ## Gramatyka formatu
 
@@ -211,8 +242,7 @@ W tej sekcji opisujemy, jak zaawansowanie wykrywamy i obsługujemy błędy skła
 - Można wykorzystywać informacje z ANTLR o oczekiwanych tokenach, by lepiej formułować komunikat.
 - Dla semantyki: przy nieznanej zmiennej zasugerować podobne nazwy, jeśli istnieją w scope.
 - W GUI można wyświetlać tooltip nad podświetloną linią z sugestią bardziej szczegółową.
-### Przykład błędu sementycznego
-![img.png](blad_sementyczny.png)
+
 ### Przykład warningów
 ![img.png](warnings.png)
 ### Przykład błędu
@@ -230,23 +260,6 @@ W tej sekcji opisujemy, jak zaawansowanie wykrywamy i obsługujemy błędy skła
   - `git`  
   - dowolne IDE lub edytor tekstu (np. VSCode)  
 
-* Przykładowy układ RC zasilany napięciem pulsacyjnym
-<pre>
-V1 {R1, C1}
-R1 {V1, C1}
-C1 {R1, V1}
-
-V1 = PULSE(0 5 0 1n 1n 10u 20u)
-R1 = 1k
-C1 = 10u
-
-+------[R1]------[C1]-----+
-|                         |
-[V1]                     GND
-|                         |
-+-------------------------+
-
-</pre>
 
 
 

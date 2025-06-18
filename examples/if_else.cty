@@ -1,35 +1,42 @@
-// examples/if_example.cty
-
+// Definicja zmiennych sterujących
 let includeR1 = true;
 let includeR2 = false;
 
-// jeśli includeR1 == true, wstawimy R1
-if (includeR1 == true) {
+// Jeśli includeR1 == true, wstaw rezystor R1, inaczej R1_pom (np. większy rezystor)
+if (includeR1) {
     print("Wstawiam R1");
     R R1 = 100 : N, GND;
+} else {
+    print("Wstawiam R1_pom");
+    R R1_pom = 1000 : N, GND;
 }
 
-// druga instrukcja if z else
-if (includeR2 == true) {
+// Druga instrukcja if-else: jeśli includeR2, wstaw R2, w przeciwnym razie nic lub inny element
+if (includeR2) {
     print("Wstawiam R2");
     R R2 = 200 : N, GND;
 } else {
-    // jeśli nie includeR2, wstawimy R3
-    print("Wstawiam R3");
+    print("Nie wstawiam R2, wstawiam R3");
     R R3 = 300 : N, GND;
 }
 
-// kilka zagnieżdżonych ifów
+// Przykład zagnieżdżonego if
 let useSeries = false;
 if (includeR1) {
     if (useSeries) {
-        // ta gałąź nigdy się nie wykona, bo useSeries=false
+        print("Wstawiam szeregowo R4 i R5");
+        // przykładowo: R4 szeregowo z R5 — ale tu w DSL same pojedyncze wpisy
         R R4 = 400 : N, GND;
-    } else {
-        // wykona się tylko ten resistor
         R R5 = 500 : N, GND;
+    } else {
+        print("Wstawiam tylko R6");
+        R R6 = 600 : N, GND;
     }
 }
 
-// na koniec źródło napięcia
+// Źródło napięcia
 V V1 = 10 : N, GND;
+
+// Blok symulacji DC (przykład składni dc();)
+dc();
+
