@@ -195,6 +195,30 @@ python circuitry.py
     ![img.png](podpowiadanie.png)
   
 ---
+## Obsługa błędów i walicacji
+W tej sekcji opisujemy, jak zaawansowanie wykrywamy i obsługujemy błędy składniowe oraz semantyczne w DSL oraz jak prezentujemy je użytkownikowi w GUI.
+### Błędy składniowe 
+1. Wykrywanie: podczas parsowania ANTLR-em korzystamy z własnego listenera, który zbiera informacje o błędach składni. Jeśli parser napotka nieoczekiwany token lub brakujący element, listener rejestruje numer linii, kolumny i komunikat.
+2. Prezentacja: po zakończeniu parsowania sprawdzamy, czy wystąpiły błędy składniowe. Jeśli tak, natychmiast wyświetlamy w polu logów komunikaty zawierające numer linii i kolumny oraz opis problemu, a dalsza analiza zostaje przerwana.
+3. Podświetlanie: linie z błędami podświetlamy w edytorze dedykowanym tagiem, aby użytkownik od razu widział, w którym miejscu kod wymaga poprawy.
+4. Informowanie użytkownika: GUI wyświetla alert lub ostrzeżenie, informując, że wystąpiły błędy składniowe i należy je poprawić przed dalszymi krokami.
+### Błędy semantyczne
+1. Wykrywanie: podczas wizyty AST w visitorze (CircuitBuilderVisitor) sprawdzamy poprawność użycia zmiennych, aliasów, wywołań funkcji itp. W przypadku niezadeklarowanej zmiennej, niezgodności argumentów funkcji lub innej niepoprawnej konstrukcji rejestrujemy błąd semantyczny z numerem linii i opisem.
+2. Warningi: niektóre konstrukcje, choć poprawne, mogą być podejrzane lub nieskuteczne (np. przypisanie stałej, zawsze prawdziwy warunek). Takie sytuacje rejestrujemy jako warningi, aby użytkownik wiedział o potencjalnych nieoptymalnych fragmentach.
+3. Podświetlanie: linie z warningami można wyróżnić innym stylem (np. subtelnym tłem), aby nieco oddzielić je od błędów krytycznych, ale nadal przyciągnąć uwagę użytkownika.
+### Sugestie naprawy i podpowiedzi
+- W komunikatach błędów składniowych można dodawać sugestie, np. “oczekiwano ‘;’ na końcu linii” lub “nieoczekiwany token, prawdopodobnie literówka”.
+- Można wykorzystywać informacje z ANTLR o oczekiwanych tokenach, by lepiej formułować komunikat.
+- Dla semantyki: przy nieznanej zmiennej zasugerować podobne nazwy, jeśli istnieją w scope.
+- W GUI można wyświetlać tooltip nad podświetloną linią z sugestią bardziej szczegółową.
+### Przykład błędu sementycznego
+![img.png](blad_sementyczny.png)
+### Przykład warningów
+![img.png](warnings.png)
+### Przykład błędu
+![img.png](errors.png)
+
+---
 ## Narzędzia i zależności
 
 - **Język implementacji:** Python 3.10+  
