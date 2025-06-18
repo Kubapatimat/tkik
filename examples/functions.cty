@@ -5,7 +5,7 @@
  * @return: Resonance frequency in Hertz
  */
 fn resonance_frequency(L, C) {
-    return 1 / (2 * pi * sqrt(L * C));
+    return 1 / (2 * 3.1415 * sqrt(L * C));
 }
 
 let R = 1k, L = 1, C = 1m;

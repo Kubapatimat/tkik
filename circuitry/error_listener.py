@@ -2,15 +2,16 @@ import sys
 from antlr4.error.ErrorListener import ErrorListener
 from antlr4 import InputStream
 
+
 class FriendlyErrorListener(ErrorListener):
     def __init__(self, input_stream: InputStream):
         super().__init__()
         data = input_stream.getText(0, input_stream.size)
         self.lines = data.splitlines()
         self.had_syntax_error = False
-        self.syntax_errors = []   # lista tuple (line, column, msg)
-        self.warnings = []        # lista tuple (line, column, msg)
-        self.semantic_errors = [] # lista tuple (line, column, msg)
+        self.syntax_errors = []  # lista tuple (line, column, msg)
+        self.warnings = []  # lista tuple (line, column, msg)
+        self.semantic_errors = []  # lista tuple (line, column, msg)
         # Możesz ustawić na True, by przerywać przy pierwszym błędzie
         self.fail_on_error = False
 
@@ -92,7 +93,7 @@ class FriendlyErrorListener(ErrorListener):
         RESET = "\033[0m"
         ICON = "❌"
         for (line, column, msg) in self.semantic_errors:
-            header = f"{RED}{BOLD}{ICON} Semantic error at line {line}, column {column}:{RESET}"
-            details = f"{RED}{msg}{RESET}"
+            header = f"Semantic error at line {line}, column {column}:"
+            details = f"{msg}"
             out.append("\n".join([header, f"    {details}"]))
         return out

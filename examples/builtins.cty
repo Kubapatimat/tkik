@@ -1,0 +1,7 @@
+let a = sqrt(81) + cos(0);
+let b = pow(2, 3) + rand();
+let c = ceil(0.7) + floor(4.2);
+
+print(a);
+print(b);
+print(c);

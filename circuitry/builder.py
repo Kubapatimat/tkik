@@ -50,10 +50,10 @@ class CircuitBuilderVisitor(CircuitryParserVisitor):
             if not info["used"]:
                 line, col = info["defined"]
                 val = info["value"]
-                self.error_listener.warning(
-                    line, col,
-                    f"Zmiennej '{name}' nigdy nie użyto. Wartość przypisana to {val!r}."
-                )
+                # self.error_listener.warning(
+                #     line, col,
+                #     f"Zmiennej '{name}' nigdy nie użyto. Wartość przypisana to {val!r}."
+                # )
         # usunięcie zakresu
         self.symbols.pop()
         self.scopes.pop()
@@ -78,6 +78,8 @@ class CircuitBuilderVisitor(CircuitryParserVisitor):
         else:
             # jeśli ponowna definicja, aktualizujemy tylko wartość
             top[name]["value"] = value
+            # **oznaczamy, że zmienna jest używana (bo przypisujemy do niej)**
+            top[name]["used"] = True
 
         # 2) Standardowe przypisanie wartości w self.scopes
         for scope in reversed(self.scopes):
@@ -149,11 +151,11 @@ class CircuitBuilderVisitor(CircuitryParserVisitor):
             token = ctx.ID().getSymbol()
             # dla stringów usuń np. cudzysłowy w wyświetleniu
             display_val = f'"{val}"' if isinstance(val, str) else val
-            self.error_listener.warning(
-                token.line,
-                token.column,
-                f"Wyrażenie dla '{name}' zawsze zwraca wartość {display_val}."
-            )
+            # self.error_listener.warning(
+            #     token.line,
+            #     token.column,
+            #     f"Wyrażenie dla '{name}' zawsze zwraca wartość {display_val}."
+            # )
 
         return name, val
 
@@ -428,7 +430,7 @@ class CircuitBuilderVisitor(CircuitryParserVisitor):
             if name in scope:
                 scope[name]["used"] = True
                 return self.resolve(name)
-        
+
         # variable not declared, throw semantic error
         token = ctx.ID().getSymbol()
         self.error_listener.semanticError(
@@ -436,7 +438,7 @@ class CircuitBuilderVisitor(CircuitryParserVisitor):
             token.column,
             f"Variable '{name}' is used but was never declared."
         )
-        return None 
+        return None
 
     def visitParenExpr(self, ctx):
         return self.visit(ctx.expr())

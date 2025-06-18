@@ -8,8 +8,3 @@ R R3 = 3k : D, A;
 R R4 = 6k : B, D;
 
 dc();
-
-pos A = (2, 2);
-pos B = (2, -2);
-pos C = (0, 0);
-pos D = (4, 0);
