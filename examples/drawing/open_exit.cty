@@ -1,4 +1,0 @@
-draw
-resistor R from (0,0) to (4,0)
-open o1 from (4,0) to (6,0)
-short s1 from (0,0) to (0,-2)

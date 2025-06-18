@@ -157,4 +157,15 @@ internal_builtins = {
     "u": u,
     "uramp": uramp,
     "white": white,
+    "NWD": lambda args: np.gcd(
+        int(to_number(args.get('_pos', [0])[0])),
+        int(to_number(args.get('_pos', [0])[1]))
+    ),
+    "NWW": lambda args: abs(
+        int(to_number(args.get('_pos', [0])[0])) *
+        int(to_number(args.get('_pos', [0])[1]))
+    ) // np.gcd(
+        int(to_number(args.get('_pos', [0])[0])),
+        int(to_number(args.get('_pos', [0])[1]))
+    ),
 }

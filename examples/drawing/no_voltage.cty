@@ -1,4 +1,0 @@
-draw
-resistor R1 from (0,0) to (2,0) label "10Ω"
-inductor L1 from (2,0) to (4,0) label "5mH"
-capacitor C1 from (4,0) to (6,0) label "2μF"
