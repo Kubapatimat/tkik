@@ -1,85 +1,98 @@
+import sys
 from antlr4.error.ErrorListener import ErrorListener
 from antlr4 import InputStream
 
 class FriendlyErrorListener(ErrorListener):
-    def __init__(self, input_stream: InputStream, print_errors: bool = False, suppress_warnings: bool = True):
+    def __init__(self, input_stream: InputStream):
         super().__init__()
         data = input_stream.getText(0, input_stream.size)
         self.lines = data.splitlines()
-        self.had_error = False
-        self.warnings = []
-        self.errors = []  # zbieramy błędy składniowe i semantyczne
-        self.print_errors = print_errors
-        self.suppress_warnings = suppress_warnings
+        self.had_syntax_error = False
+        self.syntax_errors = []   # lista tuple (line, column, msg)
+        self.warnings = []        # lista tuple (line, column, msg)
+        self.semantic_errors = [] # lista tuple (line, column, msg)
+        # Możesz ustawić na True, by przerywać przy pierwszym błędzie
+        self.fail_on_error = False
 
     def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
-        self.had_error = True
-        error_info = {
-            'type': 'syntax',
-            'line': line,
-            'column': column,
-            'msg': msg,
-        }
-        self.errors.append(error_info)
-        if self.print_errors:
-            RED    = "\033[31m"
-            BOLD   = "\033[1m"
-            YELLOW = "\033[33m"
-            RESET  = "\033[0m"
-            ICON   = "❌"
-            header = f"{RED}{BOLD}{ICON} Syntax error at line {line}, column {column}:{RESET}"
-            details = f"{RED}{msg}{RESET}"
+        # Zbieramy błąd, ale nie wypisujemy go tutaj.
+        self.had_syntax_error = True
+        self.syntax_errors.append((line, column, msg))
+        if self.fail_on_error:
+            raise RuntimeError(f"Syntax error at line {line}, column {column}: {msg}")
+
+    def warning(self, line: int, column: int, msg: str):
+        # Zbieramy warningi
+        self.warnings.append((line, column, msg))
+        # nie wypisujemy tutaj — decyzję podejmiemy z zewnątrz
+
+    def semanticError(self, line: int, column: int, msg: str):
+        # Zbieramy błąd semantyczny
+        self.semantic_errors.append((line, column, msg))
+        if self.fail_on_error:
+            raise RuntimeError(f"Semantic error at line {line}, column {column}: {msg}")
+
+    def reportAllErrors(self) -> bool:
+        """
+        Zwraca True, jeśli były błędy składniowe.
+        Metoda do wywołania po parsowaniu, aby sprawdzić, czy były błędy.
+        """
+        return self.had_syntax_error
+
+    def format_syntax_errors(self):
+        """
+        Zwraca listę sformatowanych komunikatów o błędach składni,
+        z prefiksem czerwonego X.
+        """
+        out = []
+        RED = "\033[31m"
+        BOLD = "\033[1m"
+        RESET = "\033[0m"
+        ICON = "❌"
+        for (line, column, msg) in self.syntax_errors:
+            # Pobierz źródłową linię i wskaźnik
             src_line = ""
             if 1 <= line <= len(self.lines):
                 src_line = self.lines[line - 1].replace("\t", "    ")
             pointer = ""
             if src_line:
-                pointer = " " * (column + 4) + f"{YELLOW}^{RESET}"
-            print(header)
-            print(f"    {details}")
+                pointer = " " * column + "^"
+            # Budujemy komunikat z ANSI kolorami
+            header = f"{RED}{BOLD}{ICON} Syntax error at line {line}, column {column}:{RESET}"
+            details = f"{RED}{msg}{RESET}"
+            block = [header, f"    {details}"]
             if src_line:
-                print(f"    {src_line}")
-                print(pointer)
-            print()
+                block.append(f"    {src_line}")
+                block.append(f"    {pointer}")
+            out.append("\n".join(block))
+        return out
 
-    def warning(self, line: int, column: int, msg: str):
-        # Zbieramy warningi, ale nie drukujemy, jeśli suppress_warnings=True
-        self.warnings.append((line, column, msg))
-        if not self.suppress_warnings:
-            YELLOW = "\033[33m"
-            BOLD   = "\033[1m"
-            RESET  = "\033[0m"
-            ICON   = "⚠️"
+    def format_warnings(self):
+        """
+        Zwraca listę sformatowanych warningów, z prefiksem żółtego ⚠️.
+        """
+        out = []
+        YELLOW = "\033[33m"
+        BOLD = "\033[1m"
+        RESET = "\033[0m"
+        ICON = "⚠️"
+        for (line, column, msg) in self.warnings:
             header = f"{YELLOW}{BOLD}{ICON} Warning at line {line}, column {column}:{RESET}"
             details = f"{YELLOW}{msg}{RESET}"
-            print(header)
-            print(f"    {details}\n")
+            out.append("\n".join([header, f"    {details}"]))
+        return out
 
-    def semanticError(self, line: int, column: int, msg: str):
-        self.had_error = True
-        error_info = {
-            'type': 'semantic',
-            'line': line,
-            'column': column,
-            'msg': msg,
-        }
-        self.errors.append(error_info)
-        if self.print_errors:
-            RED    = "\033[31m"
-            BOLD   = "\033[1m"
-            RESET  = "\033[0m"
-            ICON   = "❌"
+    def format_semantic_errors(self):
+        """
+        Zwraca listę sformatowanych błędów semantycznych, z prefiksem czerwonego X.
+        """
+        out = []
+        RED = "\033[31m"
+        BOLD = "\033[1m"
+        RESET = "\033[0m"
+        ICON = "❌"
+        for (line, column, msg) in self.semantic_errors:
             header = f"{RED}{BOLD}{ICON} Semantic error at line {line}, column {column}:{RESET}"
             details = f"{RED}{msg}{RESET}"
-            print(header)
-            print(f"    {details}\n")
-
-    def reportAllErrors(self) -> bool:
-        if self.had_error:
-            if self.print_errors:
-                print("Kompilacja przerwana z powodu błędów składniowych lub semantycznych.")
-            return True
-        return False
-
-    def getErrors(self):
-        return self.errors
+            out.append("\n".join([header, f"    {details}"]))
+        return out
