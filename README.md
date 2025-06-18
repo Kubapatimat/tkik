@@ -1,6 +1,6 @@
 ## 1. Temat projektu
 
-interpreter języka opisu obwodów elektrycznych z analizą i interfejsem graficznym.
+Interpreter języka opisu obwodów elektrycznych z analizą i interfejsem graficznym.
 
 ## Autorzy:
 
@@ -93,7 +93,6 @@ Element voltages i prądy:
 1. **ANTLR 4** generuje:
     - Leksykalizator → [`grammar/CircuitryLexer.g4`](./grammar/CircuitryLexer.g4)
     - Parser → [`grammar/CircuitryParser.g4`](./grammar/CircuitryParser.g4)
-    - Gramatyka rysowania → [`grammar/Draw.g4`](./grammar/Drawing.g4)
 2. Skrypty budujące parser:
 
 ## Opis tokenów
@@ -172,8 +171,6 @@ jest ważna – słowa kluczowe muszą występować przed bardziej ogólnymi reg
 | `AC`                 | `'ac'`                                                        | Dyrektywa analizy AC                             |
 | `DC`                 | `'dc'`                                                        | Dyrektywa analizy DC                             |
 | `MEASURE`            | `'measure'`                                                   | Dyrektywa pomiaru                                |
-| **Drawing**          |                                                               |                                                  |
-| `POS`                | `'pos'`                                                       | Definicja współrzędnych w dyrektywie `draw`      |
 | **Literals & IDs**   |                                                               |                                                  |
 | `FLOAT_LITERAL`      | `[+-]?([0-9]+(\.[0-9]+)?([eE][+-]?[0-9]+)?)([fpnuμmkKMGTP]?)` | Liczby zmiennoprzecinkowe z opcjonalną jednostką |
 | `STRING_LITERAL`     | `'"' (~["\\]                                                  | '\\' .)*? '"'`                                   | Ciąg znaków w cudzysłowie                             |
